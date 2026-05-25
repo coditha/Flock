@@ -32,6 +32,11 @@ const NEIGHBORHOOD_COLORS: Record<string, string> = {
 
 const SLOT_LABELS = ['N1', 'N2', 'N3', 'N4'];
 
+function slotPositionOf(position: string, neighborhoodId: string): number | null {
+  const match = position.match(new RegExp(`^${neighborhoodId}-n(\\d)$`));
+  return match ? parseInt(match[1]) - 1 : null;
+}
+
 export default function NeighborhoodTile({
   neighborhood,
   players,
@@ -41,7 +46,9 @@ export default function NeighborhoodTile({
   selectedSlot,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
-  const playersHere = players.filter((p) => p.position === neighborhood.id);
+  const playersHere = players.filter(
+    (p) => p.position === neighborhood.id || p.position.startsWith(neighborhood.id + '-n')
+  );
   const filledSlots = neighborhood.slots.filter(Boolean).length;
 
   return (
@@ -64,23 +71,38 @@ export default function NeighborhoodTile({
 
       {/* Incoming device slots — 2×2 grid */}
       <div className="device-slots">
-        {neighborhood.slots.map((device, i) => (
-          <div
-            key={i}
-            className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSlotClick(i as SlotIndex);
-            }}
-            title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
-          >
-            {device ? (
-              <span className="device-token">{DEVICE_EMOJI[device]}</span>
-            ) : (
-              <span className="slot-label">{SLOT_LABELS[i]}</span>
-            )}
-          </div>
-        ))}
+        {neighborhood.slots.map((device, i) => {
+          const playersOnSlot = players.filter(
+            (p) => slotPositionOf(p.position, neighborhood.id) === i
+          );
+          return (
+            <div
+              key={i}
+              className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSlotClick(i as SlotIndex);
+              }}
+              title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
+            >
+              {device ? (
+                <span className="device-token">{DEVICE_EMOJI[device]}</span>
+              ) : (
+                <span className="slot-label">{SLOT_LABELS[i]}</span>
+              )}
+              {playersOnSlot.length > 0 && (
+                <div className="slot-pawns">
+                  {playersOnSlot.map((p) => (
+                    <span key={p.id} className="slot-pawn" title={p.role.name}
+                      style={{ color: p.role.colorHex }}>
+                      {p.role.emoji}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Density track */}

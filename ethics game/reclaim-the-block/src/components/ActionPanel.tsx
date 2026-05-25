@@ -10,7 +10,11 @@ interface Props {
   onClearSelection: () => void;
 }
 
-const MOVE_OPTIONS: { label: string; position: Position }[] = [
+const DICE_FACES: Record<number, string> = { 1: '⚀', 2: '⚁', 3: '⚂', 4: '⚃', 5: '⚄', 6: '⚅' };
+
+const NEIGHBORHOOD_IDS = ['suburb', 'courthouse', 'media', 'politics'] as const;
+
+const AREA_MOVE_OPTIONS: { label: string; position: Position }[] = [
   { label: 'Suburb', position: 'suburb' },
   { label: 'Courthouse', position: 'courthouse' },
   { label: 'Media District', position: 'media' },
@@ -26,6 +30,12 @@ const MOVE_OPTIONS: { label: string; position: Position }[] = [
   { label: '→ Politics road 2', position: 'politics-road-2' },
 ];
 
+function currentNeighborhoodId(position: Position) {
+  return NEIGHBORHOOD_IDS.find(
+    (id) => position === id || position.startsWith(id + '-n')
+  ) ?? null;
+}
+
 export default function ActionPanel({
   state,
   selectedCardIds,
@@ -39,16 +49,22 @@ export default function ActionPanel({
   const actions = actionsRemaining;
 
   // Helpers
+  const NHCOLOR: Record<string, string> = { suburb: 'yellow', courthouse: 'blue', media: 'green', politics: 'red' };
   const canAct = phase === 'player-turn' && actions > 0 && !pendingIncident;
   const selectedCards = player.hand.filter((c) => selectedCardIds.includes(c.id));
   const twoSameColor =
     selectedCards.length >= 2 && selectedCards[0].category === selectedCards[1].category;
+  const cardsMatchNeighborhood =
+    selectedNeighborhood !== null &&
+    selectedCards.length >= 2 &&
+    selectedCards[0].category === NHCOLOR[selectedNeighborhood];
 
   const canRemove =
     canAct &&
     selectedSlot !== null &&
     selectedNeighborhood !== null &&
     twoSameColor &&
+    cardsMatchNeighborhood &&
     state.neighborhoods.find((n) => n.id === selectedNeighborhood)?.slots[selectedSlot] !== null;
 
   const canLegalRemove =
@@ -60,10 +76,15 @@ export default function ActionPanel({
     selectedNeighborhood !== null &&
     state.neighborhoods.find((n) => n.id === selectedNeighborhood)?.slots[selectedSlot] !== null;
 
+  const depositRequired = player.role.id === 'council' ? 4 : 5;
+  const depositCards = selectedCards.slice(0, depositRequired);
+  const depositColors = new Set(depositCards.map((c) => c.category));
+  const depositWildcards = depositCards.filter((c) => c.effectType === 'wildcard-deposit').length;
   const canDeposit =
     canAct &&
     player.position === 'city-hall' &&
-    selectedCards.length >= (player.role.id === 'council' ? 4 : 5);
+    selectedCards.length >= depositRequired &&
+    depositColors.size + depositWildcards >= depositRequired;
 
   const canPlayCard =
     canAct &&
@@ -74,7 +95,7 @@ export default function ActionPanel({
     <div className="action-panel">
       <div className="action-header">
         <span className="phase-badge">{getPhaseName(phase)}</span>
-        {phase === 'player-turn' && (
+        {phase === 'player-turn' && !state.pendingDiceRoll && (
           <span className="actions-remaining">
             ⚡ {actions} action{actions !== 1 ? 's' : ''} remaining
           </span>
@@ -143,14 +164,52 @@ export default function ActionPanel({
         </div>
       )}
 
+      {/* Dice roll */}
+      {phase === 'player-turn' && state.pendingDiceRoll && !pendingIncident && (
+        <div className="dice-roll-box">
+          <div className="dice-prompt">🎲 {player.role.name}, roll the dice to start your turn!</div>
+          <button className="btn btn-roll" onClick={() => dispatch({ type: 'ROLL_DIE' })}>
+            Roll Dice
+          </button>
+        </div>
+      )}
+
+      {phase === 'player-turn' && !state.pendingDiceRoll && state.lastDiceRoll !== null && !pendingIncident && (
+        <div className="dice-result">
+          {DICE_FACES[state.lastDiceRoll]} <span>You rolled a <strong>{state.lastDiceRoll}</strong> — {actions} action{actions !== 1 ? 's' : ''} left</span>
+        </div>
+      )}
+
       {/* Player turn actions */}
-      {phase === 'player-turn' && !pendingIncident && (
+      {phase === 'player-turn' && !state.pendingDiceRoll && !pendingIncident && (
         <div className="action-buttons">
-          {/* Move */}
+          {/* Move within neighborhood */}
+          {currentNeighborhoodId(player.position) && (
+            <div className="action-group">
+              <div className="action-group-label">Move within neighborhood (1 action)</div>
+              <div className="move-buttons">
+                {(['n1', 'n2', 'n3', 'n4'] as const).map((slot, i) => {
+                  const pos = `${currentNeighborhoodId(player.position)}-${slot}` as Position;
+                  return (
+                    <button
+                      key={slot}
+                      className={`btn btn-move-slot ${player.position === pos ? 'current-pos' : ''}`}
+                      disabled={!canAct || player.position === pos}
+                      onClick={() => dispatch({ type: 'MOVE', to: pos })}
+                    >
+                      N{i + 1}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Move to another area */}
           <div className="action-group">
-            <div className="action-group-label">Move (1 action each)</div>
+            <div className="action-group-label">Move to another area (1 action)</div>
             <div className="move-buttons">
-              {MOVE_OPTIONS.map(({ label, position }) => (
+              {AREA_MOVE_OPTIONS.map(({ label, position }) => (
                 <button
                   key={position}
                   className={`btn btn-move ${player.position === position ? 'current-pos' : ''}`}
@@ -165,9 +224,13 @@ export default function ActionPanel({
 
           {/* Remove device */}
           <div className="action-group">
-            <div className="action-group-label">Remove Device (1 action + 2 same-color cards)</div>
+            <div className="action-group-label">Remove Device (1 action + 2 matching-color cards)</div>
             <p className="action-hint">
-              Select 2 same-color cards from hand, then click a device slot on the board.
+              Cards must match the neighborhood color —{' '}
+              Suburb: yellow · Courthouse: blue · Media: green · Politics: red.
+              {selectedNeighborhood && NHCOLOR[selectedNeighborhood] && (
+                <> Select 2 <strong>{NHCOLOR[selectedNeighborhood]}</strong> cards for {selectedNeighborhood}.</>
+              )}
             </p>
             <button
               className="btn btn-action"
@@ -217,8 +280,8 @@ export default function ActionPanel({
             </div>
             <p className="action-hint">
               {player.position !== 'city-hall'
-                ? 'Must be at City Hall.'
-                : `Select ${player.role.id === 'council' ? '4' : '5'} cards (one per color) from hand.`}
+                ? 'Must be at City Hall to deposit.'
+                : `Select ${depositRequired} cards, one of each color${player.role.id === 'council' ? ' (Council: any 4 colors)' : ' (blue, yellow, green, red, purple)'}.`}
             </p>
             <button
               className="btn btn-deposit"

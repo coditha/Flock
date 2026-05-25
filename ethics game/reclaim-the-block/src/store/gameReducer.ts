@@ -141,6 +141,9 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
     cancelNextIncident: false,
     pendingExtraActions: 0,
 
+    pendingDiceRoll: true,
+    lastDiceRoll: null,
+
     gameLog: ['Game started! Good luck reclaiming the block.'],
     lossReason: undefined,
   };
@@ -169,6 +172,7 @@ function drawCommunityCards(state: GameState, playerId: number, count: number): 
   let s = { ...state };
   let deck = [...s.communityDeck];
   let discard = [...s.communityDiscard];
+  let deferredIncident: IncidentCard | null = null;
 
   for (let i = 0; i < count; i++) {
     if (deck.length === 0) {
@@ -179,30 +183,29 @@ function drawCommunityCards(state: GameState, playerId: number, count: number): 
     }
     const card = deck.shift()!;
     if (card.type === 'incident') {
-      // Resolve incident immediately
+      discard.push(card);
       if (s.cancelNextIncident) {
         s = { ...s, cancelNextIncident: false };
         s = log(s, `Incident "${card.name}" cancelled by Class Action.`);
-        discard.push(card);
-      } else {
-        s = { ...s, pendingIncident: { card: card as IncidentCard } };
-        s = log(s, `⚠️ INCIDENT: ${card.name}`);
-        discard.push(card);
-        // continue drawing after resolving later? For simplicity, stop draw chain
-        break;
+      } else if (!deferredIncident) {
+        // Defer so the player finishes drawing their remaining cards first
+        deferredIncident = card as IncidentCard;
       }
     } else {
-      const players = s.players.map((p) => {
-        if (p.id === playerId) {
-          return { ...p, hand: [...p.hand, card as CommunityCard] };
-        }
-        return p;
-      });
+      const players = s.players.map((p) =>
+        p.id === playerId ? { ...p, hand: [...p.hand, card as CommunityCard] } : p
+      );
       s = { ...s, players };
     }
   }
 
   s = { ...s, communityDeck: deck, communityDiscard: discard };
+
+  if (deferredIncident) {
+    s = { ...s, pendingIncident: { card: deferredIncident } };
+    s = log(s, `⚠️ INCIDENT: ${deferredIncident.name}`);
+  }
+
   return s;
 }
 
@@ -352,8 +355,8 @@ function resolveIncident(state: GameState, incident: IncidentCard, voteChoice?: 
         const emptySlot = n.slots.findIndex((sl) => sl === null);
         if (emptySlot !== -1) {
           s = placeDevice(s, n.id, emptySlot as SlotIndex, device);
+          s = shiftMeter(s, -2, `Surveillance Expansion in ${n.name}`);
         }
-        s = shiftMeter(s, -2, `Surveillance Expansion in ${n.name}`);
       }
       break;
     }
@@ -577,8 +580,9 @@ function checkWinLoss(state: GameState): GameState {
   if (state.privacyMeter <= 0) {
     return { ...state, phase: 'lost', lossReason: 'Privacy and Community Trust Meter hit 0.' };
   }
+  const gameHasProgressed = state.surveillanceDiscard.length > 0;
   const allClear = state.neighborhoods.every((n) => n.densityTrack === 0);
-  if (allClear) {
+  if (gameHasProgressed && allClear) {
     return { ...state, phase: 'won' };
   }
   return state;
@@ -599,27 +603,28 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         s = { ...s, revealedSurveillanceCards: revealed, journalistPreviewDone: true };
         s = log(s, `${journalist.role.name} revealed top 2 Surveillance Cards.`);
       }
-      // Roll die for first player
-      const roll = Math.floor(Math.random() * 6) + 1;
       s = {
         ...s,
         phase: 'player-turn',
-        actionsRemaining: roll + s.pendingExtraActions,
-        pendingExtraActions: 0,
+        actionsRemaining: 0,
+        pendingDiceRoll: true,
       };
-      s = log(s, `Round ${s.round} — ${s.players[s.currentPlayerIndex].role.name}'s turn. Rolled ${roll}.`);
+      s = log(s, `Round ${s.round} — ${s.players[s.currentPlayerIndex].role.name}'s turn. Roll the dice!`);
       return checkWinLoss(s);
     }
 
     // ── Roll die (start of player turn) ───────────────────────────────
     case 'ROLL_DIE': {
+      if (!state.pendingDiceRoll) return state;
       const roll = Math.floor(Math.random() * 6) + 1;
-      let s = {
+      let s: GameState = {
         ...state,
         actionsRemaining: roll + state.pendingExtraActions,
         pendingExtraActions: 0,
+        pendingDiceRoll: false,
+        lastDiceRoll: roll,
       };
-      s = log(s, `${s.players[s.currentPlayerIndex].role.name} rolled ${roll}. (${s.actionsRemaining} actions)`);
+      s = log(s, `${s.players[s.currentPlayerIndex].role.name} rolled a ${roll}! (${s.actionsRemaining} actions)`);
       return s;
     }
 
@@ -634,7 +639,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return s;
     }
 
-    // ── Remove device (standard: 1 action + 2 same-color cards) ──────
+    // ── Remove device (standard: 1 action + 2 cards matching neighborhood color) ──────
     case 'REMOVE_DEVICE': {
       if (state.actionsRemaining < 1) return state;
       const player = state.players[state.currentPlayerIndex];
@@ -642,6 +647,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const cards = action.cardIds.map((id) => hand.find((c) => c.id === id)!).filter(Boolean);
       if (cards.length < 2) return state;
       if (cards[0].category !== cards[1].category) return state;
+      const NHCOLOR: Record<string, string> = { suburb: 'yellow', courthouse: 'blue', media: 'green', politics: 'red' };
+      if (cards[0].category !== NHCOLOR[action.neighborhoodId]) return state;
 
       const n = state.neighborhoods.find((nb) => nb.id === action.neighborhoodId);
       if (!n || n.slots[action.slotIndex] === null) return state;
@@ -741,11 +748,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (cards.length < required) return state;
 
-      // Validate: one of each color (council member skips one color)
+      // Validate: one of each color (council member needs 4 distinct colors, others need 5)
       const colors = new Set(cards.map((c) => c.category));
       const wildcards = cards.filter((c) => c.effectType === 'wildcard-deposit').length;
       const needed = isCouncil ? 4 : 5;
-      if (colors.size + wildcards < needed && !isCouncil) return state;
+      if (colors.size + wildcards < needed) {
+        return log(state, `Deposit failed: need ${needed} different colors (have ${colors.size + wildcards}).`);
+      }
 
       // Find which neighborhood to clear (must be decided by UI — for now clear least dense)
       // In practice UI should pass targetNeighborhoodId — we'll clear the most dense
@@ -819,9 +828,15 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       // Draw 2 community cards
       s = drawCommunityCards(s, player.id, 2);
 
-      // Organizer draws an extra card if colocated
+      // Organizer draws an extra card if colocated (same neighborhood counts)
       if (player.role.id === 'organizer') {
-        const colocated = s.players.some((p) => p.id !== player.id && p.position === player.position);
+        const nids = ['suburb', 'courthouse', 'media', 'politics'] as const;
+        const playerNhd = nids.find((id) => player.position === id || player.position.startsWith(id + '-n'));
+        const colocated = s.players.some((p) => {
+          if (p.id === player.id) return false;
+          if (playerNhd && (p.position === playerNhd || p.position.startsWith(playerNhd + '-n'))) return true;
+          return p.position === player.position;
+        });
         if (colocated) {
           s = drawCommunityCards(s, player.id, 1);
         }
@@ -843,9 +858,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         s = { ...s, phase: 'board-phase', currentPlayerIndex: nextIndex };
         s = log(s, 'All players done — moving to Board Phase.');
       } else {
-        // Next player's turn
-        const roll = Math.floor(Math.random() * 6) + 1;
-        const nextActions = roll + s.pendingExtraActions;
+        // Next player's turn — they must roll first
         const nextPlayer = s.players[nextIndex];
         const players = s.players.map((p) =>
           p.id === nextPlayer.id ? { ...p, hasUsedSpecialAbilityThisTurn: false } : p
@@ -853,12 +866,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         s = {
           ...s,
           currentPlayerIndex: nextIndex,
-          actionsRemaining: nextActions,
-          pendingExtraActions: 0,
+          actionsRemaining: 0,
           players,
           phase: 'player-turn',
+          pendingDiceRoll: true,
         };
-        s = log(s, `${nextPlayer.role.name}'s turn. Rolled ${roll}. (${nextActions} actions)`);
+        s = log(s, `${nextPlayer.role.name}'s turn — roll the dice!`);
       }
 
       return checkWinLoss(s);
@@ -903,17 +916,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       s = { ...s, revealedSurveillanceCards: [] };
 
       // Advance to next round journalist preview
-      const roll = Math.floor(Math.random() * 6) + 1;
       const nextPlayers = s.players.map((p) => ({ ...p, hasUsedSpecialAbilityThisTurn: false }));
       s = {
         ...s,
         phase: 'journalist-preview',
         round: s.round + 1,
         currentPlayerIndex: 0,
-        actionsRemaining: roll + s.pendingExtraActions,
-        pendingExtraActions: 0,
+        actionsRemaining: 0,
         players: nextPlayers,
         journalistPreviewDone: false,
+        pendingDiceRoll: true,
       };
       s = log(s, `--- Round ${s.round} begins ---`);
 
