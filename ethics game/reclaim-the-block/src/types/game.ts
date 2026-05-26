@@ -143,6 +143,7 @@ export interface GameState {
 
   blockedBoardPhases: number;
   reducedBoardPhaseRounds: number;
+  reducedNextDeposit: boolean;
   cancelNextSurveillance: number;
   cancelNextIncident: boolean;
   pendingExtraActions: number;

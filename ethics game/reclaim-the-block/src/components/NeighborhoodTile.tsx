@@ -1,4 +1,4 @@
-import type { Neighborhood, Player, DeviceType, SlotIndex } from '../types/game';
+import type { Neighborhood, Player, DeviceType, SlotIndex, Position } from '../types/game';
 
 interface Props {
   neighborhood: Neighborhood;
@@ -7,6 +7,9 @@ interface Props {
   onSelect: () => void;
   onSlotClick: (slotIndex: SlotIndex) => void;
   selectedSlot: SlotIndex | null;
+  canMove: boolean;
+  activePlayerPosition: string;
+  onMove: (position: Position) => void;
 }
 
 const DEVICE_EMOJI: Record<DeviceType, string> = {
@@ -44,18 +47,29 @@ export default function NeighborhoodTile({
   onSelect,
   onSlotClick,
   selectedSlot,
+  canMove,
+  activePlayerPosition,
+  onMove,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
   const playersHere = players.filter(
     (p) => p.position === neighborhood.id || p.position.startsWith(neighborhood.id + '-n')
   );
   const filledSlots = neighborhood.slots.filter(Boolean).length;
+  // Highlight logic: true when the active player is anywhere in this neighborhood
+  const isCurrentNeighborhood =
+    activePlayerPosition === neighborhood.id ||
+    activePlayerPosition.startsWith(neighborhood.id + '-n');
+  const tileMoveable = canMove && !isCurrentNeighborhood;
 
   return (
     <div
-      className={`neighborhood-tile ${isSelected ? 'selected' : ''} ${filledSlots === 4 ? 'full' : ''}`}
+      className={`neighborhood-tile ${isSelected ? 'selected' : ''} ${filledSlots === 4 ? 'full' : ''} ${tileMoveable ? 'moveable' : ''}`}
       style={{ borderColor: color }}
-      onClick={onSelect}
+      onClick={() => {
+        if (tileMoveable) onMove(neighborhood.id as Position);
+        onSelect();
+      }}
     >
       <div className="neighborhood-header" style={{ background: color }}>
         <span className="neighborhood-name">{neighborhood.name}</span>
@@ -75,12 +89,18 @@ export default function NeighborhoodTile({
           const playersOnSlot = players.filter(
             (p) => slotPositionOf(p.position, neighborhood.id) === i
           );
+          const slotPos = `${neighborhood.id}-n${i + 1}` as Position;
+          // City Hall connects to all neighborhoods, so treat it like being in any neighborhood for slot movement
+          const slotMoveable = canMove && activePlayerPosition !== slotPos && (isCurrentNeighborhood || activePlayerPosition === 'city-hall');
+          // Highlight logic: exact slot match, only when actions are available
+          const isActivePlayerHere = canMove && activePlayerPosition === slotPos;
           return (
             <div
               key={i}
-              className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''}`}
+              className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''} ${slotMoveable ? 'slot-moveable' : ''} ${isActivePlayerHere ? 'active-player-here' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
+                if (slotMoveable) onMove(slotPos);
                 onSlotClick(i as SlotIndex);
               }}
               title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
@@ -112,16 +132,7 @@ export default function NeighborhoodTile({
         ))}
       </div>
 
-      {/* Players here */}
-      {playersHere.length > 0 && (
-        <div className="players-here">
-          {playersHere.map((p) => (
-            <span key={p.id} className="player-pawn" title={p.role.name}>
-              {p.role.emoji}
-            </span>
-          ))}
-        </div>
-      )}
+      {/* Players here — removed: players now always start at N1 and show on slots */}
     </div>
   );
 }

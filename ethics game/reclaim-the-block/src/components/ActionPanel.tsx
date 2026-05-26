@@ -1,4 +1,4 @@
-import type { GameState, Position, NeighborhoodId, SlotIndex } from '../types/game';
+import type { GameState, NeighborhoodId, SlotIndex } from '../types/game';
 import type { GameAction } from '../store/gameReducer';
 
 interface Props {
@@ -11,30 +11,6 @@ interface Props {
 }
 
 const DICE_FACES: Record<number, string> = { 1: '⚀', 2: '⚁', 3: '⚂', 4: '⚃', 5: '⚄', 6: '⚅' };
-
-const NEIGHBORHOOD_IDS = ['suburb', 'courthouse', 'media', 'politics'] as const;
-
-const AREA_MOVE_OPTIONS: { label: string; position: Position }[] = [
-  { label: 'Suburb', position: 'suburb' },
-  { label: 'Courthouse', position: 'courthouse' },
-  { label: 'Media District', position: 'media' },
-  { label: 'Politics Row', position: 'politics' },
-  { label: 'City Hall', position: 'city-hall' },
-  { label: '→ Suburb road 1', position: 'suburb-road-1' },
-  { label: '→ Suburb road 2', position: 'suburb-road-2' },
-  { label: '→ Courthouse road 1', position: 'courthouse-road-1' },
-  { label: '→ Courthouse road 2', position: 'courthouse-road-2' },
-  { label: '→ Media road 1', position: 'media-road-1' },
-  { label: '→ Media road 2', position: 'media-road-2' },
-  { label: '→ Politics road 1', position: 'politics-road-1' },
-  { label: '→ Politics road 2', position: 'politics-road-2' },
-];
-
-function currentNeighborhoodId(position: Position) {
-  return NEIGHBORHOOD_IDS.find(
-    (id) => position === id || position.startsWith(id + '-n')
-  ) ?? null;
-}
 
 export default function ActionPanel({
   state,
@@ -76,7 +52,7 @@ export default function ActionPanel({
     selectedNeighborhood !== null &&
     state.neighborhoods.find((n) => n.id === selectedNeighborhood)?.slots[selectedSlot] !== null;
 
-  const depositRequired = player.role.id === 'council' ? 4 : 5;
+  const depositRequired = (player.role.id === 'council' || state.reducedNextDeposit) ? 4 : 5;
   const depositCards = selectedCards.slice(0, depositRequired);
   const depositColors = new Set(depositCards.map((c) => c.category));
   const depositWildcards = depositCards.filter((c) => c.effectType === 'wildcard-deposit').length;
@@ -117,6 +93,28 @@ export default function ActionPanel({
               <button className="btn btn-warning" onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
                 Refuse (−2)
               </button>
+            </div>
+          ) : pendingIncident.card.effectType === 'neighbor-reports-neighbor' ? (
+            <div className="incident-discard">
+              <p>Choose a card from your hand to discard:</p>
+              {player.hand.length > 0 ? (
+                <div className="discard-options">
+                  {player.hand.map((card) => (
+                    <button
+                      key={card.id}
+                      className="btn btn-discard-choice"
+                      onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse', discardCardId: card.id })}
+                    >
+                      <span className={`card-dot cat-${card.category}`} />
+                      {card.name}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <button className="btn btn-danger" onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
+                  Resolve Incident
+                </button>
+              )}
             </div>
           ) : (
             <button
@@ -183,45 +181,6 @@ export default function ActionPanel({
       {/* Player turn actions */}
       {phase === 'player-turn' && !state.pendingDiceRoll && !pendingIncident && (
         <div className="action-buttons">
-          {/* Move within neighborhood */}
-          {currentNeighborhoodId(player.position) && (
-            <div className="action-group">
-              <div className="action-group-label">Move within neighborhood (1 action)</div>
-              <div className="move-buttons">
-                {(['n1', 'n2', 'n3', 'n4'] as const).map((slot, i) => {
-                  const pos = `${currentNeighborhoodId(player.position)}-${slot}` as Position;
-                  return (
-                    <button
-                      key={slot}
-                      className={`btn btn-move-slot ${player.position === pos ? 'current-pos' : ''}`}
-                      disabled={!canAct || player.position === pos}
-                      onClick={() => dispatch({ type: 'MOVE', to: pos })}
-                    >
-                      N{i + 1}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Move to another area */}
-          <div className="action-group">
-            <div className="action-group-label">Move to another area (1 action)</div>
-            <div className="move-buttons">
-              {AREA_MOVE_OPTIONS.map(({ label, position }) => (
-                <button
-                  key={position}
-                  className={`btn btn-move ${player.position === position ? 'current-pos' : ''}`}
-                  disabled={!canAct || player.position === position}
-                  onClick={() => dispatch({ type: 'MOVE', to: position })}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Remove device */}
           <div className="action-group">
             <div className="action-group-label">Remove Device (1 action + 2 matching-color cards)</div>

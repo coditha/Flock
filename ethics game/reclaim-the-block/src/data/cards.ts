@@ -34,7 +34,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     educationalContent:
       'Residents have the right to request information about what data local government surveillance collects under the Freedom of Information Act.',
     effect: '+1 meter, cancel next police footage request',
-    effectType: 'meter-plus',
+    effectType: 'cancel-footage-request',
     effectValue: 1,
     isPowerUp: false,
   },

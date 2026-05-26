@@ -87,7 +87,7 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
   const players = roles.map((role, i) => ({
     id: i,
     role,
-    position: role.homeNeighborhood as Position,
+    position: `${role.homeNeighborhood}-n1` as Position, // updated: players start at N1 of home neighborhood
     hand: [] as CommunityCard[],
     hasUsedSpecialAbilityThisTurn: false,
   }));
@@ -137,6 +137,7 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
 
     blockedBoardPhases: 0,
     reducedBoardPhaseRounds: 0,
+    reducedNextDeposit: false,
     cancelNextSurveillance: 0,
     cancelNextIncident: false,
     pendingExtraActions: 0,
@@ -163,7 +164,7 @@ export type GameAction =
   | { type: 'USE_SPECIAL_ABILITY'; targetNeighborhoodId?: NeighborhoodId; targetSlotIndex?: SlotIndex; revealCount?: number }
   | { type: 'END_TURN' }
   | { type: 'BOARD_PHASE' }
-  | { type: 'INCIDENT_VOTE'; choice: 'comply' | 'refuse' }
+  | { type: 'INCIDENT_VOTE'; choice: 'comply' | 'refuse'; discardCardId?: string }
   | { type: 'DISCARD_CARD'; cardId: string };
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -322,7 +323,7 @@ function placeDevice(
 
 // ── Incident Resolution ───────────────────────────────────────────────────
 
-function resolveIncident(state: GameState, incident: IncidentCard, voteChoice?: 'comply' | 'refuse'): GameState {
+function resolveIncident(state: GameState, incident: IncidentCard, voteChoice?: 'comply' | 'refuse', discardCardId?: string): GameState {
   let s: GameState = { ...state, pendingIncident: null };
   s = log(s, `Resolving incident: ${incident.name}`);
 
@@ -362,23 +363,26 @@ function resolveIncident(state: GameState, incident: IncidentCard, voteChoice?: 
     }
     case 'neighbor-reports-neighbor': {
       s = shiftMeter(s, -2, 'Neighbor Reports Neighbor');
-      // Active player discards 1 card
       const activePlayer = s.players[s.currentPlayerIndex];
       if (activePlayer.hand.length > 0) {
-        const toDiscard = activePlayer.hand[0];
-        s = removeCardFromHand(s, activePlayer.id, [toDiscard.id]);
-        s = log(s, `${activePlayer.role.name} discarded "${toDiscard.name}"`);
+        const toDiscard = discardCardId
+          ? activePlayer.hand.find((c) => c.id === discardCardId)
+          : activePlayer.hand[0];
+        if (toDiscard) {
+          s = removeCardFromHand(s, activePlayer.id, [toDiscard.id]);
+          s = log(s, `${activePlayer.role.name} discarded "${toDiscard.name}"`);
+        }
       }
       break;
     }
     case 'government-contract': {
       // Add 3 devices to the neighborhood with fewest devices
-      const target = [...s.neighborhoods].sort((a, b) => a.densityTrack - b.densityTrack)[0];
+      const targetId = [...s.neighborhoods].sort((a, b) => a.densityTrack - b.densityTrack)[0].id;
       const device = deviceForTracker(s.densityTracker);
       for (let i = 0; i < 3; i++) {
-        const emptySlot = target.slots.findIndex((sl) => sl === null);
+        const emptySlot = s.neighborhoods.find((n) => n.id === targetId)!.slots.findIndex((sl) => sl === null);
         if (emptySlot === -1) break;
-        s = placeDevice(s, target.id, emptySlot as SlotIndex, device);
+        s = placeDevice(s, targetId, emptySlot as SlotIndex, device);
       }
       s = { ...s, densityTracker: Math.min(8, s.densityTracker + 1) };
       s = log(s, `Density Tracker increased to ${s.densityTracker}`);
@@ -502,7 +506,8 @@ function applyCardEffect(
       break;
 
     case 'cancel-footage-request':
-      s = { ...s, cancelNextIncident: true }; // reuse — treated as "cancel next police footage incident"
+      s = shiftMeter(s, card.effectValue ?? 1, card.name);
+      s = { ...s, cancelNextIncident: true };
       s = log(s, 'Next Police Footage Request cancelled!');
       break;
 
@@ -558,6 +563,7 @@ function applyCardEffect(
     }
 
     case 'reduced-deposit':
+      s = { ...s, reducedNextDeposit: true };
       s = log(s, 'Next City Hall deposit only needs 4 cards!');
       break;
 
@@ -743,7 +749,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (player.position !== 'city-hall') return state;
 
       const isCouncil = player.role.id === 'council';
-      const required = isCouncil ? 4 : 5;
+      const required = (isCouncil || state.reducedNextDeposit) ? 4 : 5;
       const cards = action.cardIds.map((id) => player.hand.find((c) => c.id === id)!).filter(Boolean);
 
       if (cards.length < required) return state;
@@ -761,6 +767,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const target = [...state.neighborhoods].sort((a, b) => b.densityTrack - a.densityTrack)[0];
 
       let s = removeCardFromHand(state, player.id, action.cardIds);
+      if (s.reducedNextDeposit) s = { ...s, reducedNextDeposit: false };
       // Remove all devices
       for (let i = 0; i < 4; i++) {
         if (target.slots[i] !== null) {
@@ -910,6 +917,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (s.reducedBoardPhaseRounds > 0) {
         s = { ...s, reducedBoardPhaseRounds: s.reducedBoardPhaseRounds - 1 };
+        s = log(s, `Board Phase reduced (${s.reducedBoardPhaseRounds} round(s) remaining).`);
       }
 
       // Clear revealed surveillance cards after board phase
@@ -936,7 +944,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'INCIDENT_VOTE': {
       if (!state.pendingIncident) return state;
       const incident = state.pendingIncident.card;
-      return resolveIncident(state, incident, action.choice);
+      return resolveIncident(state, incident, action.choice, action.discardCardId);
     }
 
     // ── Discard card ──────────────────────────────────────────────────

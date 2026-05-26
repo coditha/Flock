@@ -47,6 +47,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
     setSelectedSlot(null);
   }, []);
 
+  const handleMove = useCallback((position: import('./types/game').Position) => {
+    dispatch({ type: 'MOVE', to: position });
+  }, [dispatch]);
+
+  const canMove = state.phase === 'player-turn'
+    && !state.pendingDiceRoll
+    && !(state.pendingIncident)
+    && state.actionsRemaining > 0;
+
   if (state.phase === 'won' || state.phase === 'lost') {
     return (
       <GameOver
@@ -89,6 +98,9 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 onSelect={() => handleNeighborhoodSelect('suburb')}
                 onSlotClick={(slot) => handleSlotClick('suburb', slot)}
                 selectedSlot={selectedNeighborhood === 'suburb' ? selectedSlot : null}
+                canMove={canMove}
+                activePlayerPosition={activePlayer.position}
+                onMove={handleMove}
               />
             </div>
 
@@ -102,10 +114,16 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 onSelect={() => handleNeighborhoodSelect('courthouse')}
                 onSlotClick={(slot) => handleSlotClick('courthouse', slot)}
                 selectedSlot={selectedNeighborhood === 'courthouse' ? selectedSlot : null}
+                canMove={canMove}
+                activePlayerPosition={activePlayer.position}
+                onMove={handleMove}
               />
               <div className="city-hall-area">
                 <div className="road-h" />
-                <div className={`city-hall ${state.players.some((p) => p.position === 'city-hall') ? 'has-players' : ''}`}>
+                <div
+                  className={`city-hall ${state.players.some((p) => p.position === 'city-hall') ? 'has-players' : ''} ${canMove && activePlayer.position !== 'city-hall' ? 'moveable' : ''} ${activePlayer.position === 'city-hall' ? 'active-player-here' : ''}`}
+                  onClick={() => { if (canMove && activePlayer.position !== 'city-hall') handleMove('city-hall'); }}
+                >
                   <div className="city-hall-label">🏛️ CITY HALL</div>
                   <div className="city-hall-sublabel">Deposit Zone</div>
                   <div className="city-hall-players">
@@ -132,6 +150,9 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 onSelect={() => handleNeighborhoodSelect('media')}
                 onSlotClick={(slot) => handleSlotClick('media', slot)}
                 selectedSlot={selectedNeighborhood === 'media' ? selectedSlot : null}
+                canMove={canMove}
+                activePlayerPosition={activePlayer.position}
+                onMove={handleMove}
               />
             </div>
 
@@ -145,6 +166,9 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 onSelect={() => handleNeighborhoodSelect('politics')}
                 onSlotClick={(slot) => handleSlotClick('politics', slot)}
                 selectedSlot={selectedNeighborhood === 'politics' ? selectedSlot : null}
+                canMove={canMove}
+                activePlayerPosition={activePlayer.position}
+                onMove={handleMove}
               />
             </div>
           </div>
