@@ -139,10 +139,10 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
   });
 
   const neighborhoods = [
-    { id: 'suburb' as NeighborhoodId, name: 'Suburb', slots: [null, null, null, null], densityTrack: 0 },
-    { id: 'courthouse' as NeighborhoodId, name: 'Courthouse', slots: [null, null, null, null], densityTrack: 0 },
-    { id: 'media' as NeighborhoodId, name: 'Media District', slots: [null, null, null, null], densityTrack: 0 },
-    { id: 'politics' as NeighborhoodId, name: 'Politics Row', slots: [null, null, null, null], densityTrack: 0 },
+    { id: 'suburb' as NeighborhoodId, name: 'Suburb', slots: ['ring' as DeviceType, null, null, null], densityTrack: 1 },
+    { id: 'courthouse' as NeighborhoodId, name: 'Courthouse', slots: ['ring' as DeviceType, null, null, null], densityTrack: 1 },
+    { id: 'media' as NeighborhoodId, name: 'Media District', slots: ['ring' as DeviceType, null, null, null], densityTrack: 1 },
+    { id: 'politics' as NeighborhoodId, name: 'Politics Row', slots: ['ring' as DeviceType, null, null, null], densityTrack: 1 },
   ];
 
   return {
