@@ -16,7 +16,7 @@ export default function PrivacyMeter({ value }: Props) {
       </div>
       <div className="meter-track">
         <div className="meter-fill" style={{ width: `${pct}%`, background: color }} />
-        <div className="meter-marker start" style={{ left: `${(20 / 30) * 100}%` }} title="Start (20)" />
+        <div className="meter-marker start" style={{ left: `${pct}%` }} title={`Current (${value})`} />
       </div>
       <div className="meter-labels">
         <span className="meter-label-lose">0 LOSE</span>
