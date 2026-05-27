@@ -151,7 +151,7 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
     currentPlayerIndex: 0,
     actionsRemaining: 0,
 
-    privacyMeter: 20,
+    privacyMeter: 16,
     densityTracker: 1,
 
     neighborhoods,
