@@ -126,11 +126,11 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
 
   const communityDeck = buildCommunityDeck();
 
-  // Deal 4 starting cards each
+  // Deal 3 starting cards each
   let deck = [...communityDeck];
   const dealtPlayers = players.map((p) => {
     const hand: CommunityCard[] = [];
-    while (hand.length < 4 && deck.length > 0) {
+    while (hand.length < 3 && deck.length > 0) {
       const card = deck.shift()!;
       if (card.type === 'community') hand.push(card);
       else deck.push(card); // put incident back at end
