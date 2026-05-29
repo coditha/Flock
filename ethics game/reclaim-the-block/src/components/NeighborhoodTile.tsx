@@ -53,17 +53,16 @@ export default function NeighborhoodTile({
   onMove,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
-  const playersHere = players.filter(
-    (p) => p.position === neighborhood.id || p.position.startsWith(neighborhood.id + '-n')
-  );
   const filledSlots = neighborhood.slots.filter(Boolean).length;
   const isCurrentNeighborhood =
     activePlayerPosition === neighborhood.id ||
     activePlayerPosition.startsWith(neighborhood.id + '-n');
   const roadTile = `${neighborhood.id}-road-1` as Position;
-  const isOnRoadToThis = activePlayerPosition === roadTile;
+  const isOnRoadToThis =
+    activePlayerPosition === roadTile ||
+    activePlayerPosition === (`${neighborhood.id}-road-2` as Position);
   const reachableFromHere = canMove ? getReachablePositions(activePlayerPosition as Position) : [];
-  // Clicking the tile moves to this neighborhood's road waypoint (first step)
+  // Clicking the tile moves to this neighborhood's road-1 waypoint (first step)
   const tileMoveable = canMove && !isCurrentNeighborhood && !isOnRoadToThis && reachableFromHere.includes(roadTile);
 
   return (
@@ -87,38 +86,59 @@ export default function NeighborhoodTile({
         ))}
       </div>
 
-      {/* Incoming device slots — 2×2 grid */}
-      <div className="device-slots">
+      {/* Incoming device slots — linear row with road tiles between each slot */}
+      <div className="device-slots-linear">
         {neighborhood.slots.map((device, i) => {
+          const slotPos = `${neighborhood.id}-n${i + 1}` as Position;
+          const roadPos = i < 3 ? `${neighborhood.id}-nr${i + 1}` as Position : null;
           const playersOnSlot = players.filter(
             (p) => slotPositionOf(p.position, neighborhood.id) === i
           );
-          const slotPos = `${neighborhood.id}-n${i + 1}` as Position;
-          // Slots are reachable from within the neighborhood or from the road waypoint
-          const slotMoveable = canMove && activePlayerPosition !== slotPos && (isCurrentNeighborhood || isOnRoadToThis);
-          // Highlight logic: exact slot match, only when actions are available
-          const isActivePlayerHere = canMove && activePlayerPosition === slotPos;
-          // Slot has a device and player is in the neighborhood — highlight as removeable target
+          const slotMoveable = canMove && reachableFromHere.includes(slotPos);
+          const isActivePlayerHere = activePlayerPosition === slotPos;
           const slotRemoveable = canMove && isCurrentNeighborhood && device !== null && !isActivePlayerHere;
+
+          const playersOnRoad = roadPos ? players.filter((p) => p.position === roadPos) : [];
+          const roadMoveable = roadPos ? canMove && reachableFromHere.includes(roadPos) : false;
+          const isActivePlayerOnRoad = roadPos ? activePlayerPosition === roadPos : false;
+
           return (
-            <div
-              key={i}
-              className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''} ${slotMoveable ? 'slot-moveable' : ''} ${isActivePlayerHere ? 'active-player-here' : ''} ${slotRemoveable ? 'slot-removeable' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (slotMoveable) onMove(slotPos);
-                onSlotClick(i as SlotIndex);
-              }}
-              title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
-            >
-              {device ? (
-                <span className="device-token">{DEVICE_EMOJI[device]}</span>
-              ) : (
-                <span className="slot-label">{SLOT_LABELS[i]}</span>
-              )}
-              {playersOnSlot.length > 0 && (
-                <div className="slot-pawns">
-                  {playersOnSlot.map((p) => (
+            <div key={i} className="device-slot-group">
+              <div
+                className={`device-slot ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''} ${slotMoveable ? 'slot-moveable' : ''} ${isActivePlayerHere ? 'active-player-here' : ''} ${slotRemoveable ? 'slot-removeable' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (slotMoveable) onMove(slotPos);
+                  onSlotClick(i as SlotIndex);
+                }}
+                title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
+              >
+                {device ? (
+                  <span className="device-token">{DEVICE_EMOJI[device]}</span>
+                ) : (
+                  <span className="slot-label">{SLOT_LABELS[i]}</span>
+                )}
+                {playersOnSlot.length > 0 && (
+                  <div className="slot-pawns">
+                    {playersOnSlot.map((p) => (
+                      <span key={p.id} className="slot-pawn" title={p.role.name}
+                        style={{ color: p.role.colorHex }}>
+                        {p.role.emoji}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {roadPos && (
+                <div
+                  className={`internal-road ${roadMoveable ? 'moveable' : ''} ${isActivePlayerOnRoad ? 'active-player-here' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (roadMoveable) onMove(roadPos);
+                  }}
+                  title={`Road between ${SLOT_LABELS[i]} and ${SLOT_LABELS[i + 1]}`}
+                >
+                  {playersOnRoad.map((p) => (
                     <span key={p.id} className="slot-pawn" title={p.role.name}
                       style={{ color: p.role.colorHex }}>
                       {p.role.emoji}

@@ -112,6 +112,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
               <div className="road-segment-v">
                 <div className="road-line-v" />
                 <div
+                  className={`road-waypoint${activePlayer.position === 'suburb-road-2' ? ' active-player-here' : ''}${reachable('suburb-road-2') ? ' moveable' : ''}`}
+                  onClick={() => { if (reachable('suburb-road-2')) handleMove('suburb-road-2'); }}
+                >
+                  {state.players.filter((p) => p.position === 'suburb-road-2').map((p) => (
+                    <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                  ))}
+                </div>
+                <div className="road-line-v" />
+                <div
                   className={`road-waypoint${activePlayer.position === 'suburb-road-1' ? ' active-player-here' : ''}${reachable('suburb-road-1') ? ' moveable' : ''}`}
                   onClick={() => { if (reachable('suburb-road-1')) handleMove('suburb-road-1'); }}
                 >
@@ -137,6 +146,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
               />
               <div className="city-hall-area">
                 <div className="road-segment-h">
+                  <div className="road-line-h" />
+                  <div
+                    className={`road-waypoint${activePlayer.position === 'courthouse-road-2' ? ' active-player-here' : ''}${reachable('courthouse-road-2') ? ' moveable' : ''}`}
+                    onClick={() => { if (reachable('courthouse-road-2')) handleMove('courthouse-road-2'); }}
+                  >
+                    {state.players.filter((p) => p.position === 'courthouse-road-2').map((p) => (
+                      <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                    ))}
+                  </div>
                   <div className="road-line-h" />
                   <div
                     className={`road-waypoint${activePlayer.position === 'courthouse-road-1' ? ' active-player-here' : ''}${reachable('courthouse-road-1') ? ' moveable' : ''}`}
@@ -171,6 +189,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                     ))}
                   </div>
                   <div className="road-line-h" />
+                  <div
+                    className={`road-waypoint${activePlayer.position === 'media-road-2' ? ' active-player-here' : ''}${reachable('media-road-2') ? ' moveable' : ''}`}
+                    onClick={() => { if (reachable('media-road-2')) handleMove('media-road-2'); }}
+                  >
+                    {state.players.filter((p) => p.position === 'media-road-2').map((p) => (
+                      <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                    ))}
+                  </div>
+                  <div className="road-line-h" />
                 </div>
               </div>
               <NeighborhoodTile
@@ -194,6 +221,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                   onClick={() => { if (reachable('politics-road-1')) handleMove('politics-road-1'); }}
                 >
                   {state.players.filter((p) => p.position === 'politics-road-1').map((p) => (
+                    <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                  ))}
+                </div>
+                <div className="road-line-v" />
+                <div
+                  className={`road-waypoint${activePlayer.position === 'politics-road-2' ? ' active-player-here' : ''}${reachable('politics-road-2') ? ' moveable' : ''}`}
+                  onClick={() => { if (reachable('politics-road-2')) handleMove('politics-road-2'); }}
+                >
+                  {state.players.filter((p) => p.position === 'politics-road-2').map((p) => (
                     <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
                   ))}
                 </div>
