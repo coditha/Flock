@@ -144,6 +144,7 @@ export interface GameState {
   journalistPreviewDone: boolean;
 
   pendingIncident: PendingIncident | null;
+  pendingDrawnCards: { playerId: number; cards: CommunityCard[] } | null;
   pendingDiscard: { playerId: number; count: number } | null;
 
   blockedBoardPhases: number;
