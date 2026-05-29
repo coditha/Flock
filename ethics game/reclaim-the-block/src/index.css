@@ -415,6 +415,9 @@ input, select { font-family: inherit; }
   border-radius: 4px; padding: 2px 8px;
   font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
 }
+.whose-turn {
+  color: var(--text); font-size: 0.8rem; font-weight: 600;
+}
 .actions-remaining {
   color: var(--yellow); font-weight: 700; font-size: 0.85rem;
 }
