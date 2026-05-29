@@ -125,28 +125,33 @@ export default function NeighborhoodTile({
             </div>
           );
         })}
-        {/* Road tiles: nr1=top, nr2=right, nr3=bottom, nr4=left */}
+        {/* Road tiles: nr1=top(H), nr2=right(V), nr3=bottom(H), nr4=left(V) */}
         {(['nr1', 'nr2', 'nr3', 'nr4'] as const).map((nrKey) => {
           const roadPos = `${neighborhood.id}-${nrKey}` as Position;
+          const isH = nrKey === 'nr1' || nrKey === 'nr3';
           const roadMoveable = canMove && reachableFromHere.includes(roadPos);
           const isActivePlayerOnRoad = activePlayerPosition === roadPos;
           const playersOnRoad = players.filter((p) => p.position === roadPos);
           return (
             <div
               key={nrKey}
-              className={`internal-road sq-road-${nrKey} ${roadMoveable ? 'moveable' : ''} ${isActivePlayerOnRoad ? 'active-player-here' : ''}`}
+              className={`int-road-seg sq-road-${nrKey} ${isH ? 'seg-h' : 'seg-v'} ${roadMoveable ? 'moveable' : ''} ${isActivePlayerOnRoad ? 'active-player-here' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (roadMoveable) onMove(roadPos);
               }}
               title={`Road ${nrKey}`}
             >
-              {playersOnRoad.map((p) => (
-                <span key={p.id} className="slot-pawn" title={p.role.name}
-                  style={{ color: p.role.colorHex }}>
-                  {p.role.emoji}
-                </span>
-              ))}
+              <div className={isH ? 'int-line-h' : 'int-line-v'} />
+              <div className="int-waypoint">
+                {playersOnRoad.map((p) => (
+                  <span key={p.id} className="slot-pawn" title={p.role.name}
+                    style={{ color: p.role.colorHex }}>
+                    {p.role.emoji}
+                  </span>
+                ))}
+              </div>
+              <div className={isH ? 'int-line-h' : 'int-line-v'} />
             </div>
           );
         })}

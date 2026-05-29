@@ -383,8 +383,8 @@ input, select { font-family: inherit; }
 /* 3×3 square grid: slots at corners, road waypoints on sides, road crossing in center */
 .device-slots-square {
   display: grid;
-  grid-template-columns: 1fr 28px 1fr;
-  grid-template-rows: auto 28px auto;
+  grid-template-columns: 1fr 38px 1fr;
+  grid-template-rows: auto 38px auto;
   gap: 0;
   margin-bottom: 6px;
 }
@@ -396,17 +396,22 @@ input, select { font-family: inherit; }
 .sq-road-nr2 { grid-column: 3; grid-row: 2; }
 .sq-road-nr3 { grid-column: 2; grid-row: 3; }
 .sq-road-nr4 { grid-column: 1; grid-row: 2; }
-.sq-center  { grid-column: 2; grid-row: 2; background: #9a7850; box-shadow: inset 1px 1px 0 #6e5430, inset -1px -1px 0 #c4a070; }
-.internal-road {
-  background: #d4b880;
-  border: 2px solid #9a7850;
-  box-shadow: 2px 2px 0 var(--px-dark);
-  display: flex; align-items: center; justify-content: center;
-  cursor: default; font-size: 0.7rem; flex-wrap: wrap; z-index: 1;
+.sq-center { grid-column: 2; grid-row: 2; background: #9a7850; box-shadow: inset 1px 1px 0 #6e5430, inset -1px -1px 0 #c4a070; }
+/* Internal road segments: line → waypoint → line, matching board road style */
+.int-road-seg { cursor: default; }
+.int-road-seg.seg-h { display: flex; flex-direction: row; align-items: center; width: 100%; height: 100%; }
+.int-road-seg.seg-v { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
+.int-line-h { flex: 1; height: 6px; background: #9a7850; box-shadow: 0 1px 0 #6e5430, 0 -1px 0 #c4a070; }
+.int-line-v { flex: 1; width: 6px; background: #9a7850; box-shadow: 1px 0 0 #6e5430, -1px 0 0 #c4a070; }
+.int-waypoint {
+  width: 22px; height: 22px; flex-shrink: 0; position: relative; z-index: 1;
+  background: #d4b880; border: 2px solid #9a7850; box-shadow: 2px 2px 0 var(--px-dark);
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.65rem;
 }
-.internal-road.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
-.internal-road.moveable:hover { background: #c4e0f8; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue); }
-.internal-road.active-player-here { border-color: var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); background: #b8a060; }
+.int-road-seg.moveable { cursor: pointer; }
+.int-road-seg.moveable .int-waypoint { border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
+.int-road-seg.moveable:hover .int-waypoint { background: #c4e0f8; }
+.int-road-seg.active-player-here .int-waypoint { border-color: var(--px-dark); background: #b8a060; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
 .device-slot {
   flex: 1;
   height: 44px;
