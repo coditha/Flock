@@ -468,6 +468,12 @@ input, select { font-family: inherit; }
   padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border);
   font-weight: 600; font-size: 0.8rem; color: var(--text-muted);
 }
+.log-header-toggle {
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  user-select: none;
+}
+.log-header-toggle:hover { color: var(--text); }
+.log-toggle-icon { font-size: 0.65rem; }
 .log-entries {
   padding: 0.5rem; display: flex; flex-direction: column; gap: 3px;
   max-height: 300px; overflow-y: auto;
