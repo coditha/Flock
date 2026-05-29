@@ -90,16 +90,24 @@ export function getReachablePositions(from: Position): Position[] {
   }
 
   for (const nh of neighborhoods) {
-    if (from === (`${nh}-road-1` as Position)) return ['city-hall', `${nh}-n1`] as Position[];
+    // Which internal road faces city-hall for each neighborhood:
+    // suburb=nr3(bottom), courthouse=nr2(right), media=nr4(left), politics=nr1(top)
+    const exitRoad: Record<string, string> = { suburb: 'nr3', courthouse: 'nr2', media: 'nr4', politics: 'nr1' };
+    const exit = exitRoad[nh];
+    if (from === (`${nh}-road-1` as Position)) return ['city-hall', `${nh}-${exit}`] as Position[];
     // Square ring: nr1=top(n1↔n2), nr2=right(n2↔n4), nr3=bottom(n3↔n4), nr4=left(n1↔n3)
-    if (from === (`${nh}-n1` as Position))  return [`${nh}-road-1`, `${nh}-nr1`, `${nh}-nr4`] as Position[];
+    if (from === (`${nh}-n1` as Position))  return [`${nh}-nr1`, `${nh}-nr4`] as Position[];
     if (from === (`${nh}-n2` as Position))  return [`${nh}-nr1`, `${nh}-nr2`] as Position[];
     if (from === (`${nh}-n3` as Position))  return [`${nh}-nr4`, `${nh}-nr3`] as Position[];
     if (from === (`${nh}-n4` as Position))  return [`${nh}-nr2`, `${nh}-nr3`] as Position[];
-    if (from === (`${nh}-nr1` as Position)) return [`${nh}-n1`, `${nh}-n2`] as Position[];
-    if (from === (`${nh}-nr2` as Position)) return [`${nh}-n2`, `${nh}-n4`] as Position[];
-    if (from === (`${nh}-nr3` as Position)) return [`${nh}-n3`, `${nh}-n4`] as Position[];
-    if (from === (`${nh}-nr4` as Position)) return [`${nh}-n1`, `${nh}-n3`] as Position[];
+    const r1 = exit === 'nr1' ? [`${nh}-road-1`] : [];
+    const r2 = exit === 'nr2' ? [`${nh}-road-1`] : [];
+    const r3 = exit === 'nr3' ? [`${nh}-road-1`] : [];
+    const r4 = exit === 'nr4' ? [`${nh}-road-1`] : [];
+    if (from === (`${nh}-nr1` as Position)) return [...r1, `${nh}-n1`, `${nh}-n2`] as Position[];
+    if (from === (`${nh}-nr2` as Position)) return [...r2, `${nh}-n2`, `${nh}-n4`] as Position[];
+    if (from === (`${nh}-nr3` as Position)) return [...r3, `${nh}-n3`, `${nh}-n4`] as Position[];
+    if (from === (`${nh}-nr4` as Position)) return [...r4, `${nh}-n1`, `${nh}-n3`] as Position[];
     // Legacy neighborhood-center position
     if (from === (nh as Position)) return [`${nh}-n1`, `${nh}-road-1`] as Position[];
   }
