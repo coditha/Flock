@@ -130,14 +130,13 @@ export default function NeighborhoodTile({
         {/* Road tiles: nr1=top, nr2=right, nr3=bottom, nr4=left */}
         {(['nr1', 'nr2', 'nr3', 'nr4'] as const).map((nrKey) => {
           const roadPos = `${neighborhood.id}-${nrKey}` as Position;
-          const isH = nrKey === 'nr1' || nrKey === 'nr3';
           const roadMoveable = canMove && reachableFromHere.includes(roadPos);
           const isActivePlayerOnRoad = activePlayerPosition === roadPos;
           const playersOnRoad = players.filter((p) => p.position === roadPos);
           return (
             <div
               key={nrKey}
-              className={`internal-road sq-road-${nrKey} ${isH ? 'road-h' : 'road-v'} ${roadMoveable ? 'moveable' : ''} ${isActivePlayerOnRoad ? 'active-player-here' : ''}`}
+              className={`internal-road sq-road-${nrKey} ${roadMoveable ? 'moveable' : ''} ${isActivePlayerOnRoad ? 'active-player-here' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (roadMoveable) onMove(roadPos);

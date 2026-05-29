@@ -380,11 +380,11 @@ input, select { font-family: inherit; }
 .baseline-devices { display: flex; gap: 3px; margin-bottom: 6px; opacity: 0.38; }
 .baseline-device { font-size: 0.85rem; }
 
-/* 3×3 square grid: slots at corners, roads on sides, empty center */
+/* 3×3 square grid: slots at corners, road waypoints on sides, road crossing in center */
 .device-slots-square {
   display: grid;
-  grid-template-columns: 1fr 10px 1fr;
-  grid-template-rows: auto 10px auto;
+  grid-template-columns: 1fr 28px 1fr;
+  grid-template-rows: auto 28px auto;
   gap: 0;
   margin-bottom: 6px;
 }
@@ -396,17 +396,17 @@ input, select { font-family: inherit; }
 .sq-road-nr2 { grid-column: 3; grid-row: 2; }
 .sq-road-nr3 { grid-column: 2; grid-row: 3; }
 .sq-road-nr4 { grid-column: 1; grid-row: 2; }
-.sq-center  { grid-column: 2; grid-row: 2; background: #9a7850; }
+.sq-center  { grid-column: 2; grid-row: 2; background: #9a7850; box-shadow: inset 1px 1px 0 #6e5430, inset -1px -1px 0 #c4a070; }
 .internal-road {
-  background: #9a7850;
+  background: #d4b880;
+  border: 2px solid #9a7850;
+  box-shadow: 2px 2px 0 var(--px-dark);
   display: flex; align-items: center; justify-content: center;
-  cursor: default; font-size: 0.6rem; gap: 1px; flex-wrap: wrap;
+  cursor: default; font-size: 0.7rem; flex-wrap: wrap; z-index: 1;
 }
-.internal-road.road-h { border-left: 1px solid #c4a070; border-right: 1px solid #6e5430; }
-.internal-road.road-v { border-top: 1px solid #c4a070; border-bottom: 1px solid #6e5430; }
-.internal-road.moveable { cursor: pointer; background: #3a6ab0; }
-.internal-road.moveable:hover { background: #4a80cc; }
-.internal-road.active-player-here { background: #6830a8; }
+.internal-road.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
+.internal-road.moveable:hover { background: #c4e0f8; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue); }
+.internal-road.active-player-here { border-color: var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); background: #b8a060; }
 .device-slot {
   flex: 1;
   height: 44px;
