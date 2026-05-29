@@ -80,9 +80,9 @@ export default function NeighborhoodTile({
         <span className="neighborhood-density">{filledSlots}/4</span>
       </div>
 
-      {/* Baseline devices — always 5, printed on board */}
+      {/* Baseline devices — always 4, printed on board */}
       <div className="baseline-devices">
-        {Array(5).fill(null).map((_, i) => (
+        {Array(4).fill(null).map((_, i) => (
           <span key={i} className="baseline-device" title="Baseline device (cannot remove)">📹</span>
         ))}
       </div>
