@@ -15,10 +15,10 @@ export type Position =
   | 'courthouse-n1' | 'courthouse-n2' | 'courthouse-n3' | 'courthouse-n4'
   | 'media-n1' | 'media-n2' | 'media-n3' | 'media-n4'
   | 'politics-n1' | 'politics-n2' | 'politics-n3' | 'politics-n4'
-  | 'suburb-nr1' | 'suburb-nr2' | 'suburb-nr3'
-  | 'courthouse-nr1' | 'courthouse-nr2' | 'courthouse-nr3'
-  | 'media-nr1' | 'media-nr2' | 'media-nr3'
-  | 'politics-nr1' | 'politics-nr2' | 'politics-nr3';
+  | 'suburb-nr1' | 'suburb-nr2' | 'suburb-nr3' | 'suburb-nr4'
+  | 'courthouse-nr1' | 'courthouse-nr2' | 'courthouse-nr3' | 'courthouse-nr4'
+  | 'media-nr1' | 'media-nr2' | 'media-nr3' | 'media-nr4'
+  | 'politics-nr1' | 'politics-nr2' | 'politics-nr3' | 'politics-nr4';
 
 export interface CommunityCard {
   id: string;

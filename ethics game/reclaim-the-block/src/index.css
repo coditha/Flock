@@ -380,18 +380,33 @@ input, select { font-family: inherit; }
 .baseline-devices { display: flex; gap: 3px; margin-bottom: 6px; opacity: 0.38; }
 .baseline-device { font-size: 0.85rem; }
 
-.device-slots-linear { display: flex; flex-direction: row; gap: 0; margin-bottom: 6px; align-items: stretch; }
-.device-slot-group { display: flex; flex-direction: row; align-items: stretch; flex: 1; }
-.internal-road {
-  width: 10px; flex-shrink: 0;
-  background: #9a7850;
-  border-top: 1px solid #c4a070; border-bottom: 1px solid #6e5430;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: default; font-size: 0.6rem; gap: 1px;
+/* 3×3 square grid: slots at corners, roads on sides, empty center */
+.device-slots-square {
+  display: grid;
+  grid-template-columns: 1fr 10px 1fr;
+  grid-template-rows: auto 10px auto;
+  gap: 0;
+  margin-bottom: 6px;
 }
-.internal-road.moveable { cursor: pointer; background: #3a6ab0; border-color: var(--blue); }
+.sq-slot-1 { grid-column: 1; grid-row: 1; }
+.sq-slot-2 { grid-column: 3; grid-row: 1; }
+.sq-slot-3 { grid-column: 1; grid-row: 3; }
+.sq-slot-4 { grid-column: 3; grid-row: 3; }
+.sq-road-nr1 { grid-column: 2; grid-row: 1; }
+.sq-road-nr2 { grid-column: 3; grid-row: 2; }
+.sq-road-nr3 { grid-column: 2; grid-row: 3; }
+.sq-road-nr4 { grid-column: 1; grid-row: 2; }
+.sq-center  { grid-column: 2; grid-row: 2; background: #9a7850; }
+.internal-road {
+  background: #9a7850;
+  display: flex; align-items: center; justify-content: center;
+  cursor: default; font-size: 0.6rem; gap: 1px; flex-wrap: wrap;
+}
+.internal-road.road-h { border-left: 1px solid #c4a070; border-right: 1px solid #6e5430; }
+.internal-road.road-v { border-top: 1px solid #c4a070; border-bottom: 1px solid #6e5430; }
+.internal-road.moveable { cursor: pointer; background: #3a6ab0; }
 .internal-road.moveable:hover { background: #4a80cc; }
-.internal-road.active-player-here { background: #6830a8; border-color: var(--px-dark); }
+.internal-road.active-player-here { background: #6830a8; }
 .device-slot {
   flex: 1;
   height: 44px;
