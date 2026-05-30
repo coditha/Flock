@@ -1,6 +1,7 @@
-import { useReducer, useState, useCallback } from 'react';
+import { useReducer, useState, useCallback, useEffect, useRef } from 'react';
 import { gameReducer, buildInitialState, getReachablePositions } from './store/gameReducer';
-import type { NeighborhoodId, SlotIndex, CommunityCard, Player } from './types/game';
+import type { GameAction } from './store/gameReducer';
+import type { NeighborhoodId, SlotIndex, CommunityCard, Player, GameState } from './types/game';
 import GameSetup from './components/GameSetup';
 import GameOver from './components/GameOver';
 import PrivacyMeter from './components/PrivacyMeter';
@@ -63,6 +64,64 @@ function CornerPanel({
             />
           ))
         )}
+      </div>
+    </div>
+  );
+}
+
+// ── Turn action popup ───────────────────────────────────────────────────────
+
+function TurnPopup({
+  position,
+  roleId,
+  state,
+  selectedCardIds,
+  selectedNeighborhood,
+  selectedSlot,
+  dispatch,
+  onClearSelection,
+}: {
+  position: 'bl' | 'br' | 'tl' | 'tr';
+  roleId: string;
+  state: GameState;
+  selectedCardIds: string[];
+  selectedNeighborhood: NeighborhoodId | null;
+  selectedSlot: SlotIndex | null;
+  dispatch: (action: GameAction) => void;
+  onClearSelection: () => void;
+}) {
+  const activeRole = state.players[state.currentPlayerIndex]?.role.id;
+  const isActive = activeRole === roleId && state.phase !== 'won' && state.phase !== 'lost';
+  const [show, setShow] = useState(isActive);
+  const [anim, setAnim] = useState<'popup-enter' | 'popup-exit'>(isActive ? 'popup-enter' : 'popup-exit');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (isActive) {
+      setShow(true);
+      setAnim('popup-enter');
+    } else {
+      setAnim('popup-exit');
+      timerRef.current = setTimeout(() => setShow(false), 400);
+    }
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [isActive]);
+
+  if (!show) return null;
+  const isTop = position === 'tl' || position === 'tr';
+
+  return (
+    <div className={`turn-popup turn-popup-${position} ${anim}`}>
+      <div className={`popup-inner${isTop ? ' popup-inner-rotated' : ''}`}>
+        <ActionPanel
+          state={state}
+          selectedCardIds={selectedCardIds}
+          selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot}
+          dispatch={dispatch}
+          onClearSelection={onClearSelection}
+        />
       </div>
     </div>
   );
@@ -340,16 +399,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         )}
       </div>
 
-      {/* ── BOTTOM CENTER: Action panel + Game log ────────────── */}
+      {/* ── BOTTOM CENTER: Game log only (action panel is now a per-player popup) */}
       <div className="tv-bot-center">
-        <ActionPanel
-          state={state}
-          selectedCardIds={selectedCardIds}
-          selectedNeighborhood={selectedNeighborhood}
-          selectedSlot={selectedSlot}
-          dispatch={dispatch}
-          onClearSelection={clearSelection}
-        />
         <GameLog log={state.gameLog} />
       </div>
 
@@ -366,6 +417,28 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
           <div className="corner-empty-slot">No player</div>
         )}
       </div>
+
+      {/* ── Per-player action popups ─────────────────────────── */}
+      {organizerPlayer && (
+        <TurnPopup position="tl" roleId="organizer" state={state}
+          selectedCardIds={selFor(organizerPlayer)} selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
+      )}
+      {journalistPlayer && (
+        <TurnPopup position="tr" roleId="journalist" state={state}
+          selectedCardIds={selFor(journalistPlayer)} selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
+      )}
+      {legalPlayer && (
+        <TurnPopup position="bl" roleId="legal" state={state}
+          selectedCardIds={selFor(legalPlayer)} selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
+      )}
+      {councilPlayer && (
+        <TurnPopup position="br" roleId="council" state={state}
+          selectedCardIds={selFor(councilPlayer)} selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
+      )}
 
       {/* ── Drawn cards popup overlay ─────────────────────────── */}
       {state.pendingDrawnCards && (
