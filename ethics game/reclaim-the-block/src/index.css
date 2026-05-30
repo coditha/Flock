@@ -828,7 +828,7 @@ html, body {
     Rows:    [top corners + info] [board] [bottom corners + actions]
   */
   grid-template-columns: 23vw 62px 1fr 62px 23vw;
-  grid-template-rows: 23vh 1fr 23vh;
+  grid-template-rows: 20vh 1fr 22vh;
   grid-template-areas:
     "corner-tl  pm  top-center   dt  corner-tr"
     ".          pm  board-zone   dt  ."
@@ -900,10 +900,10 @@ html, body {
 /* ── Board zone (centre middle cell) ───────────────────────── */
 .tv-board-zone {
   display: flex;
-  align-items: center;
+  align-items: flex-start;   /* anchor board to top so suburb is never clipped */
   justify-content: center;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
 }
 
 /* Scale board elements down so the board fits the middle row.
