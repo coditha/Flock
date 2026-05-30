@@ -611,6 +611,196 @@ input, select { font-family: inherit; }
 .btn-end-turn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--px-dark); }
 .btn-end-turn:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--px-dark); }
 
+/* ── Action Panel v2 (two-layer TV touchscreen design) ────── */
+
+.ap-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+}
+
+/* Header row: role name + dice chip + actions chip */
+.ap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.65rem;
+  color: #fff;
+  flex-shrink: 0;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+}
+.ap-role-name {
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.35);
+}
+.ap-header-right { display: flex; align-items: center; gap: 0.35rem; }
+.ap-chip {
+  padding: 0.15rem 0.45rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.ap-chip-dice { font-size: 0.9rem; }
+.ap-chip-actions { color: #fff; }
+
+/* Incident / phase / dice boxes */
+.ap-incident {
+  padding: 0.55rem 0.65rem;
+  background: #f8e0e0;
+  border-left: 3px solid var(--red);
+  margin: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.ap-incident-title { color: var(--red); font-weight: 700; font-size: 0.75rem; }
+.ap-incident-effect { font-size: 0.7rem; line-height: 1.4; }
+.ap-incident-edu { color: var(--text-muted); font-size: 0.63rem; font-style: italic; line-height: 1.4; }
+.ap-discard-label { font-size: 0.68rem; font-weight: 600; }
+.ap-discard-options { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.ap-phase-box {
+  padding: 0.6rem 0.65rem;
+  margin: 0.4rem;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.ap-dice-roll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 0.65rem;
+}
+.ap-dice-prompt { font-size: 0.82rem; text-align: center; }
+
+/* ── Layer 1: action body (grid + end turn) ─────────────── */
+.ap-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.5rem;
+  flex: 1;
+}
+
+/* 2-column grid of large tappable action buttons */
+.ap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.ap-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.65rem 0.3rem;
+  min-height: 68px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--px-dark);
+  color: var(--text);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  transition: border-color 0.08s, background 0.08s;
+}
+.ap-action-btn:not(.ap-disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+.ap-action-btn:not(.ap-disabled):hover { border-color: var(--yellow); }
+
+/* Grayed-out unavailable state */
+.ap-disabled {
+  opacity: 0.32;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+}
+
+.ap-btn-icon {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+.ap-btn-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+}
+
+/* End Turn — full width, most prominent */
+.ap-end-turn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.75rem;
+  background: var(--green);
+  color: #fff;
+  border: 3px solid var(--px-dark);
+  box-shadow: 3px 3px 0 var(--px-dark);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  touch-action: none;
+  user-select: none;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+.ap-end-turn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--px-dark);
+}
+.ap-end-sub {
+  font-size: 0.58rem;
+  font-weight: 400;
+  opacity: 0.82;
+  letter-spacing: 0;
+}
+
+/* ── Layer 2: tooltip (appears while holding a button) ───── */
+.ap-tooltip {
+  background: var(--px-dark);
+  color: #f0e0c0;
+  border: 2px solid var(--px-gold);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  padding: 0.55rem 0.7rem;
+  flex-shrink: 0;
+  pointer-events: none;
+  animation: tooltip-pop 0.12s ease-out;
+}
+@keyframes tooltip-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.ap-tooltip-title {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--px-gold);
+  margin-bottom: 0.35rem;
+}
+.ap-tooltip-line {
+  font-size: 0.63rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
 /* ── Game Log ─────────────────────────────────────────────── */
 .game-log {
   background: var(--surface);
