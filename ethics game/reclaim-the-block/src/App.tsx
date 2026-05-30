@@ -221,9 +221,10 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         )}
       </div>
 
-      {/* ── LEFT SIDE: Privacy Meter ──────────────────────────── */}
+      {/* ── LEFT SIDE: Privacy Meter + Game Log ──────────────── */}
       <div className="tv-pm side-tracker">
         <PrivacyMeter value={state.privacyMeter} vertical />
+        <GameLog log={state.gameLog} />
       </div>
 
       {/* ── TOP CENTER: Title bar + Revealed cards ────────────── */}
@@ -397,11 +398,6 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         ) : (
           <div className="corner-empty-slot">No player</div>
         )}
-      </div>
-
-      {/* ── BOTTOM CENTER: Game log only (action panel is now a per-player popup) */}
-      <div className="tv-bot-center">
-        <GameLog log={state.gameLog} />
       </div>
 
       {/* ── BOTTOM-RIGHT: Council Member ──────────────────────── */}
