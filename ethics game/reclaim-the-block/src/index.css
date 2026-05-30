@@ -1150,13 +1150,13 @@ html, body {
   box-shadow: 4px 4px 0 var(--px-dark);
 }
 
-/* Bottom corners — anchor to bottom of screen, slide up */
-.turn-popup-bl { left: 0;  bottom: 0; }
-.turn-popup-br { right: 0; bottom: 0; }
+/* Bottom corners — bottom edge flush with top of corner card area */
+.turn-popup-bl { left: 0;  bottom: 22vh; }
+.turn-popup-br { right: 0; bottom: 22vh; }
 
-/* Top corners — anchor to top of screen, slide down */
-.turn-popup-tl { left: 0;  top: 0; }
-.turn-popup-tr { right: 0; top: 0; }
+/* Top corners — top edge flush with bottom of corner card area */
+.turn-popup-tl { left: 0;  top: 20vh; }
+.turn-popup-tr { right: 0; top: 20vh; }
 
 /* Rotate content so top-corner players read it right-side-up */
 .popup-inner-rotated { transform: rotate(180deg); }
