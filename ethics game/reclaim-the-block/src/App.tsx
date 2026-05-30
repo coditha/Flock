@@ -1,17 +1,74 @@
 import { useReducer, useState, useCallback } from 'react';
 import { gameReducer, buildInitialState, getReachablePositions } from './store/gameReducer';
-import type { NeighborhoodId, SlotIndex, CommunityCard } from './types/game';
+import type { NeighborhoodId, SlotIndex, CommunityCard, Player } from './types/game';
 import GameSetup from './components/GameSetup';
 import GameOver from './components/GameOver';
 import PrivacyMeter from './components/PrivacyMeter';
 import DensityTracker from './components/DensityTracker';
 import NeighborhoodTile from './components/NeighborhoodTile';
-import PlayerPanel from './components/PlayerPanel';
+import CardDisplay from './components/CardDisplay';
 import ActionPanel from './components/ActionPanel';
 import GameLog from './components/GameLog';
 import RevealedCards from './components/RevealedCards';
 
-// ── Game screen — rendered only when playerCount is set ────────────────────
+// ── Corner hand tray ───────────────────────────────────────────────────────
+
+function CornerPanel({
+  player,
+  isActive,
+  selectedCardIds,
+  onCardClick,
+}: {
+  player: Player;
+  isActive: boolean;
+  selectedCardIds: string[];
+  onCardClick: (card: CommunityCard) => void;
+}) {
+  const POSITION_SHORT: Record<string, string> = {
+    'city-hall': 'City Hall',
+    suburb: 'Suburb', courthouse: 'Courthouse', media: 'Media', politics: 'Politics',
+    'suburb-n1': 'Sub N1', 'suburb-n2': 'Sub N2', 'suburb-n3': 'Sub N3', 'suburb-n4': 'Sub N4',
+    'courthouse-n1': 'Court N1', 'courthouse-n2': 'Court N2', 'courthouse-n3': 'Court N3', 'courthouse-n4': 'Court N4',
+    'media-n1': 'Med N1', 'media-n2': 'Med N2', 'media-n3': 'Med N3', 'media-n4': 'Med N4',
+    'politics-n1': 'Pol N1', 'politics-n2': 'Pol N2', 'politics-n3': 'Pol N3', 'politics-n4': 'Pol N4',
+    'suburb-road-1': 'Sub Road', 'courthouse-road-1': 'Court Road',
+    'media-road-1': 'Med Road', 'politics-road-1': 'Pol Road',
+  };
+
+  return (
+    <div
+      className={`corner-panel ${isActive ? 'corner-active' : ''}`}
+      style={{ borderColor: player.role.colorHex }}
+    >
+      <div className="corner-header" style={{ background: player.role.colorHex }}>
+        <span className="corner-emoji">{player.role.emoji}</span>
+        <div className="corner-info">
+          <span className="corner-name">{player.role.name}</span>
+          <span className="corner-pos">📍 {POSITION_SHORT[player.position] ?? player.position}</span>
+        </div>
+        <span className="corner-hand-count">{player.hand.length}/7</span>
+        {isActive && <span className="corner-active-badge">⚡ ACTIVE</span>}
+      </div>
+      <div className="corner-hand">
+        {player.hand.length === 0 ? (
+          <span className="corner-empty">No cards in hand</span>
+        ) : (
+          player.hand.map((card) => (
+            <CardDisplay
+              key={card.id}
+              card={card}
+              isSelected={selectedCardIds.includes(card.id)}
+              onClick={() => onCardClick(card)}
+              disabled={!isActive}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Game screen ────────────────────────────────────────────────────────────
 
 interface GameScreenProps {
   playerCount: 2 | 3 | 4;
@@ -47,15 +104,18 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
     setSelectedSlot(null);
   }, []);
 
-  const handleMove = useCallback((position: import('./types/game').Position) => {
-    dispatch({ type: 'MOVE', to: position });
-  }, [dispatch]);
+  const handleMove = useCallback(
+    (position: import('./types/game').Position) => {
+      dispatch({ type: 'MOVE', to: position });
+    },
+    [dispatch]
+  );
 
-  const canMove = state.phase === 'player-turn'
-    && !state.pendingDiceRoll
-    && !(state.pendingIncident)
-    && state.actionsRemaining > 0;
-
+  const canMove =
+    state.phase === 'player-turn' &&
+    !state.pendingDiceRoll &&
+    !state.pendingIncident &&
+    state.actionsRemaining > 0;
 
   if (state.phase === 'won' || state.phase === 'lost') {
     return (
@@ -73,25 +133,68 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const reachablePositions = canMove ? getReachablePositions(activePlayer.position) : [];
   const reachable = (pos: import('./types/game').Position) => reachablePositions.includes(pos);
 
+  // Role → corner mapping
+  const byRole = (id: string): Player | undefined =>
+    state.players.find((p) => p.role.id === id);
+  const organizerPlayer = byRole('organizer');
+  const legalPlayer     = byRole('legal');
+  const journalistPlayer = byRole('journalist');
+  const councilPlayer   = byRole('council');
+
+  const isActive = (p?: Player) => !!p && p.id === activePlayer.id;
+  const selFor   = (p?: Player) => (isActive(p) ? selectedCardIds : []);
+  const clickFor = (p?: Player) => (isActive(p) ? handleCardClick : () => {});
+
   return (
-    <div className="game-layout">
-      <header className="game-header">
-        <div className="game-title">📷 RECLAIM THE BLOCK</div>
-        <div className="round-info">
-          Round {state.round} — {activePlayer.role.emoji} {activePlayer.role.name}
+    <div className="tv-game">
+
+      {/* ── TOP-LEFT: Community Organizer (rotated 180°) ─────── */}
+      <div className="tv-corner corner-tl">
+        {organizerPlayer ? (
+          <CornerPanel
+            player={organizerPlayer}
+            isActive={isActive(organizerPlayer)}
+            selectedCardIds={selFor(organizerPlayer)}
+            onCardClick={clickFor(organizerPlayer)}
+          />
+        ) : (
+          <div className="corner-empty-slot">No player</div>
+        )}
+      </div>
+
+      {/* ── LEFT SIDE: Privacy Meter ──────────────────────────── */}
+      <div className="tv-pm side-tracker">
+        <PrivacyMeter value={state.privacyMeter} vertical />
+      </div>
+
+      {/* ── TOP CENTER: Title bar + Revealed cards ────────────── */}
+      <div className="tv-top-center">
+        <div className="tv-top-bar">
+          <div className="game-title">📷 RECLAIM THE BLOCK</div>
+          <div className="round-info">
+            Round {state.round} — {activePlayer.role.emoji} {activePlayer.role.name}'s turn
+          </div>
+          <button className="btn-quit" onClick={onRestart}>← New Game</button>
         </div>
-        <button className="btn-quit" onClick={onRestart}>← New Game</button>
-      </header>
+        <RevealedCards cards={state.revealedSurveillanceCards} />
+      </div>
 
-      <div className="game-body">
-        <div className="side-tracker">
-          <PrivacyMeter value={state.privacyMeter} vertical />
-        </div>
+      {/* ── TOP-RIGHT: Journalist (rotated 180°) ──────────────── */}
+      <div className="tv-corner corner-tr">
+        {journalistPlayer ? (
+          <CornerPanel
+            player={journalistPlayer}
+            isActive={isActive(journalistPlayer)}
+            selectedCardIds={selFor(journalistPlayer)}
+            onCardClick={clickFor(journalistPlayer)}
+          />
+        ) : (
+          <div className="corner-empty-slot">No player</div>
+        )}
+      </div>
 
-        <div className="game-center">
-          <RevealedCards cards={state.revealedSurveillanceCards} />
-
-          <div className="main-area">
+      {/* ── CENTER BOARD ──────────────────────────────────────── */}
+      <div className="tv-board-zone">
         <div className="board-area">
           <div className="board-grid">
             <div className="board-n1">
@@ -216,46 +319,63 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             </div>
           </div>
         </div>
-
-        <div className="right-panel">
-          <ActionPanel
-            state={state}
-            selectedCardIds={selectedCardIds}
-            selectedNeighborhood={selectedNeighborhood}
-            selectedSlot={selectedSlot}
-            dispatch={dispatch}
-            onClearSelection={clearSelection}
-          />
-          <GameLog log={state.gameLog} />
-        </div>
-        </div>{/* end main-area */}
-        </div>{/* end game-center */}
-
-        <div className="side-tracker">
-          <DensityTracker value={state.densityTracker} vertical />
-        </div>
-      </div>{/* end game-body */}
-
-      <div className="players-row">
-        {state.players.map((player) => (
-          <PlayerPanel
-            key={player.id}
-            player={player}
-            isActive={player.id === activePlayer.id}
-            selectedCardIds={player.id === activePlayer.id ? selectedCardIds : []}
-            onCardClick={player.id === activePlayer.id ? handleCardClick : () => {}}
-          />
-        ))}
       </div>
 
-      {/* Drawn cards popup overlay */}
+      {/* ── RIGHT SIDE: Density Tracker ───────────────────────── */}
+      <div className="tv-dt side-tracker">
+        <DensityTracker value={state.densityTracker} vertical />
+      </div>
+
+      {/* ── BOTTOM-LEFT: Legal Advocate ───────────────────────── */}
+      <div className="tv-corner corner-bl">
+        {legalPlayer ? (
+          <CornerPanel
+            player={legalPlayer}
+            isActive={isActive(legalPlayer)}
+            selectedCardIds={selFor(legalPlayer)}
+            onCardClick={clickFor(legalPlayer)}
+          />
+        ) : (
+          <div className="corner-empty-slot">No player</div>
+        )}
+      </div>
+
+      {/* ── BOTTOM CENTER: Action panel + Game log ────────────── */}
+      <div className="tv-bot-center">
+        <ActionPanel
+          state={state}
+          selectedCardIds={selectedCardIds}
+          selectedNeighborhood={selectedNeighborhood}
+          selectedSlot={selectedSlot}
+          dispatch={dispatch}
+          onClearSelection={clearSelection}
+        />
+        <GameLog log={state.gameLog} />
+      </div>
+
+      {/* ── BOTTOM-RIGHT: Council Member ──────────────────────── */}
+      <div className="tv-corner corner-br">
+        {councilPlayer ? (
+          <CornerPanel
+            player={councilPlayer}
+            isActive={isActive(councilPlayer)}
+            selectedCardIds={selFor(councilPlayer)}
+            onCardClick={clickFor(councilPlayer)}
+          />
+        ) : (
+          <div className="corner-empty-slot">No player</div>
+        )}
+      </div>
+
+      {/* ── Drawn cards popup overlay ─────────────────────────── */}
       {state.pendingDrawnCards && (
         <div className="drawn-cards-overlay">
           <div className="drawn-cards-modal">
             <div className="drawn-cards-title">
               {state.players.find((p) => p.id === state.pendingDrawnCards!.playerId)?.role.emoji}{' '}
               {state.players.find((p) => p.id === state.pendingDrawnCards!.playerId)?.role.name} drew{' '}
-              {state.pendingDrawnCards.cards.length} card{state.pendingDrawnCards.cards.length !== 1 ? 's' : ''}
+              {state.pendingDrawnCards.cards.length} card
+              {state.pendingDrawnCards.cards.length !== 1 ? 's' : ''}
             </div>
             <div className="drawn-cards-list">
               {state.pendingDrawnCards.cards.map((card) => (
@@ -283,7 +403,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   );
 }
 
-// ── Root ───────────────────────────────────────────────────────────────────
+// ── Root ────────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [session, setSession] = useState<{ count: 2 | 3 | 4; key: number } | null>(null);

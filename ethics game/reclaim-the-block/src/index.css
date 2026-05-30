@@ -805,3 +805,334 @@ input, select { font-family: inherit; }
 ::-webkit-scrollbar-track { background: var(--px-dark); }
 ::-webkit-scrollbar-thumb { background: var(--border); }
 ::-webkit-scrollbar-thumb:hover { background: var(--px-gold); }
+
+/* ═══════════════════════════════════════════════════════════
+   TV TOUCHSCREEN LAYOUT
+   5-column × 3-row grid that fills the full screen with no
+   scrolling. Corners house each player's hand; the board
+   occupies the centre; trackers flank it left and right.
+═══════════════════════════════════════════════════════════ */
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.tv-game {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  /*
+    Columns: [TL/BL corner] [Privacy Meter] [Board] [Density Tracker] [TR/BR corner]
+    Rows:    [top corners + info] [board] [bottom corners + actions]
+  */
+  grid-template-columns: 23vw 62px 1fr 62px 23vw;
+  grid-template-rows: 23vh 1fr 23vh;
+  grid-template-areas:
+    "corner-tl  pm  top-center   dt  corner-tr"
+    ".          pm  board-zone   dt  ."
+    "corner-bl  pm  bot-center   dt  corner-br";
+  background: var(--bg);
+  background-image:
+    linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Grid area assignments ─────────────────────────────────── */
+.corner-tl  { grid-area: corner-tl;  }
+.corner-tr  { grid-area: corner-tr;  }
+.corner-bl  { grid-area: corner-bl;  }
+.corner-br  { grid-area: corner-br;  }
+.tv-pm      { grid-area: pm;         }
+.tv-dt      { grid-area: dt;         }
+.tv-top-center { grid-area: top-center; }
+.tv-board-zone { grid-area: board-zone; }
+.tv-bot-center { grid-area: bot-center; }
+
+/* ── Top corners rotated 180° so text reads right-side-up
+   for players standing at the top of the screen ─────────── */
+.corner-tl,
+.corner-tr {
+  transform: rotate(180deg);
+}
+
+/* ── Tracker columns (override flex-child widths from old layout) */
+.tv-pm,
+.tv-dt {
+  width: auto;           /* let the grid column control width */
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+.tv-pm {
+  border-right: 3px solid var(--border);
+  box-shadow: inset -2px 0 0 var(--px-dark);
+}
+.tv-dt {
+  border-left: 3px solid var(--border);
+  box-shadow: inset 2px 0 0 var(--px-dark);
+}
+
+/* ── Top center bar ─────────────────────────────────────────── */
+.tv-top-center {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 3px solid var(--border);
+  box-shadow: 0 3px 0 var(--px-dark);
+  background: var(--surface);
+  overflow: hidden;
+}
+.tv-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 1rem;
+  gap: 1rem;
+  flex-shrink: 0;
+  border-bottom: 2px solid var(--border);
+}
+
+/* ── Board zone (centre middle cell) ───────────────────────── */
+.tv-board-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+/* Scale board elements down so the board fits the middle row.
+   Rule of thumb: 23vh rows leave ~54vh for the board at 1080p ≈ 583px.
+   Original board is ~800px tall, so we target ≈72% scale. */
+.tv-game .board-area {
+  flex: none;                 /* don't stretch in flex parent */
+  padding: 0.5rem;
+  overflow: hidden;
+}
+.tv-game .neighborhood-tile {
+  width: 148px;
+  min-width: 130px;
+  padding: 0.5rem;
+}
+/* Hide the baseline (always-on) device decorations to save vertical space */
+.tv-game .baseline-devices { display: none; }
+
+.tv-game .device-slots-square {
+  grid-template-columns: 1fr 28px 1fr;
+  grid-template-rows: auto 28px auto;
+  margin-bottom: 4px;
+}
+.tv-game .device-slot {
+  height: 34px;
+}
+.tv-game .int-waypoint {
+  width: 16px;
+  height: 16px;
+}
+.tv-game .road-waypoint {
+  width: 24px;
+  height: 24px;
+}
+.tv-game .board-roads-top,
+.tv-game .board-roads-bottom {
+  height: 46px;
+}
+.tv-game .city-hall {
+  min-width: 82px;
+  padding: 0.5rem;
+}
+.tv-game .city-hall-label { font-size: 0.6rem; }
+.tv-game .city-hall-sublabel { font-size: 0.52rem; }
+.tv-game .city-hall-players { font-size: 1rem; margin-top: 2px; }
+.tv-game .neighborhood-header {
+  margin: -0.5rem -0.5rem 0.4rem;
+  padding: 0.3rem 0.5rem;
+}
+.tv-game .neighborhood-name { font-size: 0.62rem; }
+.tv-game .neighborhood-density { font-size: 0.62rem; }
+.tv-game .density-row { margin-bottom: 2px; }
+
+/* ── Bottom center (action panel + game log side by side) ──── */
+.tv-bot-center {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-top: 3px solid var(--border);
+  box-shadow: inset 0 3px 0 var(--px-dark);
+  background: var(--surface);
+  overflow: hidden;
+}
+.tv-bot-center .action-panel {
+  flex: 3;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.8rem;
+}
+.tv-bot-center .game-log {
+  flex: 1;
+  min-width: 160px;
+  max-width: 220px;
+  overflow: hidden;
+}
+
+/* Compact action-panel layout for the narrow bottom bar */
+.tv-bot-center .action-header {
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
+}
+.tv-bot-center .action-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+.tv-bot-center .action-group {
+  flex: 1 1 170px;
+  min-width: 140px;
+}
+.tv-bot-center .action-group-label { font-size: 0.58rem; margin-bottom: 2px; }
+.tv-bot-center .action-hint { font-size: 0.62rem; margin-bottom: 2px; }
+.tv-bot-center .btn { font-size: 0.72rem; padding: 0.3rem 0.5rem; }
+.tv-bot-center .btn-end-turn { font-size: 0.78rem; padding: 0.45rem 0.5rem; }
+.tv-bot-center .dice-roll-box { padding: 0.5rem; margin-bottom: 0.4rem; }
+.tv-bot-center .dice-prompt { font-size: 0.75rem; margin-bottom: 0.4rem; }
+.tv-bot-center .btn-roll { font-size: 0.85rem; padding: 0.35rem 1.2rem; }
+.tv-bot-center .dice-result { font-size: 1.1rem; padding: 0.3rem 0.5rem; margin-bottom: 0.4rem; }
+.tv-bot-center .incident-box { padding: 0.5rem; margin-bottom: 0.4rem; }
+.tv-bot-center .incident-title { font-size: 0.68rem; }
+.tv-bot-center .incident-effect { font-size: 0.7rem; }
+.tv-bot-center .incident-edu { font-size: 0.65rem; margin-bottom: 4px; }
+.tv-bot-center .phase-box { padding: 0.5rem; }
+.tv-bot-center .phase-box p { font-size: 0.72rem; margin-bottom: 0.5rem; }
+.tv-bot-center .log-entries {
+  max-height: none;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ── Corner panels (card hand trays) ───────────────────────── */
+.tv-corner {
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+.corner-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid;
+  box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow);
+  background: var(--surface2);
+  overflow: hidden;
+  opacity: 0.72;
+  transition: opacity 0.2s;
+}
+.corner-panel.corner-active {
+  opacity: 1;
+  box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow),
+              0 0 0 3px white;
+}
+
+.corner-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  flex-shrink: 0;
+}
+.corner-emoji { font-size: 1.1rem; flex-shrink: 0; }
+.corner-info { flex: 1; min-width: 0; }
+.corner-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.65rem;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.corner-pos {
+  display: block;
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.corner-hand-count {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  flex-shrink: 0;
+}
+.corner-active-badge {
+  background: rgba(0,0,0,0.28);
+  color: #fff;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 2px 5px;
+  flex-shrink: 0;
+  animation: pulse 1.2s infinite;
+}
+
+/* Hand row: cards fill the corner horizontally */
+.corner-hand {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 4px;
+  padding: 5px 6px;
+  overflow: hidden;          /* no scroll — cards shrink to fit */
+}
+.corner-empty {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  padding: 6px;
+  align-self: center;
+}
+
+/* Cards in the corner: flexible width so all fit without scrolling */
+.corner-hand .card {
+  flex: 1 1 0;
+  min-width: 52px;
+  width: auto;
+  overflow: hidden;
+}
+/* Keep text readable at narrow widths */
+.corner-hand .card-name   { font-size: 0.6rem; line-height: 1.2; padding: 3px 4px; }
+.corner-hand .card-effect { font-size: 0.55rem; padding: 0 4px 3px; }
+.corner-hand .card-top    { padding: 2px 4px; }
+.corner-hand .card-category { font-size: 0.5rem; }
+/* Hide flip button and edu content in corner — players see full card on draw */
+.corner-hand .card-flip-btn { display: none; }
+.corner-hand .card-edu      { display: none; }
+
+/* Lift effect for selected cards: in top corners (rotated 180°) the
+   transform is also rotated, so translateY(-8px) visually lifts the
+   card toward the standing player — which is the correct direction. */
+.corner-hand .card:hover { transform: translateY(-6px); }
+.corner-hand .card-selected { transform: translateY(-10px) !important; }
+
+/* Empty corner placeholder when a role isn't in the game */
+.corner-empty-slot {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  opacity: 0.4;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 8px,
+    rgba(0,0,0,0.05) 8px, rgba(0,0,0,0.05) 16px
+  );
+}
