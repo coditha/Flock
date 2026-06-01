@@ -156,6 +156,28 @@ input, select { font-family: inherit; }
 }
 .btn-quit:hover { border-color: var(--text); color: var(--text); }
 
+/* Top-bar action buttons (Log + New Game sit together at the right) */
+.tv-top-actions { display: flex; align-items: center; gap: 0.5rem; }
+.btn-log.active { background: var(--yellow); color: #fff; border-color: var(--px-dark); }
+
+/* Game Log dropdown — anchored under the top-right buttons, expands in place */
+.log-dropdown {
+  position: fixed;
+  top: 52px; right: 12px;
+  width: 320px; max-width: 90vw;
+  z-index: 200;
+  background: var(--surface);
+  border: 3px solid var(--px-gold);
+  box-shadow: 4px 4px 0 var(--px-dark);
+}
+.log-dropdown-title {
+  padding: 0.5rem 0.75rem; background: var(--surface2);
+  border-bottom: 2px solid var(--border);
+  font-weight: 700; font-size: 0.72rem; color: var(--px-gold);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.log-dropdown .log-entries { max-height: 60vh; }
+
 /* ── Game Body (side trackers + center) ──────────────────── */
 .game-body { display: flex; flex: 1; min-height: 0; }
 .game-center { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
@@ -195,32 +217,44 @@ input, select { font-family: inherit; }
 .meter-v-warning { font-size: 1rem; animation: pulse 1s infinite; }
 
 /* Compact Privacy & Trust badge + in-place expansion (mirrors the density tracker) */
-.tv-pm .pm-inline {
-  flex: none;
-  align-self: stretch;
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center;          /* center the badge when collapsed */
-  gap: 0.5rem; padding: 0.5rem 0.35rem;
+.pm-inline {
+  display: flex; flex-direction: row; align-items: center;
+  gap: 0.6rem;
 }
-.tv-pm .pm-inline.expanded { justify-content: flex-start; }
+/* Single horizontal badge — matches the compact density tracker's footprint */
 .pm-inline-badge {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  padding: 0.5rem;
+  display: flex; flex-direction: row; align-items: center; gap: 6px;
+  padding: 0.5rem 0.6rem;
   background: var(--surface2); border: 3px solid var(--border);
   box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 3px 3px 0 var(--px-dark);
-  cursor: pointer; font-family: inherit;
+  cursor: pointer; font-family: inherit; color: var(--text);
   transition: border-color 0.1s, transform 0.1s;
 }
 .pm-inline-badge:hover { border-color: var(--yellow); }
 .pm-inline-badge:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--px-dark); }
-.pm-inline-dot { font-size: 1.4rem; line-height: 1; }
-.pm-inline-num { font-family: 'Press Start 2P', monospace; font-size: 1rem; text-shadow: 1px 1px 0 var(--px-dark); }
-.pm-inline-label { font-size: 0.48rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
-.pm-inline-chevron { font-size: 0.7rem; color: var(--text-muted); }
-/* The full meter (reused) fills the column below the badge when expanded */
-.tv-pm .pm-inline .privacy-meter-v {
-  flex: 1; width: 100%; height: auto; min-height: 0; padding: 0.25rem 0;
+.pm-inline-dot { font-size: 1.5rem; line-height: 1; }
+.pm-inline-num { font-family: 'Press Start 2P', monospace; font-size: 0.7rem; text-shadow: 1px 1px 0 var(--px-dark); }
+.pm-inline-label { font-size: 0.62rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+.pm-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }
+/* Horizontal meter — unfolds to the side of the badge (0 → 30, with current marker) */
+.pm-hmeter {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0.3rem 0.5rem;
+  background: var(--surface); border: 2px solid var(--border);
+  box-shadow: inset 1px 1px 0 var(--px-highlight);
 }
+.pm-hmeter-end { font-size: 0.6rem; font-weight: 700; }
+.pm-hmeter-end.lose { color: var(--red); }
+.pm-hmeter-end.safe { color: var(--green); }
+.pm-hmeter-track {
+  position: relative; width: 180px; height: 16px;
+  background: var(--surface2); border: 2px solid var(--border);
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+.pm-hmeter-fill { position: absolute; left: 0; top: 0; height: 100%; transition: width 0.4s ease, background 0.4s ease; }
+.pm-hmeter-marker { position: absolute; top: 0; width: 2px; height: 100%; background: rgba(0,0,0,0.6); }
+.pm-hmeter-warning { font-size: 0.9rem; animation: pulse 1s infinite; }
 
 /* Vertical Density Tracker */
 .density-tracker-v {
@@ -252,10 +286,7 @@ input, select { font-family: inherit; }
 
 /* In-place density tracker — compact badge that unfolds a panel within the cell */
 .density-inline {
-  align-self: center;        /* don't stretch to full cell height */
-  margin: 0 0.5rem;          /* sit just inside the right column */
-  width: 180px;
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: row; align-items: center; gap: 0.5rem;
 }
 .density-inline-badge {
   display: flex; align-items: center; gap: 6px;
@@ -277,28 +308,28 @@ input, select { font-family: inherit; }
 }
 .density-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }
 
-/* Expanded panel — unfolds in place beneath the badge (no overlay/modal) */
+/* Expanded panel — unfolds horizontally beside the badge (no overlay/modal) */
 .density-inline-track {
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex; flex-direction: row; gap: 3px;
   padding: 4px;
   background: var(--surface);
   border: 2px solid var(--border);
   box-shadow: inset 1px 1px 0 var(--px-highlight);
 }
 .density-inline-step {
-  display: flex; align-items: center; gap: 6px;
-  padding: 3px 5px;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 3px 4px; min-width: 42px;
   background: var(--surface2); border: 2px solid var(--border);
-  font-size: 0.66rem; color: var(--text-muted);
+  font-size: 0.55rem; color: var(--text-muted); text-align: center;
 }
 .density-inline-step.current {
   background: var(--yellow); border-color: var(--px-dark); color: #fff; font-weight: 700;
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), 2px 2px 0 var(--px-dark);
 }
 .density-inline-step.passed { opacity: 0.5; }
-.density-inline-emoji { font-size: 1rem; }
-.density-inline-name { flex: 1; text-align: left; }
-.density-inline-lv { font-weight: 700; }
+.density-inline-emoji { font-size: 1.1rem; }
+.density-inline-name { font-size: 0.5rem; line-height: 1.1; }
+.density-inline-lv { font-weight: 700; font-size: 0.55rem; }
 
 /* Horizontal meter (fallback / unused in current layout) */
 .privacy-meter { flex: 2; min-width: 280px; }
@@ -1274,13 +1305,11 @@ input, select { font-family: inherit; }
 /* ── Tracker cells — sit between the corner hand trays ──────── */
 .tv-pm {
   display: flex;
-  flex-direction: column;   /* title on top, meter+log below */
+  flex-direction: column;
   align-items: stretch;
-  background: var(--surface);
-  border-top: 3px solid var(--border);
-  border-bottom: 3px solid var(--border);
-  border-right: 3px solid var(--border);
-  box-shadow: inset -2px 0 0 var(--px-dark);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 .tv-dt {
   display: flex;
@@ -1363,11 +1392,28 @@ input, select { font-family: inherit; }
 /* ── Board zone (centre middle cell) ───────────────────────── */
 .tv-board-zone {
   display: flex;
-  align-items: flex-start;   /* anchor board to top so suburb is never clipped */
-  justify-content: center;
+  flex-direction: column;        /* top tracker flush to board, board, bottom tracker */
+  align-items: center;
+  justify-content: flex-start;
   overflow: hidden;
   padding: 0.25rem 0.5rem;
 }
+
+/* Shared tracker bars on the board's top & bottom edges.
+   Trackers stack vertically; each expands horizontally (centered, grows left/right). */
+.board-trackers {
+  flex: none;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 0.5rem;
+  position: relative; z-index: 20;
+}
+/* Top copy: flipped 180° for far-side players, anchored flush to the board's top edge */
+.board-trackers-top { transform: rotate(180deg); }
+/* Bottom copy stays pinned to the bottom edge (auto margin absorbs the free space) */
+.board-trackers-bottom { margin-top: auto; }
+/* Header copy: attached under the round-info bar (top-center has pointer-events:none),
+   flipped 180° so the players on that side can read it */
+.board-trackers-header { pointer-events: auto; padding: 0.4rem 0; transform: rotate(180deg); }
 
 /* Scale board elements down so the board fits the middle row.
    Rule of thumb: 23vh rows leave ~54vh for the board at 1080p ≈ 583px.

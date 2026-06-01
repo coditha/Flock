@@ -20,7 +20,6 @@ interface ActionBtn {
   onTap: () => void;
 }
 
-const DICE_FACES: Record<number, string> = { 1: '⚀', 2: '⚁', 3: '⚂', 4: '⚃', 5: '⚄', 6: '⚅' };
 const NHCOLOR: Record<string, string> = { suburb: 'yellow', courthouse: 'blue', media: 'green', politics: 'red' };
 
 // Isometric pixel-art die — three visible faces with dots on each
@@ -352,17 +351,7 @@ export default function ActionPanel({
   return (
     <div className="ap-wrap">
 
-      {/* ── Header: role, dice, actions ─────────────────────── */}
-      <div className="ap-header" style={{ background: player.role.colorHex }}>
-        <span className="ap-role-name">{player.role.emoji} {player.role.name}</span>
-        <div className="ap-header-right">
-          {phase === 'player-turn' && !state.pendingDiceRoll && state.lastDiceRoll !== null && (
-            <span className="ap-chip ap-chip-dice">{DICE_FACES[state.lastDiceRoll]} {state.lastDiceRoll}</span>
-          )}
-        </div>
-      </div>
-
-      {/* ── Action tracker — replaces the old ⚡ chip ──────────── */}
+      {/* ── Action tracker (panel header removed — player identified by color/corner) ── */}
       {phase === 'player-turn' && !state.pendingDiceRoll && !pendingIncident && !pendingDiscard && (() => {
         const total = Math.max(state.lastDiceRoll ?? actions, actions);
         return (

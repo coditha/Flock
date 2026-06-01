@@ -24,20 +24,19 @@ export default function PrivacyMeter({ value, vertical }: Props) {
           <span className="pm-inline-dot">{dot}</span>
           <span className="pm-inline-num" style={{ color }}>{value}</span>
           <span className="pm-inline-label">Remaining</span>
-          <span className="pm-inline-chevron">{expanded ? '▴' : '▾'}</span>
+          <span className="pm-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 
-        {/* In-place expansion — the full meter, unfolded beneath the badge */}
+        {/* In-place expansion — the full meter, unfolded horizontally beside the badge */}
         {expanded && (
-          <div className="privacy-meter-v">
-            <div className="meter-v-value" style={{ color }}>{value}</div>
-            <div className="meter-v-safe">30</div>
-            <div className="meter-v-track">
-              <div className="meter-v-fill" style={{ height: `${pct}%`, background: color }} />
-              <div className="meter-v-marker" style={{ bottom: `${pct}%` }} />
+          <div className="pm-hmeter">
+            <span className="pm-hmeter-end lose">0</span>
+            <div className="pm-hmeter-track">
+              <div className="pm-hmeter-fill" style={{ width: `${pct}%`, background: color }} />
+              <div className="pm-hmeter-marker" style={{ left: `${pct}%` }} title={`Current (${value})`} />
             </div>
-            <div className="meter-v-lose">0</div>
-            {value <= 5 && <div className="meter-v-warning">⚠️</div>}
+            <span className="pm-hmeter-end safe">30</span>
+            {value <= 5 && <span className="pm-hmeter-warning">⚠️</span>}
           </div>
         )}
       </div>

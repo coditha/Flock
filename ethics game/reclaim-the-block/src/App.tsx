@@ -165,6 +165,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const [selectedCardIds, setSelectedCardIds] = useState<string[]>([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodId | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
+  const [showLog, setShowLog] = useState(false);
 
   const handleCardClick = useCallback((card: CommunityCard) => {
     setSelectedCardIds((prev) =>
@@ -246,14 +247,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         )}
       </div>
 
-      {/* ── LEFT SIDE: Privacy Meter + Game Log ──────────────── */}
-      <div className="tv-pm side-tracker">
-        <div className="tv-pm-title">Privacy &amp; Trust Tracker</div>
-        <div className="tv-pm-content">
-          <PrivacyMeter value={state.privacyMeter} vertical />
-          <GameLog log={state.gameLog} />
-        </div>
-      </div>
+      {/* ── LEFT SIDE: empty (log moved to top-bar button) ────── */}
+      <div className="tv-pm side-tracker" />
 
       {/* ── TOP CENTER: Title bar + Revealed cards ────────────── */}
       <div className="tv-top-center">
@@ -262,10 +257,31 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
           <div className="round-info">
             Round {state.round} — {activePlayer.role.emoji} {activePlayer.role.name}'s turn
           </div>
-          <button className="btn-quit" onClick={onRestart}>← New Game</button>
+          <div className="tv-top-actions">
+            <button
+              className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
+              onClick={() => setShowLog((s) => !s)}
+            >
+              📜 Log
+            </button>
+            <button className="btn-quit" onClick={onRestart}>← New Game</button>
+          </div>
+        </div>
+        {/* Shared trackers — attached to the round-info header (same state as bottom set) */}
+        <div className="board-trackers board-trackers-header">
+          <PrivacyMeter value={state.privacyMeter} vertical />
+          <DensityTracker value={state.densityTracker} vertical />
         </div>
         <RevealedCards cards={state.revealedSurveillanceCards} />
       </div>
+
+      {/* ── Game Log dropdown — expands in place under the Log button ── */}
+      {showLog && (
+        <div className="log-dropdown">
+          <div className="log-dropdown-title">📜 Game Log</div>
+          <GameLog log={state.gameLog} />
+        </div>
+      )}
 
       {/* ── TOP-RIGHT: Journalist (rotated 180°) ──────────────── */}
       <div className="tv-corner corner-tr">
@@ -407,12 +423,16 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             </div>
           </div>
         </div>
+
+        {/* Shared trackers — bottom edge (duplicate of top set, same state) */}
+        <div className="board-trackers board-trackers-bottom">
+          <PrivacyMeter value={state.privacyMeter} vertical />
+          <DensityTracker value={state.densityTracker} vertical />
+        </div>
       </div>
 
-      {/* ── RIGHT SIDE: Density Tracker ───────────────────────── */}
-      <div className="tv-dt side-tracker">
-        <DensityTracker value={state.densityTracker} vertical />
-      </div>
+      {/* ── RIGHT SIDE: (trackers moved to board edges) ───────── */}
+      <div className="tv-dt side-tracker" />
 
       {/* ── BOTTOM-LEFT: Legal Advocate ───────────────────────── */}
       <div className="tv-corner corner-bl">

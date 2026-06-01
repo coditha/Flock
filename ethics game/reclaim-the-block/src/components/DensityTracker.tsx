@@ -23,7 +23,7 @@ export default function DensityTracker({ value, vertical }: Props) {
         >
           <span className="density-inline-badge-emoji">{DEVICE_EMOJIS[idx]}</span>
           <span className="density-inline-badge-lv">Lv {value}</span>
-          <span className="density-inline-chevron">{expanded ? '▴' : '▾'}</span>
+          <span className="density-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 
         {/* In-place expansion — full tracker unfolds beneath the badge */}
