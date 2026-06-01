@@ -40,7 +40,7 @@ function CornerPanel({
 
   // Horizontal overlap layout: cards spread evenly, overlap increases with hand size
   const n = player.hand.length;
-  const CARD_W = 88; // px, fixed — never shrinks
+  const CARD_W = 124; // px, fixed — never shrinks
 
   return (
     <div

@@ -1,5 +1,6 @@
 import type { CommunityCard } from '../types/game';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface Props {
   card: CommunityCard;
@@ -25,7 +26,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default function CardDisplay({ card, isSelected, onClick, disabled }: Props) {
-  const [flipped, setFlipped] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const color = CATEGORY_COLORS[card.category];
 
   return (
@@ -40,21 +41,44 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
       </div>
       <div className="card-name">{card.name}</div>
       <div className="card-effect">{card.effect}</div>
+      {/* Description shown directly; CSS line-clamp truncates with "…" when it overflows */}
+      <div className="card-desc">{card.educationalContent}</div>
+
+      {/* Read All button — opens a read-only enlarged view; never triggers gameplay */}
       <button
-        className="card-flip-btn"
+        className="card-view-btn"
         onClick={(e) => {
           e.stopPropagation();
-          setFlipped((f) => !f);
+          setShowModal(true);
         }}
-        title="Toggle educational content"
+        title="Read the full card details"
       >
-        {flipped ? '▲' : '▼'}
+        📖 Read All
       </button>
-      {flipped && (
-        <div className="card-edu">
-          {card.educationalContent}
-        </div>
-      )}
+
+      {/* Enlarged detail popup — portaled to body so it escapes the fan's overflow clipping */}
+      {showModal &&
+        createPortal(
+          <div className="card-modal-overlay" onClick={() => setShowModal(false)}>
+            <div
+              className="card-modal"
+              style={{ borderColor: color }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="card-modal-top" style={{ background: color }}>
+                <span className="card-modal-category">{CATEGORY_LABELS[card.category]}</span>
+                {card.isPowerUp && <span className="powerup-star">⭐</span>}
+                <button className="card-modal-close" onClick={() => setShowModal(false)} title="Close">
+                  ✕
+                </button>
+              </div>
+              <div className="card-modal-name">{card.name}</div>
+              <div className="card-modal-effect">{card.effect}</div>
+              <div className="card-modal-edu">{card.educationalContent}</div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

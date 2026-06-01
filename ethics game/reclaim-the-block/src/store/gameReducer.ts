@@ -326,6 +326,18 @@ function removeCardFromHand(state: GameState, playerId: number, cardIds: string[
   return { ...state, players, communityDiscard: [...state.communityDiscard, ...removed] };
 }
 
+// If the player exceeds the 7-card hand limit, return state with a manual discard
+// prompt set; otherwise return null (no discard needed). Never discards automatically.
+// advanceAfter=true ends the turn once resolved (end-of-turn draw); false keeps the
+// turn going (mid-turn draw effects).
+function enforceHandLimit(state: GameState, playerId: number, advanceAfter: boolean): GameState | null {
+  const player = state.players.find((p) => p.id === playerId);
+  if (!player || player.hand.length <= 7) return null;
+  const count = player.hand.length - 7;
+  const s = log(state, `${player.role.name} must choose ${count} card(s) to discard (7-card hand limit).`);
+  return { ...s, pendingDiscard: { playerId, count, advanceAfter } };
+}
+
 function removeDeviceFromSlot(
   state: GameState,
   neighborhoodId: NeighborhoodId,
@@ -892,7 +904,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         chosenPosition: action.chosenPosition,
       });
       s = log(s, `${player.role.name} played "${card.name}"`);
-      return checkWinLoss(s);
+      s = checkWinLoss(s);
+      if (s.phase === 'player-turn') {
+        // A draw effect may have pushed the player over 7 cards → manual discard
+        const limited = enforceHandLimit(s, player.id, false);
+        if (limited) return limited;
+      }
+      return s;
     }
 
     // ── Deposit at City Hall ──────────────────────────────────────────
@@ -977,7 +995,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         p.id === player.id ? { ...p, hasUsedSpecialAbilityThisTurn: true } : p
       );
       s = spendActions({ ...s, players }, 1);
-      return checkWinLoss(s);
+      s = checkWinLoss(s);
+      if (s.phase === 'player-turn') {
+        // Organizer's draw may have pushed them over 7 cards → manual discard
+        const limited = enforceHandLimit(s, player.id, false);
+        if (limited) return limited;
+      }
+      return s;
     }
 
     // ── End turn ──────────────────────────────────────────────────────
@@ -1027,25 +1051,23 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       let s: GameState = { ...state, players, pendingDrawnCards: null };
       s = log(s, `${player.role.name} drew ${cards.length} card${cards.length !== 1 ? 's' : ''}.`);
 
-      const updatedPlayer = s.players.find((p) => p.id === playerId)!;
-      if (updatedPlayer.hand.length > 7) {
-        const excess = updatedPlayer.hand.length - 7;
-        s = log(s, `${player.role.name} must discard ${excess} card(s) to meet the 7-card hand limit.`);
-        return { ...s, pendingDiscard: { playerId, count: excess } };
-      }
+      // End-of-turn draw may exceed 7 → manual discard, then advance the turn
+      const limited = enforceHandLimit(s, playerId, true);
+      if (limited) return limited;
 
       return advanceTurn(s);
     }
 
     case 'DISCARD_TO_HAND_LIMIT': {
       if (!state.pendingDiscard) return state;
-      const { playerId, count } = state.pendingDiscard;
+      const { playerId, count, advanceAfter } = state.pendingDiscard;
       if (action.cardIds.length !== count) return state;
       const playerName = state.players.find((p) => p.id === playerId)!.role.name;
       let s = removeCardFromHand(state, playerId, action.cardIds);
       s = log(s, `${playerName} discarded ${count} card(s) to meet the hand limit.`);
       s = { ...s, pendingDiscard: null };
-      return advanceTurn(s);
+      // Only end the turn if the overflow came from the end-of-turn draw
+      return advanceAfter ? advanceTurn(s) : s;
     }
 
     // ── Board Phase ───────────────────────────────────────────────────

@@ -194,6 +194,34 @@ input, select { font-family: inherit; }
 .meter-v-marker { position: absolute; left: 0; width: 100%; height: 2px; background: rgba(0,0,0,0.5); }
 .meter-v-warning { font-size: 1rem; animation: pulse 1s infinite; }
 
+/* Compact Privacy & Trust badge + in-place expansion (mirrors the density tracker) */
+.tv-pm .pm-inline {
+  flex: none;
+  align-self: stretch;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;          /* center the badge when collapsed */
+  gap: 0.5rem; padding: 0.5rem 0.35rem;
+}
+.tv-pm .pm-inline.expanded { justify-content: flex-start; }
+.pm-inline-badge {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 0.5rem;
+  background: var(--surface2); border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 3px 3px 0 var(--px-dark);
+  cursor: pointer; font-family: inherit;
+  transition: border-color 0.1s, transform 0.1s;
+}
+.pm-inline-badge:hover { border-color: var(--yellow); }
+.pm-inline-badge:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--px-dark); }
+.pm-inline-dot { font-size: 1.4rem; line-height: 1; }
+.pm-inline-num { font-family: 'Press Start 2P', monospace; font-size: 1rem; text-shadow: 1px 1px 0 var(--px-dark); }
+.pm-inline-label { font-size: 0.48rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+.pm-inline-chevron { font-size: 0.7rem; color: var(--text-muted); }
+/* The full meter (reused) fills the column below the badge when expanded */
+.tv-pm .pm-inline .privacy-meter-v {
+  flex: 1; width: 100%; height: auto; min-height: 0; padding: 0.25rem 0;
+}
+
 /* Vertical Density Tracker */
 .density-tracker-v {
   display: flex; flex-direction: column; align-items: center;
@@ -221,6 +249,56 @@ input, select { font-family: inherit; }
 }
 .density-step-v.passed { background: var(--border); border-color: var(--px-dark); opacity: 0.55; }
 .density-v-num { font-size: 0.6rem; }
+
+/* In-place density tracker — compact badge that unfolds a panel within the cell */
+.density-inline {
+  align-self: center;        /* don't stretch to full cell height */
+  margin: 0 0.5rem;          /* sit just inside the right column */
+  width: 180px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.density-inline-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0.5rem 0.6rem;
+  background: var(--surface2);
+  border: 3px solid var(--border);
+  box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 3px 3px 0 var(--px-dark);
+  cursor: pointer; font-family: inherit; color: var(--text);
+  transition: border-color 0.1s, transform 0.1s;
+}
+.density-inline-badge:hover { border-color: var(--yellow); }
+.density-inline-badge:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--px-dark); }
+.density-inline-badge-emoji { font-size: 1.5rem; line-height: 1; }
+.density-inline-badge-name { flex: 1; text-align: left; font-weight: 700; font-size: 0.75rem; }
+.density-inline-badge-lv {
+  flex: 1; text-align: left; white-space: nowrap;
+  font-family: 'Press Start 2P', monospace; font-size: 0.7rem;
+  color: var(--yellow); text-shadow: 1px 1px 0 var(--px-dark);
+}
+.density-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }
+
+/* Expanded panel — unfolds in place beneath the badge (no overlay/modal) */
+.density-inline-track {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 4px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: inset 1px 1px 0 var(--px-highlight);
+}
+.density-inline-step {
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 5px;
+  background: var(--surface2); border: 2px solid var(--border);
+  font-size: 0.66rem; color: var(--text-muted);
+}
+.density-inline-step.current {
+  background: var(--yellow); border-color: var(--px-dark); color: #fff; font-weight: 700;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), 2px 2px 0 var(--px-dark);
+}
+.density-inline-step.passed { opacity: 0.5; }
+.density-inline-emoji { font-size: 1rem; }
+.density-inline-name { flex: 1; text-align: left; }
+.density-inline-lv { font-weight: 700; }
 
 /* Horizontal meter (fallback / unused in current layout) */
 .privacy-meter { flex: 2; min-width: 280px; }
@@ -552,20 +630,6 @@ input, select { font-family: inherit; }
   padding: 0.6rem 0.75rem;
   margin-bottom: 0.6rem;
   text-align: center;
-}
-.ap-action-boots {
-  display: flex; justify-content: center; flex-wrap: wrap; gap: 4px;
-  margin-bottom: 0.4rem;
-}
-.ap-action-boot {
-  font-size: 1.6rem;
-  line-height: 1;
-  transition: opacity 0.15s, filter 0.15s;
-  display: inline-block;
-}
-.ap-action-boot.spent {
-  opacity: 0.22;
-  filter: grayscale(1);
 }
 .ap-action-count {
   font-size: 0.78rem;
@@ -1018,18 +1082,54 @@ input, select { font-family: inherit; }
 
 .card-name { padding: 4px 6px; font-weight: 700; font-size: 0.68rem; line-height: 1.3; }
 .card-effect { padding: 0 6px 4px; font-size: 0.62rem; color: var(--text-muted); line-height: 1.3; }
-
-.card-flip-btn {
-  display: block; width: 100%; background: rgba(0,0,0,0.1);
-  border: none; border-top: 2px solid rgba(0,0,0,0.2);
-  color: var(--text-muted); font-size: 0.56rem; padding: 2px;
-  cursor: pointer; font-family: inherit;
+/* Description shown directly on the card, clamped to N lines with an ellipsis */
+.card-desc {
+  padding: 0 6px 4px; font-size: 0.6rem; line-height: 1.35; color: var(--text-muted);
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;
 }
-.card-flip-btn:hover { background: rgba(0,0,0,0.18); color: var(--text); }
-.card-edu {
-  padding: 6px; font-size: 0.62rem; color: var(--text-muted);
-  line-height: 1.4; border-top: 2px solid rgba(0,0,0,0.2);
-  background: rgba(0,0,0,0.08);
+
+/* View button — opens the enlarged read-only popup */
+.card-view-btn {
+  display: block; width: 100%; background: rgba(0,0,0,0.12);
+  border: none; border-top: 2px solid rgba(0,0,0,0.2);
+  color: var(--text); font-size: 0.56rem; font-weight: 700; padding: 3px;
+  cursor: pointer; font-family: inherit; letter-spacing: 0.3px;
+}
+.card-view-btn:hover { background: rgba(0,0,0,0.22); }
+
+/* Enlarged card detail popup (portaled to body) */
+.card-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+}
+.card-modal {
+  width: 380px; max-width: 90vw;
+  background: var(--surface);
+  border: 4px solid;
+  box-shadow: 6px 6px 0 var(--px-dark);
+  font-family: 'Nunito', system-ui, sans-serif;
+}
+.card-modal-top {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.75rem; border-bottom: 3px solid rgba(0,0,0,0.35);
+}
+.card-modal-category {
+  flex: 1; font-weight: 700; font-size: 0.85rem;
+  text-transform: uppercase; letter-spacing: 0.5px; color: rgba(0,0,0,0.8);
+}
+.card-modal-close {
+  background: rgba(0,0,0,0.2); border: 2px solid rgba(0,0,0,0.35);
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+  width: 26px; height: 26px; cursor: pointer; line-height: 1;
+}
+.card-modal-close:hover { background: rgba(0,0,0,0.4); }
+.card-modal-name { padding: 0.75rem 0.9rem 0.25rem; font-weight: 800; font-size: 1.15rem; line-height: 1.25; }
+.card-modal-effect { padding: 0 0.9rem 0.6rem; font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.card-modal-edu {
+  padding: 0.6rem 0.9rem 0.9rem; font-size: 0.9rem; line-height: 1.5;
+  color: var(--text-muted); border-top: 2px solid var(--border);
 }
 
 /* ── Game Over ────────────────────────────────────────────── */
@@ -1141,7 +1241,7 @@ input, select { font-family: inherit; }
     Columns: [TL/BL corner] [Privacy Meter] [Board] [Density Tracker] [TR/BR corner]
     Rows:    [top corners + info] [board] [bottom corners + actions]
   */
-  grid-template-columns: 23vw 1fr 23vw;
+  grid-template-columns: 28vw 1fr 28vw;
   grid-template-rows: 20vh 1fr 22vh;
   grid-template-areas:
     "corner-tl  top-center  corner-tr"
@@ -1186,11 +1286,9 @@ input, select { font-family: inherit; }
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  background: var(--surface);
-  border-top: 3px solid var(--border);
-  border-bottom: 3px solid var(--border);
-  border-left: 3px solid var(--border);
-  box-shadow: inset 2px 0 0 var(--px-dark);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   justify-content: flex-end;
 }
 
@@ -1411,7 +1509,7 @@ input, select { font-family: inherit; }
   position: absolute;
   top: 4px;
   bottom: 4px;
-  width: 88px;      /* fixed — never shrinks */
+  width: 124px;     /* fixed — must match CARD_W in App.tsx */
   /* left and z-index come from inline style in App.tsx */
   cursor: pointer;
   transition: z-index 0s;
@@ -1419,18 +1517,18 @@ input, select { font-family: inherit; }
 
 /* Card fills its wrapper completely */
 .corner-hand .card {
-  width: 88px !important;
+  width: 124px !important;
   height: 100% !important;  /* fills the top-to-bottom wrapper height */
   min-width: 0 !important;
   overflow: hidden;
+  display: flex; flex-direction: column;
 }
-/* Compact text for corner cards */
-.corner-hand .card-name   { font-size: 0.6rem; line-height: 1.2; padding: 3px 4px; }
-.corner-hand .card-effect { font-size: 0.55rem; padding: 0 4px 3px; }
-.corner-hand .card-top    { padding: 2px 4px; }
-.corner-hand .card-category { font-size: 0.5rem; }
-.corner-hand .card-flip-btn { font-size: 0.5rem; padding: 1px; }
-.corner-hand .card-edu      { font-size: 0.55rem; padding: 4px; line-height: 1.35; }
+/* Wider cards → more readable text, description shown inline (no dropdown) */
+.corner-hand .card-name   { font-size: 0.72rem; line-height: 1.25; padding: 4px 6px; }
+.corner-hand .card-effect { font-size: 0.62rem; padding: 0 6px 3px; font-weight: 700; color: var(--text); }
+.corner-hand .card-desc   { font-size: 0.58rem; padding: 0 6px 4px; flex: 1; }
+.corner-hand .card-top    { padding: 3px 6px; }
+.corner-hand .card-category { font-size: 0.56rem; }
 .corner-hand .card-selected { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 11px 0 var(--px-dark), 0 0 0 2px white !important; }
 
 /* ── Turn action popup ─────────────────────────────────────── */

@@ -26,42 +26,46 @@ const NHCOLOR: Record<string, string> = { suburb: 'yellow', courthouse: 'blue', 
 // Isometric pixel-art die — three visible faces with dots on each
 // Vertices: FTL(11,30) FTR(53,30) FBL(11,62) FBR(53,62) BTL(21,16) BTR(63,16) BBR(63,48)
 
-// Front face: 42×32 px area, 7×7 dots
+// Front face (x 11-53, y 30-62). Symmetric 3×3 grid of 7×7 pips (top-left coords).
+// cols L=17 C=28.5 R=40   rows T=35 M=42.5 B=50
 const FACE_DOTS: Record<number, [number, number][]> = {
-  1: [[28, 43]],
-  2: [[40, 33], [16, 53]],
-  3: [[40, 33], [28, 43], [16, 53]],
-  4: [[16, 33], [40, 33], [16, 53], [40, 53]],
-  5: [[16, 33], [40, 33], [28, 43], [16, 53], [40, 53]],
-  6: [[16, 33], [40, 33], [16, 43], [40, 43], [16, 53], [40, 53]],
+  1: [[28.5, 42.5]],
+  2: [[40, 35], [17, 50]],
+  3: [[40, 35], [28.5, 42.5], [17, 50]],
+  4: [[17, 35], [40, 35], [17, 50], [40, 50]],
+  5: [[17, 35], [40, 35], [28.5, 42.5], [17, 50], [40, 50]],
+  6: [[17, 35], [40, 35], [17, 42.5], [40, 42.5], [17, 50], [40, 50]],
 };
 
-// Top face: wide-flat dots (6×3 px) to suggest horizontal perspective
+// Top face: 6×3 pips on a 3×3 grid that follows the cube's shear (rows shift right
+// toward the back). Top-left coords.
 const TOP_DOTS: Record<number, [number, number][]> = {
-  1: [[34, 21]],
-  2: [[22, 21], [46, 21]],
-  3: [[22, 21], [34, 21], [46, 21]],
-  4: [[22, 18], [46, 18], [22, 24], [46, 24]],
-  5: [[22, 18], [46, 18], [34, 21], [22, 25], [46, 25]],
-  6: [[22, 18], [34, 18], [46, 18], [22, 24], [34, 24], [46, 24]],
+  1: [[34, 21.5]],
+  2: [[47.6, 19], [20.4, 24]],
+  3: [[47.6, 19], [34, 21.5], [20.4, 24]],
+  4: [[24, 19], [47.6, 19], [20.4, 24], [44, 24]],
+  5: [[24, 19], [47.6, 19], [34, 21.5], [20.4, 24], [44, 24]],
+  6: [[20.4, 24], [22.2, 21.5], [24, 19], [44, 24], [45.8, 21.5], [47.6, 19]],
 };
 
-// Right face: tall-narrow dots (4×5 px) within the 10 px-wide shadow face
+// Right face: 3×4 pips on a 3×3 grid following the shear (back column sits higher).
+// Top-left coords within the narrow x 53-63 shadow face.
 const RIGHT_DOTS: Record<number, [number, number][]> = {
-  1: [[56, 42]],
-  2: [[56, 31], [56, 53]],
-  3: [[56, 30], [56, 42], [56, 54]],
-  4: [[54, 31], [58, 31], [54, 52], [58, 52]],
-  5: [[54, 31], [58, 31], [56, 42], [54, 53], [58, 53]],
-  6: [[54, 31], [58, 31], [54, 42], [58, 42], [54, 53], [58, 53]],
+  1: [[56.5, 37]],
+  2: [[58.7, 25], [54.3, 49]],
+  3: [[58.7, 25], [56.5, 37], [54.3, 49]],
+  4: [[54.3, 31], [58.7, 25], [54.3, 49], [58.7, 43]],
+  5: [[54.3, 31], [58.7, 25], [56.5, 37], [54.3, 49], [58.7, 43]],
+  6: [[54.3, 31], [54.3, 40], [54.3, 49], [58.7, 25], [58.7, 34], [58.7, 43]],
 };
 
-// Which faces appear on top and right when front shows each value (standard die conventions)
+// Which faces appear on top and right when front shows each value.
+// Opposite faces (sum to 7) can never be visible together — all combos avoid that.
 const SIDE_FACES: Record<number, { top: number; right: number }> = {
   1: { top: 2, right: 3 },
   2: { top: 3, right: 6 },
   3: { top: 2, right: 6 },
-  4: { top: 5, right: 3 },
+  4: { top: 5, right: 1 },
   5: { top: 4, right: 1 },
   6: { top: 3, right: 5 },
 };
@@ -81,7 +85,7 @@ function PixelDie({ face }: { face: number }) {
       <polygon points="53,30 63,16 63,48 53,62" fill="#b09050" />
       {/* Right face dots — tall-narrow to suggest vertical face in shadow */}
       {rightDots.map(([x, y], i) => (
-        <rect key={`r${i}`} x={x} y={y} width="4" height="5" fill="#2a1808" rx="0.5" opacity="0.75" />
+        <rect key={`r${i}`} x={x} y={y} width="3" height="4" fill="#2a1808" rx="0.5" opacity="0.75" />
       ))}
 
       {/* Top face fill — lightest (catches most light) */}
@@ -363,11 +367,6 @@ export default function ActionPanel({
         const total = Math.max(state.lastDiceRoll ?? actions, actions);
         return (
           <div className="ap-action-tracker">
-            <div className="ap-action-boots">
-              {Array.from({ length: total }).map((_, i) => (
-                <span key={i} className={`ap-action-boot${i < actions ? '' : ' spent'}`}>👢</span>
-              ))}
-            </div>
             <div className="ap-action-count">
               <span className="ap-action-num">{actions}</span>
               <span className="ap-action-sep"> / {total} Actions Remaining</span>
@@ -413,9 +412,10 @@ export default function ActionPanel({
       {/* ── Hand limit discard ──────────────────────────────── */}
       {pendingDiscard && (
         <div className="ap-incident">
-          <div className="ap-incident-title">✋ Hand Limit Reached</div>
+          <div className="ap-incident-title">✋ Hand Limit Exceeded</div>
           <div className="ap-incident-effect">
-            Select {pendingDiscard.count} card{pendingDiscard.count > 1 ? 's' : ''} to discard.
+            Choose {pendingDiscard.count} card{pendingDiscard.count > 1 ? 's' : ''} to discard
+            (max 7 in hand). Tap cards in your hand to select.
             ({selectedCardIds.length}/{pendingDiscard.count} selected)
           </div>
           <button className="btn btn-danger"

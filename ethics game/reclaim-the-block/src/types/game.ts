@@ -145,7 +145,7 @@ export interface GameState {
 
   pendingIncident: PendingIncident | null;
   pendingDrawnCards: { playerId: number; cards: CommunityCard[] } | null;
-  pendingDiscard: { playerId: number; count: number } | null;
+  pendingDiscard: { playerId: number; count: number; advanceAfter: boolean } | null;
 
   blockedBoardPhases: number;
   reducedBoardPhaseRounds: number;
