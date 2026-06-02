@@ -39,7 +39,7 @@ const NEIGHBORHOOD_COLORS: Record<string, string> = {
 // sprite in CSS later without touching this component.
 const LANDMARK_EMOJI: Record<string, string> = {
   suburb: '🏘️',      // Community center / residential
-  courthouse: '⚖️',   // Courthouse
+  courthouse: '',      // Courthouse
   media: '📰',        // News office
   politics: '🗳️',     // Government / political building
 };
