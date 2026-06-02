@@ -1607,8 +1607,15 @@ input, select { font-family: inherit; }
 }
 /* Top copy: flipped 180° for far-side players, anchored flush to the board's top edge */
 .board-trackers-top { transform: rotate(180deg); }
-/* Bottom copy stays pinned to the bottom edge (auto margin absorbs the free space) */
-.board-trackers-bottom { margin-top: auto; margin-bottom: 20vh; position: relative; z-index: 50; }
+/* Bottom copy — fixed so the board's transform can't hide it */
+.board-trackers-bottom {
+  position: fixed;
+  bottom: 8vh;
+  left: 23vw;
+  right: 23vw;
+  z-index: 50;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
 /* Header copy: attached under the round-info bar (top-center has pointer-events:none),
    flipped 180° so the players on that side can read it */
 .board-trackers-header { pointer-events: auto; padding: 0.4rem 0; transform: rotate(180deg); }
