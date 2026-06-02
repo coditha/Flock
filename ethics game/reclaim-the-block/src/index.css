@@ -1323,12 +1323,12 @@ input, select { font-family: inherit; }
 /* Red header band */
 .incident-card-header {
   background: #ef4444;
-  padding: 1rem 1rem;
+  padding: 0.65rem 0.75rem;
   display: flex; align-items: center; justify-content: center;
 }
 .incident-card-type-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.85rem; color: #fff;
+  font-size: 0.75rem; color: #fff;
   letter-spacing: 1px; text-align: center; line-height: 1.6;
 }
 /* Art zone */
