@@ -1825,25 +1825,5 @@ input, select { font-family: inherit; }
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE BOARD SCALING
-   Laptop screens keep the base size. On larger displays (TV /
-   touch-table / TUI) the board scales up to use the extra space,
-   growing down & outward from the top-centre into the grass.
-   Gated on both width AND height so we never overflow a short screen.
-═══════════════════════════════════════════════════════════ */
-@media (min-width: 1500px) and (min-height: 820px) {
-  .tv-game .board-area { transform: scale(1.18); }
-}
-@media (min-width: 1800px) and (min-height: 1000px) {
-  .tv-game .board-area { transform: scale(1.45); }
-}
-@media (min-width: 2200px) and (min-height: 1200px) {
-  .tv-game .board-area { transform: scale(1.75); }
-}
-@media (min-width: 2800px) and (min-height: 1500px) {
-  .tv-game .board-area { transform: scale(2.1); }
-}
-@media (min-width: 3400px) and (min-height: 1800px) {
-  .tv-game .board-area { transform: scale(2.5); }
-}
+/* Board scaling is handled by JS auto-fit (see useLayoutEffect in App.tsx),
+   which measures the centre zone and scales .board-area to fit any screen. */
