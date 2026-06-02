@@ -33,7 +33,7 @@ const FACE_DOTS: Record<number, [number, number][]> = {
   3: [[40, 35], [28.5, 42.5], [17, 50]],
   4: [[17, 35], [40, 35], [17, 50], [40, 50]],
   5: [[17, 35], [40, 35], [28.5, 42.5], [17, 50], [40, 50]],
-  6: [[17, 35], [40, 35], [17, 42.5], [40, 42.5], [17, 50], [40, 50]],
+  6: [[17, 32], [40, 32], [17, 43], [40, 43], [17, 54], [40, 54]],
 };
 
 // Top face: 6×3 pips on a 3×3 grid that follows the cube's shear (rows shift right
@@ -112,10 +112,11 @@ function PixelDie({ face }: { face: number }) {
       <polygon points="11,30 53,30 53,62 11,62" fill="none" stroke="#3a2410" strokeWidth="1.5" />
       <polygon points="53,30 63,16 63,48 53,62" fill="none" stroke="#3a2410" strokeWidth="1.5" />
 
-      {/* Front face dots — full size, most prominent */}
-      {frontDots.map(([x, y], i) => (
-        <rect key={i} x={x} y={y} width="7" height="7" fill="#3a2410" rx="1" />
-      ))}
+      {/* Front face dots — slightly smaller for 6 to give breathing room */}
+      {frontDots.map(([x, y], i) => {
+        const s = face === 6 ? 6 : 7;
+        return <rect key={i} x={x} y={y} width={s} height={s} fill="#3a2410" rx="1" />;
+      })}
     </svg>
   );
 }
@@ -152,7 +153,7 @@ export default function ActionPanel({
     // Ease-out: interval starts at 50ms and grows to ~220ms over totalSteps
     function scheduleStep(step: number) {
       const t = step / totalSteps; // 0 → 1
-      const delay = 50 + t * t * 170; // quadratic ease-out: 50ms → 220ms
+      const delay = 40 + t * t * t * 320; // cubic ease-out: 40ms → 360ms
       rollTimer.current = setTimeout(() => {
         if (step >= totalSteps) {
           setRollingFace(finalRoll);
