@@ -114,7 +114,7 @@ function IncidentOverlay({
       <div className="incident-card">
         {/* Card header band */}
         <div className="incident-card-header">
-          <span className="incident-card-type-label">⚠ SURVEILLANCE INCIDENT</span>
+          <span className="incident-card-type-label">SURVEILLANCE INCIDENT</span>
         </div>
 
         {/* Art zone */}
