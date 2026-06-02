@@ -557,6 +557,14 @@ input, select { font-family: inherit; }
   filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.4));
   background-size: contain; background-repeat: no-repeat; background-position: center;
 }
+/* Courthouse uses a real building sprite (save to public/courthouse.png).
+   font-size:0 hides the emoji fallback; enlarged so the building reads. */
+.district-landmark.lm-courthouse {
+  background-image: url('/courthouse.png');
+  width: 78px; height: 78px;
+  font-size: 0;
+}
+.tv-game .district-landmark.lm-courthouse { width: 68px; height: 68px; }
 /* Houses (slots) at N / E / S / W around the landmark */
 .device-slot.sq-slot-1, .device-slot.sq-slot-2,
 .device-slot.sq-slot-3, .device-slot.sq-slot-4 {
