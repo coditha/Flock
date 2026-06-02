@@ -1472,7 +1472,7 @@ input, select { font-family: inherit; }
   display: grid;
   /* Corner columns sized for the player hands; board fills the center cell */
   grid-template-columns: 23vw 1fr 23vw;
-  grid-template-rows: 14vh 1fr 22vh;
+  grid-template-rows: 22vh 1fr 22vh;
   grid-template-areas:
     "corner-tl  top-center  corner-tr"
     "pm         board-zone  dt"
