@@ -48,10 +48,6 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
         <span className="card-category">{CATEGORY_LABELS[card.category]}</span>
         {card.isPowerUp && <span className="powerup-star">⭐</span>}
       </div>
-      {/* Art zone */}
-      <div className="card-art">
-        <span className="card-art-icon">{CATEGORY_ICONS[card.category]}</span>
-      </div>
       {/* Body */}
       <div className="card-name">{card.name}</div>
       <div className="card-desc">{card.educationalContent}</div>
