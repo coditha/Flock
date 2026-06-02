@@ -403,13 +403,13 @@ input, select { font-family: inherit; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 .road-line-v {
   width: 12px; flex: 1;
-  background: linear-gradient(90deg, #6a3c10 0%, #b07830 20%, #d4a040 50%, #b07830 80%, #6a3c10 100%);
-  box-shadow: none;
+  background: linear-gradient(90deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%);
+  box-shadow: 2px 0 0 #1e0e02, -2px 0 0 #1e0e02;
 }
 .road-line-h {
   height: 12px; width: 14px;
-  background: linear-gradient(180deg, #6a3c10 0%, #b07830 20%, #d4a040 50%, #b07830 80%, #6a3c10 100%);
-  box-shadow: none;
+  background: linear-gradient(180deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%);
+  box-shadow: 0 2px 0 #1e0e02, 0 -2px 0 #1e0e02;
 }
 .road-waypoint {
   flex-shrink: 0;
@@ -425,8 +425,8 @@ input, select { font-family: inherit; }
 .road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 0 3px 7px rgba(0,0,0,0.45), inset 0 1px 3px rgba(255,240,180,0.6), 0 0 0 2px var(--blue); }
 .road-waypoint.moveable:hover { background: radial-gradient(circle at 38% 35%, #d8f0ff 0%, #90c8f0 40%, #4090d0 75%, #204878 100%); border-color: var(--blue); box-shadow: 0 3px 7px rgba(0,0,0,0.45), 0 0 0 3px var(--blue), 0 0 14px rgba(30,90,176,0.4); }
 .road-waypoint.active-player-here { border-color: white; box-shadow: 0 3px 7px rgba(0,0,0,0.45), 0 0 0 3px white; }
-.road-v { width: 12px; height: 100%; background: linear-gradient(90deg, #6a3c10 0%, #b07830 20%, #d4a040 50%, #b07830 80%, #6a3c10 100%); }
-.road-h { height: 12px; width: 40px; background: linear-gradient(180deg, #6a3c10 0%, #b07830 20%, #d4a040 50%, #b07830 80%, #6a3c10 100%); }
+.road-v { width: 12px; height: 100%; background: linear-gradient(90deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%); box-shadow: 2px 0 0 #1e0e02, -2px 0 0 #1e0e02; }
+.road-h { height: 12px; width: 40px; background: linear-gradient(180deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%); box-shadow: 0 2px 0 #1e0e02, 0 -2px 0 #1e0e02; }
 
 .board-middle { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; }
 .city-hall-area { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
@@ -506,8 +506,8 @@ input, select { font-family: inherit; }
 .int-road-seg { cursor: default; }
 .int-road-seg.seg-h { display: flex; flex-direction: row; align-items: center; width: 100%; height: 100%; }
 .int-road-seg.seg-v { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
-.int-line-h { flex: 1; height: 8px; background: linear-gradient(180deg, #6a3c10 0%, #b07830 25%, #d4a040 50%, #b07830 75%, #6a3c10 100%); box-shadow: none; }
-.int-line-v { flex: 1; width: 8px; background: linear-gradient(90deg, #6a3c10 0%, #b07830 25%, #d4a040 50%, #b07830 75%, #6a3c10 100%); box-shadow: none; }
+.int-line-h { flex: 1; height: 8px; background: linear-gradient(180deg, #3e2006 0%, #b07830 22%, #dba840 50%, #b07830 78%, #3e2006 100%); box-shadow: 0 1px 0 #1e0e02, 0 -1px 0 #1e0e02; }
+.int-line-v { flex: 1; width: 8px; background: linear-gradient(90deg, #3e2006 0%, #b07830 22%, #dba840 50%, #b07830 78%, #3e2006 100%); box-shadow: 1px 0 0 #1e0e02, -1px 0 0 #1e0e02; }
 .int-waypoint {
   width: 20px; height: 20px; flex-shrink: 0; position: relative; z-index: 1;
   border-radius: 50%;
@@ -550,44 +550,56 @@ input, select { font-family: inherit; }
 /* ── District neighborhood terrain themes ─────────────────────
    Background & border only — interaction box-shadows stay in state rules */
 
-/* Suburb: Residential — warm green grass, cozy and bright */
+/* Suburb: Residential — lush green with warm highlights, cozy Stardew farm feel */
 .neighborhood-tile.district-suburb {
-  background: linear-gradient(160deg, #c0dc90 0%, #aec878 50%, #9cb460 100%);
-  border-color: #6a5018 !important;
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(180,220,100,0.4) 0%, transparent 55%),
+    linear-gradient(160deg, #b8d878 0%, #a8c868 45%, #94b454 100%);
+  border: 3px solid #3e2c08 !important;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #6a9428, inset 0 1px 0 rgba(200,240,120,0.35) !important;
 }
 .district-suburb .neighborhood-header {
-  background: linear-gradient(135deg, #cc7c18 0%, #e89828 55%, #b86810 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #c07010 0%, #e09020 50%, #a85e0c 100%) !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
 }
 
-/* Courthouse: Civic stone — cool blue-gray, formal and solid */
+/* Courthouse: Civic stone — cool cobblestone blue-gray, distinct from grass */
 .neighborhood-tile.district-courthouse {
-  background: linear-gradient(160deg, #b0c0d0 0%, #a0b0c4 50%, #90a0b4 100%);
-  border-color: #304868 !important;
+  background:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 10px, rgba(255,255,255,0.06) 10px, rgba(255,255,255,0.06) 11px),
+    linear-gradient(160deg, #a8b8cc 0%, #98aabf 45%, #8898b0 100%);
+  border: 3px solid #1e2c3e !important;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #4868a0, inset 0 1px 0 rgba(180,210,255,0.25) !important;
 }
 .district-courthouse .neighborhood-header {
-  background: linear-gradient(135deg, #182e5c 0%, #2450a0 55%, #0c2250 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #102848 0%, #1e4898 50%, #081c38 100%) !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
 }
 
-/* Media District: Urban — warm concrete and energy */
+/* Media District: Urban concrete — warm gray, commercial building texture */
 .neighborhood-tile.district-media {
-  background: linear-gradient(160deg, #a8b8a0 0%, #98a890 50%, #889880 100%);
-  border-color: #285820 !important;
+  background:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 8px, rgba(0,0,0,0.05) 8px, rgba(0,0,0,0.05) 9px),
+    linear-gradient(160deg, #a0ad98 0%, #909d88 45%, #808d78 100%);
+  border: 3px solid #182e10 !important;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #2a6820, inset 0 1px 0 rgba(160,220,140,0.2) !important;
 }
 .district-media .neighborhood-header {
-  background: linear-gradient(135deg, #145820 0%, #1e9038 55%, #0c4818 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #105018 0%, #1a8830 50%, #083c10 100%) !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
 }
 
-/* Politics Row: Government — deep formal burgundy-cream */
+/* Politics Row: Government — deep formal warm stone, important building feel */
 .neighborhood-tile.district-politics {
-  background: linear-gradient(160deg, #c0a898 0%, #b09888 50%, #a08878 100%);
-  border-color: #600810 !important;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(180,120,90,0.3) 0%, transparent 55%),
+    linear-gradient(160deg, #b89880 0%, #a88870 45%, #987860 100%);
+  border: 3px solid #380408 !important;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #801028, inset 0 1px 0 rgba(240,180,160,0.25) !important;
 }
 .district-politics .neighborhood-header {
-  background: linear-gradient(135deg, #7c0810 0%, #a81020 55%, #5c0408 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #680808 0%, #981020 50%, #480404 100%) !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
 }
 
 .players-here { display: flex; gap: 4px; margin-top: 4px; font-size: 1rem; }
@@ -1314,13 +1326,50 @@ input, select { font-family: inherit; }
     "corner-tl  top-center  corner-tr"
     "pm         board-zone  dt"
     "corner-bl  board-zone  corner-br";
-  /* Full-screen Stardew Valley grass map */
-  background-color: #3d7a28;
+  /* Stardew Valley pixel art map — layered terrain */
+  background-color: #4a8e2c;
   background-image:
-    radial-gradient(circle at 2px 2px, rgba(40,100,20,0.32) 1px, transparent 0),
-    radial-gradient(circle at 7px 6px, rgba(65,125,30,0.18) 1px, transparent 0),
-    linear-gradient(145deg, rgba(255,255,255,0.05) 0%, transparent 55%);
-  background-size: 9px 9px, 9px 9px, 100% 100%;
+    /* Pink cherry blossom tree canopies at screen edges */
+    radial-gradient(circle, rgba(240,155,175,0.65) 0%, rgba(225,110,140,0.22) 45%, transparent 70%),
+    radial-gradient(circle, rgba(240,155,175,0.58) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
+    radial-gradient(circle, rgba(240,155,175,0.65) 0%, rgba(225,110,140,0.22) 45%, transparent 70%),
+    radial-gradient(circle, rgba(240,155,175,0.58) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
+    radial-gradient(circle, rgba(240,155,175,0.55) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
+    radial-gradient(circle, rgba(240,155,175,0.55) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
+    /* Dark forest tree canopy patches framing corners and edges */
+    radial-gradient(ellipse, rgba(15,46,6,0.80) 0%, rgba(15,46,6,0.30) 50%, transparent 100%),
+    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
+    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
+    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
+    radial-gradient(ellipse, rgba(15,46,6,0.44) 0%, transparent 100%),
+    radial-gradient(ellipse, rgba(15,46,6,0.44) 0%, transparent 100%),
+    /* Pixel tile grid — Stardew map tile feel */
+    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(0,0,0,0.075) 15px, rgba(0,0,0,0.075) 16px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 15px, rgba(0,0,0,0.075) 15px, rgba(0,0,0,0.075) 16px),
+    /* Fine grass variation — two-tone ground detail */
+    radial-gradient(circle at 2px 2px, rgba(38,105,16,0.30) 1px, transparent 0),
+    radial-gradient(circle at 7px 6px, rgba(60,118,22,0.16) 1px, transparent 0);
+  background-position:
+    5% 22%,   7% 25%,
+    95% 18%,  93% 21%,
+    3% 80%,   97% 77%,
+    0% 0%,    100% 0%,   0% 100%,  100% 100%,
+    50% 0%,   50% 100%,
+    0 0,      0 0,
+    0 0,      0 0;
+  background-size:
+    9vw 14vh,  6vw 10vh,
+    9vw 14vh,  6vw 10vh,
+    8vw 12vh,  8vw 12vh,
+    25vw 28vh, 22vw 24vh, 22vw 24vh, 22vw 24vh,
+    36vw 16vh, 36vw 16vh,
+    16px 16px, 16px 16px,
+    9px 9px,   9px 9px;
+  background-repeat:
+    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat,
+    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat,
+    repeat, repeat,
+    repeat, repeat;
 }
 
 /* ── Grid area assignments ─────────────────────────────────── */
