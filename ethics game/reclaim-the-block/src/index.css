@@ -458,7 +458,11 @@ input, select { font-family: inherit; }
 .road-h { height: 8px; width: 40px; background: #c8a060; box-shadow: 0 2px 0 var(--px-dark), 0 -2px 0 var(--px-dark); }
 
 .board-middle { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; }
-.city-hall-area { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
+/* City Hall area fills the full middle-row height with vertical road stubs
+   above & below, so the roads reach up to Suburb and down to Politics Row. */
+.city-hall-area { display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: stretch; gap: 0; flex-shrink: 0; }
+.city-hall-row { display: flex; flex-direction: row; align-items: center; }
+.ch-road-v { flex: 1 1 0; min-height: 10px; width: 8px; background: #c8a060; box-shadow: 2px 0 0 var(--px-dark), -2px 0 0 var(--px-dark); }
 
 .city-hall {
   background: linear-gradient(180deg, #ecdcb0 0%, #dcc890 100%);
@@ -1449,7 +1453,7 @@ input, select { font-family: inherit; }
   display: grid;
   /* Corner columns sized for the player hands; board fills the center cell */
   grid-template-columns: 23vw 1fr 23vw;
-  grid-template-rows: 20vh 1fr 22vh;
+  grid-template-rows: 14vh 1fr 22vh;
   grid-template-areas:
     "corner-tl  top-center  corner-tr"
     "pm         board-zone  dt"

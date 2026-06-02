@@ -432,6 +432,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 onMove={handleMove}
               />
               <div className="city-hall-area">
+                <div className="ch-road-v" />
+                <div className="city-hall-row">
                 <div className="road-segment-h">
                   <div className="road-line-h" />
                   <div
@@ -468,6 +470,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                   </div>
                   <div className="road-line-h" />
                 </div>
+                </div>
+                <div className="ch-road-v" />
               </div>
               <NeighborhoodTile
                 neighborhood={state.neighborhoods[2]}
