@@ -10,7 +10,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Beyond the Fourth',
     educationalContent:
       'As the city installs surveillance devices across every neighborhood, many residents assume the Fourth Amendment, which protects citizens from unreasonable government searches, will shield them. However, street-level and smart home surveillance data exists in a legal gray area that courts are still actively defining, leaving open the question of whether police even need a warrant to access footage captured outside your front door.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -21,7 +21,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Right to Know',
     educationalContent:
       'As your community fights back, you learn that submitting a public records request can reveal exactly which surveillance devices your city has installed. Many residents are shocked to discover how many exist that were never publicly announced.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -32,7 +32,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Request Information',
     educationalContent:
       'Residents file public records requests to learn how surveillance cameras are storing and sharing data.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -43,7 +43,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Warrant Required',
     educationalContent:
       'Community lawyers pressure government officials to require warrants before accessing surveillance footage.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -54,7 +54,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Facial Recognition Ban',
     educationalContent:
       'After many wrongful identifications, activists and legal experts campaign to ban facial recognition technology in public spaces.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -65,7 +65,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Know Your Rights Workshop',
     educationalContent:
       'Volunteer attorneys organize workshops teaching residents their legal rights during police stops, public monitoring, and digital surveillance encounters.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -77,7 +77,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Beyond the Fourth',
     educationalContent:
       'As the city installs surveillance devices across every neighborhood, many residents assume the Fourth Amendment, which protects citizens from unreasonable government searches, will shield them. However, street-level and smart home surveillance data exists in a legal gray area that courts are still actively defining, leaving open the question of whether police even need a warrant to access footage captured outside your front door.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -88,7 +88,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Right to Know',
     educationalContent:
       'As your community fights back, you learn that submitting a public records request can reveal exactly which surveillance devices your city has installed. Many residents are shocked to discover how many exist that were never publicly announced.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -99,7 +99,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Request Information',
     educationalContent:
       'Residents file public records requests to learn how surveillance cameras are storing and sharing data.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
@@ -110,7 +110,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Know Your Rights Workshop',
     educationalContent:
       'Volunteer attorneys organize workshops teaching residents their legal rights during police stops, public monitoring, and digital surveillance encounters.',
-    effect: 'Educational card — no gameplay effect.',
+    effect: '',
     effectType: 'none',
     isPowerUp: false,
   },
