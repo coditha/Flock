@@ -1333,9 +1333,8 @@ input, select { font-family: inherit; }
 }
 /* Art zone */
 .incident-card-art {
-  background: var(--surface2);
+  background: var(--surface);
   border-top: 2px solid var(--border);
-  border-bottom: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   padding: 1.1rem 0;
 }
@@ -1348,8 +1347,8 @@ input, select { font-family: inherit; }
 }
 .incident-card-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.52rem; color: var(--red);
-  text-align: center; letter-spacing: 0.5px; line-height: 1.5;
+  font-size: 0.72rem; color: var(--red);
+  text-align: center; letter-spacing: 0.5px; line-height: 1.6;
 }
 .incident-card-flavor {
   font-size: 0.72rem; color: var(--text-muted); line-height: 1.55;

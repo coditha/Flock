@@ -105,6 +105,9 @@ function IncidentOverlay({
   player: Player;
   dispatch: (a: GameAction) => void;
 }) {
+  const [showDiscard, setShowDiscard] = useState(false);
+  const needsDiscard = incident.card.effectType === 'neighbor-reports-neighbor' && player.hand.length > 0;
+
   return (
     <div className="incident-overlay">
       <div className="incident-flash" />
@@ -128,7 +131,7 @@ function IncidentOverlay({
 
         {/* Action footer */}
         <div className="incident-card-footer">
-          {incident.card.effectType === 'neighbor-reports-neighbor' && player.hand.length > 0 ? (
+          {showDiscard ? (
             <>
               <div className="incident-card-discard-label">Discard a card to resolve:</div>
               <div className="incident-card-discard-options">
@@ -142,7 +145,7 @@ function IncidentOverlay({
             </>
           ) : (
             <button className="btn btn-danger incident-card-btn"
-              onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
+              onClick={() => needsDiscard ? setShowDiscard(true) : dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
               Acknowledge
             </button>
           )}
