@@ -86,7 +86,8 @@ input, select { font-family: inherit; }
 .player-count-buttons { display: flex; gap: 0.6rem; }
 .count-btn {
   width: clamp(44px, 5vh, 56px); height: clamp(44px, 5vh, 56px);
-  font-size: clamp(1.1rem, 2.2vh, 1.4rem); font-weight: 700;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.85rem, 1.8vh, 1.1rem); font-weight: 700;
   background: var(--surface2);
   border: 3px solid var(--border);
   box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 3px 3px 0 var(--px-dark);
