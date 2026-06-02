@@ -142,6 +142,8 @@ export default function ActionPanel({
   const [rolling, setRolling] = useState(false);
   const [landed, setLanded] = useState(false);
   const [rollingFace, setRollingFace] = useState(6);
+  const [dicePos, setDicePos] = useState({ x: 0, y: 0 });
+  const [diceTransition, setDiceTransition] = useState('none');
   const rollTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function handleDiceTap() {
@@ -150,7 +152,6 @@ export default function ActionPanel({
     setRolling(true);
     setLanded(false);
     const totalSteps = 14;
-    // Ease-out: interval starts at 50ms and grows to ~220ms over totalSteps
     function scheduleStep(step: number) {
       const t = step / totalSteps; // 0 → 1
       const delay = 40 + t * t * t * 320; // cubic ease-out: 40ms → 360ms
@@ -159,12 +160,19 @@ export default function ActionPanel({
           setRollingFace(finalRoll);
           setRolling(false);
           setLanded(true);
-          // Landing buzz — longer pulse to signal the final number
+          // Slide back to center
+          setDiceTransition(`transform ${delay * 0.8}ms ease-out`);
+          setDicePos({ x: 0, y: 0 });
           navigator.vibrate?.([60, 30, 60]);
           setTimeout(() => dispatch({ type: 'ROLL_DIE', precomputedRoll: finalRoll }), 450);
         } else {
+          // Random position within ±65px x, ±45px y; slows down as t→1
+          const range = 1 - t * 0.5;
+          const x = (Math.random() * 2 - 1) * 65 * range;
+          const y = (Math.random() * 2 - 1) * 45 * range;
+          setDiceTransition(`transform ${delay * 0.7}ms ease-in-out`);
+          setDicePos({ x, y });
           setRollingFace(Math.floor(Math.random() * 6) + 1);
-          // Short tick vibration on each face change, gets slightly longer as it slows down
           const buzzLen = Math.round(8 + t * 14);
           navigator.vibrate?.(buzzLen);
           scheduleStep(step + 1);
@@ -442,6 +450,7 @@ export default function ActionPanel({
             onClick={handleDiceTap}
             role="button"
             aria-label="Roll dice"
+            style={{ transform: `translate(${dicePos.x}px, ${dicePos.y}px)`, transition: diceTransition }}
           >
             <PixelDie face={rollingFace} />
             {landed && SPARKLE_DIRS.map((dir, i) => (
