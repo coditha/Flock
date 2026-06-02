@@ -389,10 +389,15 @@ input, select { font-family: inherit; }
 /* ── Board ────────────────────────────────────────────────── */
 .board-area {
   flex: 2; min-width: 0;
-  background: transparent;
-  background-image: none;
-  border: none;
-  box-shadow: none;
+  background: #c8aa70;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.08) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0,0,0,0.08) 2px, transparent 2px),
+    linear-gradient(rgba(154,100,8,0.06) 16px, transparent 16px),
+    linear-gradient(90deg, rgba(154,100,8,0.06) 16px, transparent 16px);
+  background-size: 8px 8px, 8px 8px, 64px 64px, 64px 64px;
+  border: 3px solid var(--border);
+  box-shadow: inset 4px 4px 0 rgba(0,0,0,0.15), 3px 3px 0 var(--px-dark);
   padding: 0.75rem;
 }
 
@@ -402,40 +407,42 @@ input, select { font-family: inherit; }
 .road-segment-v { display: flex; flex-direction: column; align-items: center; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 .road-line-v {
-  width: 12px; flex: 1;
-  background: linear-gradient(90deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%);
-  box-shadow: 2px 0 0 #1e0e02, -2px 0 0 #1e0e02;
+  width: 6px; flex: 1;
+  background: #9a7850;
+  box-shadow: 1px 0 0 #6e5430, -1px 0 0 #c4a070;
 }
 .road-line-h {
-  height: 12px; width: 14px;
-  background: linear-gradient(180deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%);
-  box-shadow: 0 2px 0 #1e0e02, 0 -2px 0 #1e0e02;
+  height: 6px; width: 14px;
+  background: #9a7850;
+  box-shadow: 0 1px 0 #6e5430, 0 -1px 0 #c4a070;
 }
 .road-waypoint {
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  background: #e8c050;
-  border: 3px solid var(--px-dark);
-  box-shadow: 2px 2px 0 var(--px-dark), inset 1px 1px 0 rgba(255,245,200,0.6);
+  width: 28px; height: 28px;
+  background: #d4b880;
+  border: 2px solid #9a7850;
+  box-shadow: 2px 2px 0 var(--px-dark);
   font-size: 0.7rem;
   z-index: 1;
 }
-.road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue); }
-.road-waypoint.moveable:hover { background: #7fb3f0; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 3px var(--blue), 0 0 14px rgba(30,90,176,0.4); }
-.road-waypoint.active-player-here { border-color: white; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 3px white; }
-.road-v { width: 12px; height: 100%; background: linear-gradient(90deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%); box-shadow: 2px 0 0 #1e0e02, -2px 0 0 #1e0e02; }
-.road-h { height: 12px; width: 40px; background: linear-gradient(180deg, #3e2006 0%, #b07830 16%, #dba840 50%, #b07830 84%, #3e2006 100%); box-shadow: 0 2px 0 #1e0e02, 0 -2px 0 #1e0e02; }
+.road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
+.road-waypoint.moveable:hover { box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue), 0 0 10px rgba(30,90,176,0.25); }
+.road-waypoint.active-player-here { border-color: var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
+.road-v { width: 6px; height: 100%; background: #9a7850; }
+.road-h { height: 6px; width: 40px; background: #9a7850; }
 
 .board-middle { display: flex; align-items: center; gap: 0; width: 100%; justify-content: center; }
 .city-hall-area { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
 
 .city-hall {
   background: linear-gradient(180deg, #ecdcb0 0%, #dcc890 100%);
-  background-image: repeating-linear-gradient(0deg, transparent 0px, transparent 7px, rgba(0,0,0,0.05) 7px, rgba(0,0,0,0.05) 8px);
   border: 3px solid var(--yellow);
-  box-shadow: 0 0 0 2px var(--px-dark), inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark);
+  box-shadow:
+    0 0 0 2px var(--px-dark),
+    inset 2px 2px 0 var(--px-highlight),
+    inset -2px -2px 0 var(--px-shadow),
+    4px 4px 0 var(--px-dark);
   padding: 0.75rem;
   text-align: center; min-width: 100px;
 }
@@ -452,21 +459,24 @@ input, select { font-family: inherit; }
 /* ── Neighborhood Tile ────────────────────────────────────── */
 .neighborhood-tile {
   background: var(--surface);
-  background-image: none;
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.06) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.06) 75%);
+  background-size: 6px 6px;
+  background-position: 0 0, 0 3px, 3px -3px, -3px 0px;
   border: 3px solid;
-  /* Crisp pixel-art tile — sharp corners, chunky offset shadow */
-  border-radius: 0;
-  overflow: hidden;
   box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark);
   padding: 0.75rem;
   cursor: pointer;
   width: 180px; min-width: 160px;
   user-select: none;
 }
-.neighborhood-tile:hover { filter: brightness(1.06); }
-.neighborhood-tile.selected { box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 3px white; }
-.neighborhood-tile.moveable { cursor: pointer; box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 3px var(--blue); }
-.neighborhood-tile.moveable:hover { box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 3px var(--blue), 0 0 12px rgba(91,154,245,0.3); }
+.neighborhood-tile:hover { filter: brightness(1.07); }
+.neighborhood-tile.selected { box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 2px white; }
+.neighborhood-tile.moveable { cursor: pointer; box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 2px var(--blue); }
+.neighborhood-tile.moveable:hover { box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 2px var(--blue), 0 0 12px rgba(91,154,245,0.3); }
 .neighborhood-tile.full { animation: fullPulse 1s infinite; }
 @keyframes fullPulse {
   0%,100% { box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 0 rgba(217,79,79,0.7); }
@@ -484,77 +494,38 @@ input, select { font-family: inherit; }
 .baseline-devices { display: flex; gap: 3px; margin-bottom: 6px; opacity: 0.38; }
 .baseline-device { font-size: 0.85rem; }
 
-/* Organic loop: 4 slots scattered around a curvy dirt-path ring, with road
-   stops between them. Cycle order (matches movement graph):
-   n1 → nr1 → n2 → nr2 → n4 → nr3 → n3 → nr4 → n1 */
+/* 3×3 square grid: slots at corners, road waypoints on sides, road crossing in center */
 .device-slots-square {
-  position: relative;
-  height: 168px;
-  width: 100%;
-  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr 38px 1fr;
+  grid-template-rows: auto 38px auto;
+  gap: 0;
+  margin-bottom: 6px;
 }
-/* The curvy connecting path — an organic dirt-road loop the nodes sit on */
-.device-slots-square::before {
-  content: '';
-  position: absolute;
-  inset: 30px 22px;
-  border: 8px solid #c08a3c;
-  border-radius: 52% 48% 46% 54% / 50% 52% 48% 50%;
-  box-shadow: 0 0 0 2px var(--px-dark), inset 0 0 0 2px var(--px-dark);
-  z-index: 0;
-}
-/* Slot nodes — placed at N / E / S / W of the loop */
-.device-slot.sq-slot-1,
-.device-slot.sq-slot-2,
-.device-slot.sq-slot-3,
-.device-slot.sq-slot-4 {
-  position: absolute;
-  width: 46px;
-  flex: none;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
-.device-slot.sq-slot-1 { left: 50%; top: 9%; }    /* n1 — top */
-.device-slot.sq-slot-2 { left: 90%; top: 50%; }   /* n2 — right */
-.device-slot.sq-slot-4 { left: 50%; top: 91%; }   /* n4 — bottom */
-.device-slot.sq-slot-3 { left: 10%; top: 50%; }   /* n3 — left */
-/* Road-stop nodes — placed at the diagonals between slots.
-   Prefixed with .device-slots-square to win over the .seg-h/.seg-v sizing rules. */
-.device-slots-square .int-road-seg.sq-road-nr1,
-.device-slots-square .int-road-seg.sq-road-nr2,
-.device-slots-square .int-road-seg.sq-road-nr3,
-.device-slots-square .int-road-seg.sq-road-nr4 {
-  position: absolute;
-  width: 24px; height: 24px;
-  transform: translate(-50%, -50%);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 2;
-}
-.device-slots-square .int-road-seg.sq-road-nr1 { left: 81%; top: 19%; } /* between n1 & n2 — top-right */
-.device-slots-square .int-road-seg.sq-road-nr2 { left: 81%; top: 81%; } /* between n2 & n4 — bottom-right */
-.device-slots-square .int-road-seg.sq-road-nr3 { left: 19%; top: 81%; } /* between n4 & n3 — bottom-left */
-.device-slots-square .int-road-seg.sq-road-nr4 { left: 19%; top: 19%; } /* between n3 & n1 — top-left */
-/* The path itself is drawn by the loop ring, so hide the straight line stubs */
-.int-line-h, .int-line-v { display: none; }
-.sq-center { display: none; }
+.sq-slot-1 { grid-column: 1; grid-row: 1; }
+.sq-slot-2 { grid-column: 3; grid-row: 1; }
+.sq-slot-3 { grid-column: 1; grid-row: 3; }
+.sq-slot-4 { grid-column: 3; grid-row: 3; }
+.sq-road-nr1 { grid-column: 2; grid-row: 1; }
+.sq-road-nr2 { grid-column: 3; grid-row: 2; }
+.sq-road-nr3 { grid-column: 2; grid-row: 3; }
+.sq-road-nr4 { grid-column: 1; grid-row: 2; }
+.sq-center { grid-column: 2; grid-row: 2; background: #9a7850; box-shadow: inset 1px 1px 0 #6e5430, inset -1px -1px 0 #c4a070; }
 /* Internal road segments: line → waypoint → line, matching board road style */
 .int-road-seg { cursor: default; }
 .int-road-seg.seg-h { display: flex; flex-direction: row; align-items: center; width: 100%; height: 100%; }
 .int-road-seg.seg-v { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
-.int-line-h { flex: 1; height: 8px; background: linear-gradient(180deg, #3e2006 0%, #b07830 22%, #dba840 50%, #b07830 78%, #3e2006 100%); box-shadow: 0 1px 0 #1e0e02, 0 -1px 0 #1e0e02; }
-.int-line-v { flex: 1; width: 8px; background: linear-gradient(90deg, #3e2006 0%, #b07830 22%, #dba840 50%, #b07830 78%, #3e2006 100%); box-shadow: 1px 0 0 #1e0e02, -1px 0 0 #1e0e02; }
+.int-line-h { flex: 1; height: 6px; background: #9a7850; box-shadow: 0 1px 0 #6e5430, 0 -1px 0 #c4a070; }
+.int-line-v { flex: 1; width: 6px; background: #9a7850; box-shadow: 1px 0 0 #6e5430, -1px 0 0 #c4a070; }
 .int-waypoint {
-  width: 20px; height: 20px; flex-shrink: 0; position: relative; z-index: 1;
-  border-radius: 50%;
-  background: #e8c050;
-  border: 2px solid var(--px-dark);
-  box-shadow: 2px 2px 0 var(--px-dark), inset 1px 1px 0 rgba(255,245,200,0.6);
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.6rem;
+  width: 22px; height: 22px; flex-shrink: 0; position: relative; z-index: 1;
+  background: #d4b880; border: 2px solid #9a7850; box-shadow: 2px 2px 0 var(--px-dark);
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.65rem;
 }
 .int-road-seg.moveable { cursor: pointer; }
-.int-road-seg.moveable .int-waypoint { border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue); }
-.int-road-seg.moveable:hover .int-waypoint { background: #7fb3f0; }
-.int-road-seg.active-player-here .int-waypoint { border-color: white; background: #e8c050; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px white; }
+.int-road-seg.moveable .int-waypoint { border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
+.int-road-seg.moveable:hover .int-waypoint { background: #c4e0f8; }
+.int-road-seg.active-player-here .int-waypoint { border-color: var(--px-dark); background: #b8a060; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
 .device-slot {
   flex: 1;
   height: 44px;
@@ -580,61 +551,6 @@ input, select { font-family: inherit; }
 .density-row { display: flex; gap: 3px; margin-bottom: 4px; }
 .density-pip { flex: 1; height: 5px; background: var(--surface2); border: 1px solid var(--border); }
 .density-pip.filled { background: var(--red); border-color: #8a2020; }
-
-/* ── District neighborhood terrain themes ─────────────────────
-   Background & border only — interaction box-shadows stay in state rules */
-
-/* Suburb: Residential — lush green with warm highlights, cozy Stardew farm feel */
-.neighborhood-tile.district-suburb {
-  background:
-    radial-gradient(ellipse at 80% 20%, rgba(180,220,100,0.4) 0%, transparent 55%),
-    linear-gradient(160deg, #b8d878 0%, #a8c868 45%, #94b454 100%);
-  border: 3px solid #3e2c08 !important;
-  border-radius: 0;
-}
-.district-suburb .neighborhood-header {
-  background: linear-gradient(135deg, #c07010 0%, #e09020 50%, #a85e0c 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
-}
-
-/* Courthouse: Civic stone — cool cobblestone blue-gray, distinct from grass */
-.neighborhood-tile.district-courthouse {
-  background:
-    repeating-linear-gradient(90deg, transparent 0px, transparent 10px, rgba(255,255,255,0.06) 10px, rgba(255,255,255,0.06) 11px),
-    linear-gradient(160deg, #a8b8cc 0%, #98aabf 45%, #8898b0 100%);
-  border: 3px solid #1e2c3e !important;
-  border-radius: 0;
-}
-.district-courthouse .neighborhood-header {
-  background: linear-gradient(135deg, #102848 0%, #1e4898 50%, #081c38 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
-}
-
-/* Media District: Urban concrete — warm gray, commercial building texture */
-.neighborhood-tile.district-media {
-  background:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 8px, rgba(0,0,0,0.05) 8px, rgba(0,0,0,0.05) 9px),
-    linear-gradient(160deg, #a0ad98 0%, #909d88 45%, #808d78 100%);
-  border: 3px solid #182e10 !important;
-  border-radius: 0;
-}
-.district-media .neighborhood-header {
-  background: linear-gradient(135deg, #105018 0%, #1a8830 50%, #083c10 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
-}
-
-/* Politics Row: Government — deep formal warm stone, important building feel */
-.neighborhood-tile.district-politics {
-  background:
-    radial-gradient(ellipse at 20% 80%, rgba(180,120,90,0.3) 0%, transparent 55%),
-    linear-gradient(160deg, #b89880 0%, #a88870 45%, #987860 100%);
-  border: 3px solid #380408 !important;
-  border-radius: 0;
-}
-.district-politics .neighborhood-header {
-  background: linear-gradient(135deg, #680808 0%, #981020 50%, #480404 100%) !important;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
-}
 
 .players-here { display: flex; gap: 4px; margin-top: 4px; font-size: 1rem; }
 .player-pawn { line-height: 1; }
@@ -1500,10 +1416,7 @@ input, select { font-family: inherit; }
    Rule of thumb: 23vh rows leave ~54vh for the board at 1080p ≈ 583px.
    Original board is ~800px tall, so we target ≈72% scale. */
 .tv-game .board-area {
-  flex: none;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  flex: none;                 /* don't stretch in flex parent */
   padding: 0.5rem;
   overflow: hidden;
 }
@@ -1516,33 +1429,24 @@ input, select { font-family: inherit; }
 .tv-game .baseline-devices { display: none; }
 
 .tv-game .device-slots-square {
-  height: 138px;
+  grid-template-columns: 1fr 28px 1fr;
+  grid-template-rows: auto 28px auto;
   margin-bottom: 4px;
 }
 .tv-game .device-slot {
   height: 34px;
 }
-.tv-game .device-slot.sq-slot-1,
-.tv-game .device-slot.sq-slot-2,
-.tv-game .device-slot.sq-slot-3,
-.tv-game .device-slot.sq-slot-4 {
-  width: 42px;
-}
-.tv-game .device-slots-square::before {
-  inset: 24px 16px;
-  border-width: 7px;
-}
 .tv-game .int-waypoint {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 .tv-game .road-waypoint {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 .tv-game .board-roads-top,
 .tv-game .board-roads-bottom {
-  height: 50px;
+  height: 46px;
 }
 .tv-game .city-hall {
   min-width: 82px;
