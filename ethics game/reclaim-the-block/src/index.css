@@ -388,13 +388,12 @@ input, select { font-family: inherit; }
 /* ── Board ────────────────────────────────────────────────── */
 .board-area {
   flex: 2; min-width: 0;
-  background: #c8aa70;
+  background: #b8b080;
   background-image:
-    linear-gradient(rgba(0,0,0,0.08) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(0,0,0,0.08) 2px, transparent 2px),
-    linear-gradient(rgba(154,100,8,0.06) 16px, transparent 16px),
-    linear-gradient(90deg, rgba(154,100,8,0.06) 16px, transparent 16px);
-  background-size: 8px 8px, 8px 8px, 64px 64px, 64px 64px;
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.07) 1px, transparent 0),
+    linear-gradient(rgba(80,60,20,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80,60,20,0.06) 1px, transparent 1px);
+  background-size: 10px 10px, 40px 40px, 40px 40px;
   border: 3px solid var(--border);
   box-shadow: inset 4px 4px 0 rgba(0,0,0,0.15), 3px 3px 0 var(--px-dark);
   padding: 0.75rem;
@@ -407,27 +406,29 @@ input, select { font-family: inherit; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 .road-line-v {
   width: 6px; flex: 1;
-  background: #9a7850;
-  box-shadow: 1px 0 0 #6e5430, -1px 0 0 #c4a070;
+  background-color: #484848;
+  background-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 5px, rgba(255,255,255,0.36) 5px, rgba(255,255,255,0.36) 7px, transparent 7px, transparent 12px);
+  box-shadow: 1px 0 0 #606060, -1px 0 0 #303030;
 }
 .road-line-h {
   height: 6px; width: 14px;
-  background: #9a7850;
-  box-shadow: 0 1px 0 #6e5430, 0 -1px 0 #c4a070;
+  background-color: #484848;
+  background-image: repeating-linear-gradient(to right, transparent 0px, transparent 3px, rgba(255,255,255,0.36) 3px, rgba(255,255,255,0.36) 5px, transparent 5px, transparent 9px);
+  box-shadow: 0 1px 0 #606060, 0 -1px 0 #303030;
 }
 .road-waypoint {
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
   width: 28px; height: 28px;
-  background: #d4b880;
-  border: 2px solid #9a7850;
-  box-shadow: 2px 2px 0 var(--px-dark);
+  background: #3a3a3a;
+  border: 2px solid #686868;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12), inset -1px -1px 0 rgba(0,0,0,0.3), 2px 2px 0 var(--px-dark);
   font-size: 0.7rem;
   z-index: 1;
 }
-.road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
-.road-waypoint.moveable:hover { box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue), 0 0 10px rgba(30,90,176,0.25); }
-.road-waypoint.active-player-here { border-color: var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
+.road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12), 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
+.road-waypoint.moveable:hover { background: #2a3848; box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12), 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue), 0 0 10px rgba(30,90,176,0.25); }
+.road-waypoint.active-player-here { border-color: var(--px-dark); box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12), 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
 .road-v { width: 6px; height: 100%; background: #9a7850; }
 .road-h { height: 6px; width: 40px; background: #9a7850; }
 
@@ -435,12 +436,17 @@ input, select { font-family: inherit; }
 .city-hall-area { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
 
 .city-hall {
-  background: linear-gradient(180deg, #ecdcb0 0%, #dcc890 100%);
+  background-color: #eedcaa;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 11px, rgba(0,0,0,0.07) 11px, rgba(0,0,0,0.07) 13px),
+    linear-gradient(180deg, #f8eccc 0%, #e8d490 55%, #d4bc78 100%);
   border: 3px solid var(--yellow);
   box-shadow:
     0 0 0 2px var(--px-dark),
-    inset 2px 2px 0 var(--px-highlight),
-    inset -2px -2px 0 var(--px-shadow),
+    inset 2px 0 0 rgba(255,255,255,0.4),
+    inset -2px 0 0 rgba(0,0,0,0.12),
+    inset 0 2px 0 rgba(255,255,255,0.5),
+    inset 0 -3px 0 rgba(0,0,0,0.18),
     4px 4px 0 var(--px-dark);
   padding: 0.75rem;
   text-align: center; min-width: 100px;
@@ -458,6 +464,8 @@ input, select { font-family: inherit; }
 /* ── Neighborhood Tile ────────────────────────────────────── */
 .neighborhood-tile {
   background: var(--surface);
+  border-radius: 4px;
+  overflow: hidden;
   background-image:
     linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(0,0,0,0.06) 25%, transparent 25%),
@@ -509,22 +517,22 @@ input, select { font-family: inherit; }
 .sq-road-nr2 { grid-column: 3; grid-row: 2; }
 .sq-road-nr3 { grid-column: 2; grid-row: 3; }
 .sq-road-nr4 { grid-column: 1; grid-row: 2; }
-.sq-center { grid-column: 2; grid-row: 2; background: #9a7850; box-shadow: inset 1px 1px 0 #6e5430, inset -1px -1px 0 #c4a070; }
+.sq-center { grid-column: 2; grid-row: 2; background: #383838; background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 4px 4px; box-shadow: inset 1px 1px 0 rgba(255,255,255,0.08), inset -1px -1px 0 rgba(0,0,0,0.25); }
 /* Internal road segments: line → waypoint → line, matching board road style */
 .int-road-seg { cursor: default; }
 .int-road-seg.seg-h { display: flex; flex-direction: row; align-items: center; width: 100%; height: 100%; }
 .int-road-seg.seg-v { display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; }
-.int-line-h { flex: 1; height: 6px; background: #9a7850; box-shadow: 0 1px 0 #6e5430, 0 -1px 0 #c4a070; }
-.int-line-v { flex: 1; width: 6px; background: #9a7850; box-shadow: 1px 0 0 #6e5430, -1px 0 0 #c4a070; }
+.int-line-h { flex: 1; height: 6px; background: #484848; box-shadow: 0 1px 0 #606060, 0 -1px 0 #303030; }
+.int-line-v { flex: 1; width: 6px; background: #484848; box-shadow: 1px 0 0 #606060, -1px 0 0 #303030; }
 .int-waypoint {
   width: 22px; height: 22px; flex-shrink: 0; position: relative; z-index: 1;
-  background: #d4b880; border: 2px solid #9a7850; box-shadow: 2px 2px 0 var(--px-dark);
+  background: #3a3a3a; border: 2px solid #686868; box-shadow: 2px 2px 0 var(--px-dark);
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.65rem;
 }
 .int-road-seg.moveable { cursor: pointer; }
 .int-road-seg.moveable .int-waypoint { border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
-.int-road-seg.moveable:hover .int-waypoint { background: #c4e0f8; }
-.int-road-seg.active-player-here .int-waypoint { border-color: var(--px-dark); background: #b8a060; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
+.int-road-seg.moveable:hover .int-waypoint { background: #2a3848; }
+.int-road-seg.active-player-here .int-waypoint { border-color: var(--px-dark); background: #505050; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
 .device-slot {
   flex: 1;
   height: 44px;
@@ -550,6 +558,60 @@ input, select { font-family: inherit; }
 .density-row { display: flex; gap: 3px; margin-bottom: 4px; }
 .density-pip { flex: 1; height: 5px; background: var(--surface2); border: 1px solid var(--border); }
 .density-pip.filled { background: var(--red); border-color: #8a2020; }
+
+/* ── District neighborhood visual themes ──────────────────────── */
+/* Background & border only — interaction box-shadows stay in state rules */
+
+/* Suburb: Residential — warm grass, horizontal fence lines, soft green */
+.neighborhood-tile.district-suburb {
+  background-color: #d4e8b0;
+  background-image:
+    repeating-linear-gradient(60deg, rgba(80,120,30,0.07) 0px, rgba(80,120,30,0.07) 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 18px, rgba(120,80,30,0.06) 18px, rgba(120,80,30,0.06) 20px);
+  border-color: #b87820 !important;
+}
+.district-suburb .neighborhood-header {
+  background: linear-gradient(135deg, #e09010 0%, #f5b030 55%, #c87808 100%) !important;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 3px 0 rgba(100,55,0,0.45);
+}
+
+/* Courthouse: Civic — stone blue-gray, column-stripe pattern, formal */
+.neighborhood-tile.district-courthouse {
+  background-color: #c8d4e4;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 15px, rgba(255,255,255,0.2) 15px, rgba(255,255,255,0.2) 17px),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 10px, rgba(0,0,0,0.04) 10px, rgba(0,0,0,0.04) 11px);
+  border-color: #1a4a8a !important;
+}
+.district-courthouse .neighborhood-header {
+  background: linear-gradient(135deg, #1040a0 0%, #2862c8 55%, #0c3280 100%) !important;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 3px 0 rgba(0,20,80,0.45);
+}
+
+/* Media District: Urban commercial — concrete grid, building-block pattern */
+.neighborhood-tile.district-media {
+  background-color: #bcc8b4;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0px, transparent 20px, rgba(0,0,0,0.06) 20px, rgba(0,0,0,0.06) 22px),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 14px, rgba(0,0,0,0.04) 14px, rgba(0,0,0,0.04) 15px);
+  border-color: #1a6830 !important;
+}
+.district-media .neighborhood-header {
+  background: linear-gradient(135deg, #186828 0%, #24a040 55%, #105018 100%) !important;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 3px 0 rgba(0,60,10,0.45);
+}
+
+/* Politics Row: Government — formal cream, diagonal stripe pattern */
+.neighborhood-tile.district-politics {
+  background-color: #d8c8b8;
+  background-image:
+    repeating-linear-gradient(-45deg, transparent 0px, transparent 14px, rgba(160,15,20,0.05) 14px, rgba(160,15,20,0.05) 16px, transparent 16px, transparent 30px, rgba(0,0,0,0.03) 30px, rgba(0,0,0,0.03) 32px);
+  border-color: #901018 !important;
+}
+.district-politics .neighborhood-header {
+  background: linear-gradient(135deg, #981018 0%, #c81828 55%, #780808 100%) !important;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 3px 0 rgba(80,0,0,0.45);
+}
 
 .players-here { display: flex; gap: 4px; margin-top: 4px; font-size: 1rem; }
 .player-pawn { line-height: 1; }

@@ -65,7 +65,7 @@ export default function NeighborhoodTile({
 
   return (
     <div
-      className={`neighborhood-tile ${isSelected ? 'selected' : ''} ${filledSlots === 4 ? 'full' : ''} ${tileMoveable ? 'moveable' : ''}`}
+      className={`neighborhood-tile district-${neighborhood.id} ${isSelected ? 'selected' : ''} ${filledSlots === 4 ? 'full' : ''} ${tileMoveable ? 'moveable' : ''}`}
       style={{ borderColor: color }}
       onClick={() => {
         if (tileMoveable) onMove(roadTile);
