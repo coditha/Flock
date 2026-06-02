@@ -122,11 +122,9 @@ function IncidentOverlay({
         {/* Inner frame body */}
         <div className="incident-card-body">
           <div className="incident-card-name">{incident.card.name}</div>
+          <div className="incident-card-flavor">{incident.card.educationalNote}</div>
           <div className="incident-card-rule">{incident.card.effect}</div>
         </div>
-
-        {/* Flavor / educational text */}
-        <div className="incident-card-flavor">{incident.card.educationalNote}</div>
 
         {/* Action footer */}
         <div className="incident-card-footer">

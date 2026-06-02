@@ -1313,13 +1313,12 @@ input, select { font-family: inherit; }
 .incident-card {
   position: relative; z-index: 1;
   width: min(300px, 88vw);
-  background: #1a0a04;
+  background: var(--surface);
   border: 3px solid #ef4444;
-  box-shadow: 0 0 40px rgba(239,68,68,0.55), 6px 6px 0 var(--px-dark);
   clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
   display: flex; flex-direction: column;
   animation: incident-card-in 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-  filter: drop-shadow(6px 6px 0 var(--px-dark));
+  filter: drop-shadow(0 0 24px rgba(239,68,68,0.5)) drop-shadow(6px 6px 0 var(--px-dark));
 }
 /* Red header band */
 .incident-card-header {
@@ -1334,9 +1333,9 @@ input, select { font-family: inherit; }
 }
 /* Art zone */
 .incident-card-art {
-  background: #2a0c0c;
-  border-top: 2px solid #7f1d1d;
-  border-bottom: 2px solid #7f1d1d;
+  background: var(--surface2);
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   padding: 1.1rem 0;
 }
@@ -1345,22 +1344,21 @@ input, select { font-family: inherit; }
 .incident-card-body {
   padding: 0.85rem 1rem 0.6rem;
   display: flex; flex-direction: column; gap: 0.5rem;
-  border-bottom: 1px solid #7f1d1d;
+  border-bottom: 2px solid var(--border);
 }
 .incident-card-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.52rem; color: #ef4444;
+  font-size: 0.52rem; color: var(--red);
   text-align: center; letter-spacing: 0.5px; line-height: 1.5;
 }
-.incident-card-rule {
-  font-size: 0.78rem; color: #f5d0d0; line-height: 1.55; text-align: center;
-}
-/* Flavor text */
 .incident-card-flavor {
-  padding: 0.55rem 1rem;
-  font-size: 0.68rem; color: #a87070; line-height: 1.5;
+  font-size: 0.72rem; color: var(--text-muted); line-height: 1.55;
   font-style: italic; text-align: center;
-  border-bottom: 1px solid #3a1010;
+}
+.incident-card-rule {
+  font-size: 0.8rem; color: var(--text); line-height: 1.55; text-align: center;
+  font-weight: 600;
+  border-top: 1px solid var(--border); padding-top: 0.45rem;
 }
 /* Footer actions */
 .incident-card-footer {
@@ -1368,7 +1366,7 @@ input, select { font-family: inherit; }
   display: flex; flex-direction: column; gap: 0.45rem;
 }
 .incident-card-discard-label {
-  font-size: 0.72rem; font-weight: 700; color: #f5d0d0; text-align: center;
+  font-size: 0.72rem; font-weight: 700; color: var(--text); text-align: center;
 }
 .incident-card-discard-options { display: flex; flex-direction: column; gap: 0.35rem; }
 .incident-card-btn { width: 100%; }
