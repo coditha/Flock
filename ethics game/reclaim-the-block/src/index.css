@@ -144,7 +144,6 @@ input, select { font-family: inherit; }
   font-family: 'Press Start 2P', monospace;
   font-size: 0.6rem;
   color: var(--yellow);
-  text-shadow: 2px 2px 0 var(--px-dark);
   letter-spacing: 1px;
 }
 .round-info { color: var(--text-muted); font-size: 0.85rem; }
