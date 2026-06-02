@@ -1425,19 +1425,20 @@ input, select { font-family: inherit; }
 .drawn-card.cat-border-purple { border-color: var(--purple); }
 /* Header band — filled with category color */
 .drawn-card-header {
-  padding: 0.35rem 0.75rem;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.65rem 0.75rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
 }
-.drawn-card-category { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: rgba(0,0,0,0.85); }
+.drawn-card-category { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(0,0,0,0.85); text-align: center; }
 .drawn-card-star { font-size: 0.85rem; }
-/* Art zone */
-.drawn-card-art { background: var(--surface2); border-top: 1px solid rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; padding: 0.6rem 0; }
+/* Art zone — transparent background */
+.drawn-card-art { background: transparent; display: flex; align-items: center; justify-content: center; padding: 0.6rem 0; }
 .drawn-card-art-icon { font-size: 2rem; line-height: 1; }
 /* Body */
 .drawn-card-body { padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
 .drawn-card-name {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.75rem; color: var(--px-dark); line-height: 1.6;
+  text-align: center;
 }
 .drawn-card-edu {
   font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; font-style: italic;
