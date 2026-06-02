@@ -46,6 +46,15 @@ const LANDMARK_EMOJI: Record<string, string> = {
 
 const SLOT_LABELS = ['N1', 'N2', 'N3', 'N4'];
 
+// Winding road loop (in a 0–100 coordinate space) threading through the
+// node positions: N1(50,8) → nr1(80,20) → N2(87,50) → nr2(80,80) →
+// N4(50,92) → nr3(20,80) → N3(13,50) → nr4(20,20) → back to N1.
+// Smooth closed curve so the streets bend organically between houses.
+const ROADS_PATH =
+  'M50,8 C60,8 73.8,13 80,20 C86.2,27 87,40 87,50 C87,60 86.2,73 80,80 ' +
+  'C73.8,87 60,92 50,92 C40,92 26.2,87 20,80 C13.8,73 13,60 13,50 ' +
+  'C13,40 13.8,27 20,20 C26.2,13 40,8 50,8 Z';
+
 function slotPositionOf(position: string, neighborhoodId: string): number | null {
   const match = position.match(new RegExp(`^${neighborhoodId}-n(\\d)$`));
   return match ? parseInt(match[1]) - 1 : null;
@@ -101,6 +110,11 @@ export default function NeighborhoodTile({
 
       {/* Houses (device slots) scattered around the landmark, linked by paths */}
       <div className="device-slots-square">
+        {/* Winding streets — drawn behind the houses and landmark */}
+        <svg className="district-roads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path className="road-edge" d={ROADS_PATH} />
+          <path className="road-fill" d={ROADS_PATH} />
+        </svg>
         {/* Central landmark — the district's identity. Swap to a sprite via
             .district-landmark.lm-<id> { background-image: url(...) } later. */}
         <div className={`district-landmark lm-${neighborhood.id}`} aria-hidden="true">
