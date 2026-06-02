@@ -1343,7 +1343,6 @@ input, select { font-family: inherit; }
 .incident-card-body {
   padding: 0.85rem 1rem 0.6rem;
   display: flex; flex-direction: column; gap: 0.5rem;
-  border-bottom: 2px solid var(--border);
 }
 .incident-card-name {
   font-family: 'Press Start 2P', monospace;
