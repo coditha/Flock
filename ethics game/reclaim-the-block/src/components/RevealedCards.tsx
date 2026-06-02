@@ -16,7 +16,7 @@ export default function RevealedCards({ cards }: Props) {
 
   return (
     <div className="revealed-cards">
-      <div className="revealed-header">👁️ Journalist Preview — Upcoming Surveillance</div>
+      <div className="revealed-header">👁️ Upcoming Surveillance</div>
       <div className="revealed-list">
         {cards.map((card, i) => (
           <div key={card.id} className="revealed-card">

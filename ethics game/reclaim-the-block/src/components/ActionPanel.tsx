@@ -207,11 +207,20 @@ export default function ActionPanel({
     twoSameColor && cardsMatchNeighborhood &&
     state.neighborhoods.find((n) => n.id === selectedNeighborhood)?.slots[selectedSlot] !== null;
 
+  // Legal Advocate: 2 cards of DIFFERENT colors, any neighborhood (not just own)
+  const twoDifferentColors =
+    selectedCards.length >= 2 && selectedCards[0].category !== selectedCards[1].category;
   const canLegalRemove =
-    canAct && playerInSelectedNeighborhood && player.role.id === 'legal' &&
-    !player.hasUsedSpecialAbilityThisTurn && selectedCards.length >= 2 &&
+    canAct && player.role.id === 'legal' &&
+    !player.hasUsedSpecialAbilityThisTurn && twoDifferentColors &&
     selectedSlot !== null && selectedNeighborhood !== null &&
     state.neighborhoods.find((n) => n.id === selectedNeighborhood)?.slots[selectedSlot] !== null;
+
+  // Neighborhood Captain: discard any 2 cards to lower the Surveillance Density Tracker by 1
+  const canCaptain =
+    canAct && player.role.id === 'captain' &&
+    !player.hasUsedSpecialAbilityThisTurn && selectedCards.length >= 2 &&
+    state.densityTracker > 1;
 
   const depositRequired = (player.role.id === 'council' || state.reducedNextDeposit) ? 4 : 5;
   const depositCards = selectedCards.slice(0, depositRequired);
@@ -301,10 +310,10 @@ export default function ActionPanel({
       icon: '⚖️',
       label: 'Legal Remove',
       tooltip: [
-        'Cost: 1 action + any 2 cards (once per turn).',
+        'Cost: 1 action + 2 cards of DIFFERENT colors (once per turn).',
         'Legal Advocate special ability.',
-        'Remove any device — no color matching required.',
-        'Select any 2 cards and a device slot.',
+        'Remove a device from ANY neighborhood.',
+        'Select 2 different-color cards and a device slot.',
       ].join('\n'),
       available: canLegalRemove,
       onTap: () => {
@@ -317,7 +326,26 @@ export default function ActionPanel({
         onClearSelection();
       },
     } as ActionBtn] : []),
-    ...((player.role.id === 'organizer' || player.role.id === 'journalist') ? [{
+    ...(player.role.id === 'captain' ? [{
+      id: 'captain',
+      icon: '🟢',
+      label: 'Reverse Overflow',
+      tooltip: [
+        'Cost: 1 action + discard any 2 cards (once per turn).',
+        'Neighborhood Captain special ability.',
+        'Lower the Surveillance Density Tracker by 1.',
+        'Select any 2 cards to discard.',
+      ].join('\n'),
+      available: canCaptain,
+      onTap: () => {
+        dispatch({
+          type: 'CAPTAIN_REVERSE_OVERFLOW',
+          cardIds: [selectedCardIds[0], selectedCardIds[1]] as [string, string],
+        });
+        onClearSelection();
+      },
+    } as ActionBtn] : []),
+    ...(player.role.id === 'organizer' ? [{
       id: 'special',
       icon: player.role.emoji,
       label: 'Special',
@@ -384,23 +412,6 @@ export default function ActionPanel({
             disabled={selectedCardIds.length !== pendingDiscard.count}
             onClick={() => { dispatch({ type: 'DISCARD_TO_HAND_LIMIT', cardIds: selectedCardIds }); onClearSelection(); }}>
             Confirm Discard
-          </button>
-        </div>
-      )}
-
-      {/* ── Journalist preview ──────────────────────────────── */}
-      {phase === 'journalist-preview' && !pendingIncident && (
-        <div className="ap-phase-box">
-          <p>
-            {players.find((p) => p.role.id === 'journalist')
-              ? 'The Journalist may preview the top 2 Surveillance Cards before play begins.'
-              : 'No Journalist in this game — proceed to player turns.'}
-          </p>
-          <button className="btn btn-primary"
-            onClick={() => dispatch({ type: 'JOURNALIST_PREVIEW_DONE' })}>
-            {!state.journalistPreviewDone && players.find((p) => p.role.id === 'journalist')
-              ? 'Journalist Previews Cards'
-              : 'Start Player Phase'}
           </button>
         </div>
       )}

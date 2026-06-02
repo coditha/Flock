@@ -264,7 +264,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
     state.players.find((p) => p.role.id === id);
   const organizerPlayer = byRole('organizer');
   const legalPlayer     = byRole('legal');
-  const journalistPlayer = byRole('journalist');
+  const captainPlayer   = byRole('captain');
   const councilPlayer   = byRole('council');
 
   const isActive = (p?: Player) => !!p && p.id === activePlayer.id;
@@ -324,14 +324,14 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         </div>
       )}
 
-      {/* ── TOP-RIGHT: Journalist (rotated 180°) ──────────────── */}
+      {/* ── TOP-RIGHT: Neighborhood Captain (rotated 180°) ────── */}
       <div className="tv-corner corner-tr">
-        {journalistPlayer ? (
+        {captainPlayer ? (
           <CornerPanel
-            player={journalistPlayer}
-            isActive={isActive(journalistPlayer)}
-            selectedCardIds={selFor(journalistPlayer)}
-            onCardClick={clickFor(journalistPlayer)}
+            player={captainPlayer}
+            isActive={isActive(captainPlayer)}
+            selectedCardIds={selFor(captainPlayer)}
+            onCardClick={clickFor(captainPlayer)}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>
@@ -509,9 +509,9 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
           selectedCardIds={selFor(organizerPlayer)} selectedNeighborhood={selectedNeighborhood}
           selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
       )}
-      {journalistPlayer && (
-        <TurnPopup position="tr" roleId="journalist" state={state}
-          selectedCardIds={selFor(journalistPlayer)} selectedNeighborhood={selectedNeighborhood}
+      {captainPlayer && (
+        <TurnPopup position="tr" roleId="captain" state={state}
+          selectedCardIds={selFor(captainPlayer)} selectedNeighborhood={selectedNeighborhood}
           selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
       )}
       {legalPlayer && (

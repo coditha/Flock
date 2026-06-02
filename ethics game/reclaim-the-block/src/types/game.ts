@@ -1,5 +1,5 @@
 export type NeighborhoodId = 'suburb' | 'courthouse' | 'media' | 'politics';
-export type RoleId = 'organizer' | 'legal' | 'journalist' | 'council';
+export type RoleId = 'organizer' | 'legal' | 'captain' | 'council';
 export type DeviceType = 'ring' | 'smart-speaker' | 'traffic-camera' | 'flock-reader';
 export type CardCategory = 'blue' | 'yellow' | 'green' | 'red' | 'purple';
 export type SlotIndex = 0 | 1 | 2 | 3;
@@ -112,7 +112,6 @@ export interface Player {
 
 export type GamePhase =
   | 'setup'
-  | 'journalist-preview'
   | 'player-turn'
   | 'board-phase'
   | 'check-phase'
@@ -142,7 +141,6 @@ export interface GameState {
   surveillanceDiscard: SurveillanceCard[];
 
   revealedSurveillanceCards: SurveillanceCard[];
-  journalistPreviewDone: boolean;
 
   pendingIncident: PendingIncident | null;
   pendingDrawnCards: { playerId: number; cards: CommunityCard[] } | null;

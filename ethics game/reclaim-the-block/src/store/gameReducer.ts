@@ -163,7 +163,7 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
   });
 
   return {
-    phase: 'journalist-preview',
+    phase: 'player-turn',
     round: 1,
     currentPlayerIndex: 0,
     actionsRemaining: 0,
@@ -180,7 +180,6 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
     surveillanceDiscard: [],
 
     revealedSurveillanceCards: [],
-    journalistPreviewDone: false,
 
     pendingIncident: null,
     pendingDrawnCards: null,
@@ -204,11 +203,11 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
 // ── Action Types ──────────────────────────────────────────────────────────
 
 export type GameAction =
-  | { type: 'JOURNALIST_PREVIEW_DONE' }
   | { type: 'ROLL_DIE'; precomputedRoll?: number }
   | { type: 'MOVE'; to: Position }
   | { type: 'REMOVE_DEVICE'; neighborhoodId: NeighborhoodId; slotIndex: SlotIndex; cardIds: [string, string] }
   | { type: 'LEGAL_REMOVE_DEVICE'; neighborhoodId: NeighborhoodId; slotIndex: SlotIndex; cardIds: [string, string] }
+  | { type: 'CAPTAIN_REVERSE_OVERFLOW'; cardIds: [string, string] }
   | { type: 'SWAP_CARDS'; withPlayerId: number; giveCardIds: string[]; takeCardIds: string[] }
   | { type: 'SHARE_KNOWLEDGE'; fromPlayerId: number; toPlayerId: number; cardId: string }
   | { type: 'PLAY_CARD'; cardId: string; targetNeighborhoodId?: NeighborhoodId; targetSlotIndex?: SlotIndex; targetPlayerId?: number; chosenPosition?: Position }
@@ -743,24 +742,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
   if (state.phase === 'won' || state.phase === 'lost') return state;
 
   switch (action.type) {
-    // ── Journalist Preview ─────────────────────────────────────────────
-    case 'JOURNALIST_PREVIEW_DONE': {
-      const journalist = state.players.find((p) => p.role.id === 'journalist');
-      let s = state;
-      if (journalist && !state.journalistPreviewDone) {
-        const revealed = s.surveillanceDeck.slice(0, 2);
-        s = { ...s, revealedSurveillanceCards: revealed, journalistPreviewDone: true };
-        s = log(s, `${journalist.role.name} revealed top 2 Surveillance Cards.`);
-      }
-      s = {
-        ...s,
-        phase: 'player-turn',
-        actionsRemaining: 0,
-        pendingDiceRoll: true,
-      };
-      s = log(s, `Round ${s.round} — ${s.players[s.currentPlayerIndex].role.name}'s turn. Roll the dice!`);
-      return checkWinLoss(s);
-    }
 
     // ── Roll die (start of player turn) ───────────────────────────────
     case 'ROLL_DIE': {
@@ -813,11 +794,36 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     // ── Legal Advocate special remove (any 2 cards) ───────────────────
+    case 'CAPTAIN_REVERSE_OVERFLOW': {
+      const player = state.players[state.currentPlayerIndex];
+      if (player.role.id !== 'captain') return state;
+      if (state.actionsRemaining < 1) return state;
+      if (player.hasUsedSpecialAbilityThisTurn) return state;
+      // Need 2 cards in hand and a tracker above its minimum to lower
+      const cards = action.cardIds.map((id) => player.hand.find((c) => c.id === id)).filter(Boolean);
+      if (cards.length < 2) return state;
+      if (state.densityTracker <= 1) return log(state, 'Surveillance Density Tracker is already at its lowest.');
+
+      let s = removeCardFromHand(state, player.id, action.cardIds);
+      s = { ...s, densityTracker: Math.max(1, s.densityTracker - 1) };
+      s = spendActions(s, 1);
+      const players = s.players.map((p) =>
+        p.id === player.id ? { ...p, hasUsedSpecialAbilityThisTurn: true } : p
+      );
+      s = { ...s, players };
+      s = log(s, `${player.role.name} reversed overflow — Density Tracker lowered to ${s.densityTracker}`);
+      return checkWinLoss(s);
+    }
+
     case 'LEGAL_REMOVE_DEVICE': {
       const player = state.players[state.currentPlayerIndex];
       if (player.role.id !== 'legal') return state;
       if (state.actionsRemaining < 1) return state;
       if (player.hasUsedSpecialAbilityThisTurn) return state;
+
+      // Legal Advocate must spend 2 cards of DIFFERENT colors
+      const cards = action.cardIds.map((id) => player.hand.find((c) => c.id === id)).filter(Boolean) as CommunityCard[];
+      if (cards.length < 2 || cards[0].category === cards[1].category) return state;
 
       const n = state.neighborhoods.find((nb) => nb.id === action.neighborhoodId);
       if (!n || n.slots[action.slotIndex] === null) return state;
@@ -963,20 +969,19 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
       switch (player.role.id as RoleId) {
         case 'organizer': {
-          // Draw 2 extra cards if co-located with another player
+          // Draw 1 extra card if co-located with another player
           const colocated = s.players.some((p) => p.id !== player.id && p.position === player.position);
           if (colocated) {
-            s = drawCommunityCards(s, player.id, 2);
-            s = log(s, `${player.role.name} drew 2 extra cards (organizer ability)`);
+            s = drawCommunityCards(s, player.id, 1);
+            s = log(s, `${player.role.name} drew 1 extra card (organizer ability)`);
           } else {
             return log(s, 'Organizer ability requires another player on same space.');
           }
           break;
         }
-        case 'journalist': {
-          const revealed = s.surveillanceDeck.slice(0, 2);
-          s = { ...s, revealedSurveillanceCards: revealed };
-          s = log(s, `${player.role.name} previewed top 2 Surveillance Cards`);
+        case 'captain': {
+          // Handled via CAPTAIN_REVERSE_OVERFLOW
+          s = log(s, 'Use the Neighborhood Captain ability via the Reverse Overflow action.');
           break;
         }
         case 'council': {
@@ -1109,19 +1114,18 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       // Clear revealed surveillance cards after board phase
       s = { ...s, revealedSurveillanceCards: [] };
 
-      // Advance to next round journalist preview
+      // Advance to the next round — straight into player turns (no preview phase)
       const nextPlayers = s.players.map((p) => ({ ...p, hasUsedSpecialAbilityThisTurn: false }));
       s = {
         ...s,
-        phase: 'journalist-preview',
+        phase: 'player-turn',
         round: s.round + 1,
         currentPlayerIndex: 0,
         actionsRemaining: 0,
         players: nextPlayers,
-        journalistPreviewDone: false,
         pendingDiceRoll: true,
       };
-      s = log(s, `--- Round ${s.round} begins ---`);
+      s = log(s, `--- Round ${s.round} begins — ${s.players[0].role.name}, roll the dice! ---`);
 
       return checkWinLoss(s);
     }
