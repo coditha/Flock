@@ -25,6 +25,14 @@ const CATEGORY_LABELS: Record<string, string> = {
   purple: 'Neighborhood',
 };
 
+const CATEGORY_ICONS: Record<string, string> = {
+  blue: '⚖️',
+  yellow: '🤝',
+  green: '📰',
+  red: '🏛️',
+  purple: '🏘️',
+};
+
 export default function CardDisplay({ card, isSelected, onClick, disabled }: Props) {
   const [showModal, setShowModal] = useState(false);
   const color = CATEGORY_COLORS[card.category];
@@ -35,16 +43,21 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
       style={{ borderColor: color }}
       onClick={!disabled ? onClick : undefined}
     >
+      {/* Header band */}
       <div className="card-top" style={{ background: color }}>
         <span className="card-category">{CATEGORY_LABELS[card.category]}</span>
         {card.isPowerUp && <span className="powerup-star">⭐</span>}
       </div>
+      {/* Art zone */}
+      <div className="card-art">
+        <span className="card-art-icon">{CATEGORY_ICONS[card.category]}</span>
+      </div>
+      {/* Body */}
       <div className="card-name">{card.name}</div>
-      <div className="card-effect">{card.effect}</div>
-      {/* Description shown directly; CSS line-clamp truncates with "…" when it overflows */}
       <div className="card-desc">{card.educationalContent}</div>
+      <div className="card-effect">{card.effect}</div>
 
-      {/* Read All button — opens a read-only enlarged view; never triggers gameplay */}
+      {/* Read All button */}
       <button
         className="card-view-btn"
         onClick={(e) => {

@@ -12,6 +12,16 @@ import ActionPanel from './components/ActionPanel';
 import GameLog from './components/GameLog';
 import RevealedCards from './components/RevealedCards';
 
+const DRAWN_CARD_LABELS: Record<string, string> = {
+  blue: 'Legal', yellow: 'Organizing', green: 'Media', red: 'Political', purple: 'Neighborhood',
+};
+const DRAWN_CARD_ICONS: Record<string, string> = {
+  blue: '⚖️', yellow: '🤝', green: '📰', red: '🏛️', purple: '🏘️',
+};
+const DRAWN_CARD_COLORS: Record<string, string> = {
+  blue: '#3b82f6', yellow: '#f59e0b', green: '#22c55e', red: '#ef4444', purple: '#a855f7',
+};
+
 // ── Corner hand tray ───────────────────────────────────────────────────────
 
 function CornerPanel({
@@ -604,13 +614,18 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             <div className="drawn-cards-list">
               {state.pendingDrawnCards.cards.map((card) => (
                 <div key={card.id} className={`drawn-card cat-border-${card.category}`}>
-                  <div className="drawn-card-header">
-                    <span className={`card-dot cat-${card.category}`} />
-                    <span className="drawn-card-name">{card.name}</span>
+                  <div className="drawn-card-header" style={{ background: DRAWN_CARD_COLORS[card.category] }}>
+                    <span className="drawn-card-category">{DRAWN_CARD_LABELS[card.category]}</span>
                     {card.isPowerUp && <span className="drawn-card-star">⭐</span>}
                   </div>
-                  <div className="drawn-card-effect">{card.effect}</div>
-                  <div className="drawn-card-edu">{card.educationalContent}</div>
+                  <div className="drawn-card-art">
+                    <span className="drawn-card-art-icon">{DRAWN_CARD_ICONS[card.category]}</span>
+                  </div>
+                  <div className="drawn-card-body">
+                    <div className="drawn-card-name">{card.name}</div>
+                    <div className="drawn-card-edu">{card.educationalContent}</div>
+                    <div className="drawn-card-effect">{card.effect}</div>
+                  </div>
                 </div>
               ))}
             </div>
