@@ -1201,7 +1201,7 @@ input, select { font-family: inherit; }
   border: 3px solid var(--border);
   box-shadow: 6px 6px 0 var(--px-dark);
   padding: 1.5rem;
-  max-width: 600px; width: 90%;
+  max-width: 90vw; width: fit-content;
   max-height: 80vh; overflow-y: auto;
   display: flex; flex-direction: column; gap: 1rem;
 }
@@ -1212,7 +1212,7 @@ input, select { font-family: inherit; }
   padding-bottom: 0.5rem;
 }
 .drawn-cards-list {
-  display: flex; flex-direction: column; gap: 0.75rem;
+  display: flex; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
 }
 .drawn-card {
   background: var(--surface2);
@@ -1220,6 +1220,7 @@ input, select { font-family: inherit; }
   box-shadow: inset 2px 2px 0 var(--px-highlight);
   padding: 0.75rem 1rem;
   display: flex; flex-direction: column; gap: 0.35rem;
+  width: 200px; flex-shrink: 0;
 }
 .drawn-card.cat-border-blue   { border-color: var(--blue); }
 .drawn-card.cat-border-yellow { border-color: var(--yellow); }
