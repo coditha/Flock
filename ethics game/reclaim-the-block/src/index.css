@@ -1169,16 +1169,18 @@ input, select { font-family: inherit; }
 .card {
   width: 100px; min-width: 100px; border: 2px solid;
   background: var(--surface);
-  box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 3px 0 var(--px-dark);
+  box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow);
+  filter: drop-shadow(3px 3px 0 var(--px-dark));
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
   cursor: pointer;
   flex-shrink: 0; user-select: none;
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition: transform 0.1s, filter 0.1s;
 }
-.card:hover { transform: translateY(-4px); box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 7px 0 var(--px-dark); }
-.card-selected { transform: translateY(-8px) !important; box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 11px 0 var(--px-dark), 0 0 0 2px white !important; }
+.card:hover { transform: translateY(-4px); filter: drop-shadow(3px 7px 0 var(--px-dark)); }
+.card-selected { transform: translateY(-8px) !important; border-color: white !important; filter: drop-shadow(3px 11px 0 var(--px-dark)) !important; }
 .card-disabled { opacity: 0.4; cursor: not-allowed; }
-.card-disabled:hover { transform: none !important; box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 3px 0 var(--px-dark) !important; }
-.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 3px 0 var(--px-dark), 0 0 0 1px var(--purple); }
+.card-disabled:hover { transform: none !important; filter: drop-shadow(3px 3px 0 var(--px-dark)) !important; }
+.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); border-color: var(--purple) !important; }
 
 .card-top { padding: 3px 6px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(0,0,0,0.35); }
 .card-category { font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: rgba(0,0,0,0.8); }
@@ -1351,6 +1353,7 @@ input, select { font-family: inherit; }
   background: var(--surface2);
   border: 2px solid var(--border);
   box-shadow: inset 2px 2px 0 var(--px-highlight);
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
   padding: 0.75rem 1rem;
   display: flex; flex-direction: column; gap: 0.35rem;
   width: 200px; flex-shrink: 0;
