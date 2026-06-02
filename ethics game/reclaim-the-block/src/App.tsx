@@ -310,8 +310,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         </div>
         {/* Shared trackers — attached to the round-info header (same state as bottom set) */}
         <div className="board-trackers board-trackers-header">
-          <PrivacyMeter value={state.privacyMeter} vertical />
-          <DensityTracker value={state.densityTracker} vertical />
+          <PrivacyMeter value={state.privacyMeter} vertical blocked={!!state.pendingIncident} />
+          <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
         </div>
         <RevealedCards cards={state.revealedSurveillanceCards} />
       </div>
@@ -467,8 +467,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
 
         {/* Shared trackers — bottom edge (duplicate of top set, same state) */}
         <div className="board-trackers board-trackers-bottom">
-          <PrivacyMeter value={state.privacyMeter} vertical />
-          <DensityTracker value={state.densityTracker} vertical />
+          <PrivacyMeter value={state.privacyMeter} vertical blocked={!!state.pendingIncident} />
+          <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
         </div>
       </div>
 

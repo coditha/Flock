@@ -3,26 +3,43 @@ import { useState, useEffect, useRef } from 'react';
 interface Props {
   value: number;
   vertical?: boolean;
+  blocked?: boolean;
 }
 
-export default function PrivacyMeter({ value, vertical }: Props) {
+export default function PrivacyMeter({ value, vertical, blocked }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [decreasing, setDecreasing] = useState(false);
   const prevValue = useRef(value);
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingAnim = useRef(false);
+
+  function triggerAnim() {
+    setDecreasing(true);
+    setExpanded(true);
+    if (collapseTimer.current) clearTimeout(collapseTimer.current);
+    collapseTimer.current = setTimeout(() => {
+      setDecreasing(false);
+      setExpanded(false);
+    }, 2200);
+  }
 
   useEffect(() => {
     if (value < prevValue.current) {
-      setDecreasing(true);
-      setExpanded(true);
-      if (collapseTimer.current) clearTimeout(collapseTimer.current);
-      collapseTimer.current = setTimeout(() => {
-        setDecreasing(false);
-        setExpanded(false);
-      }, 2200);
+      if (blocked) {
+        pendingAnim.current = true;
+      } else {
+        triggerAnim();
+      }
     }
     prevValue.current = value;
   }, [value]);
+
+  useEffect(() => {
+    if (!blocked && pendingAnim.current) {
+      pendingAnim.current = false;
+      triggerAnim();
+    }
+  }, [blocked]);
 
   const pct = (value / 30) * 100;
   const color = value <= 5 ? '#ef4444' : value <= 10 ? '#f97316' : value <= 15 ? '#eab308' : '#22c55e';

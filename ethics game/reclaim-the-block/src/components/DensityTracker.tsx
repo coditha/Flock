@@ -3,29 +3,46 @@ import { useState, useEffect, useRef } from 'react';
 interface Props {
   value: number;
   vertical?: boolean;
+  blocked?: boolean;
 }
 
 const DEVICE_LABELS = ['Ring', 'Ring', 'Speaker', 'Speaker', 'Traffic', 'Traffic', 'Flock', 'Flock'];
 const DEVICE_EMOJIS = ['📷', '📷', '🔊', '🔊', '🚦', '🚦', '🚗', '🚗'];
 
-export default function DensityTracker({ value, vertical }: Props) {
+export default function DensityTracker({ value, vertical, blocked }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [increasing, setIncreasing] = useState(false);
   const prevValue = useRef(value);
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingAnim = useRef(false);
+
+  function triggerAnim() {
+    setIncreasing(true);
+    setExpanded(true);
+    if (collapseTimer.current) clearTimeout(collapseTimer.current);
+    collapseTimer.current = setTimeout(() => {
+      setIncreasing(false);
+      setExpanded(false);
+    }, 2200);
+  }
 
   useEffect(() => {
     if (value > prevValue.current) {
-      setIncreasing(true);
-      setExpanded(true);
-      if (collapseTimer.current) clearTimeout(collapseTimer.current);
-      collapseTimer.current = setTimeout(() => {
-        setIncreasing(false);
-        setExpanded(false);
-      }, 2200);
+      if (blocked) {
+        pendingAnim.current = true;
+      } else {
+        triggerAnim();
+      }
     }
     prevValue.current = value;
   }, [value]);
+
+  useEffect(() => {
+    if (!blocked && pendingAnim.current) {
+      pendingAnim.current = false;
+      triggerAnim();
+    }
+  }, [blocked]);
 
   const idx = Math.min(Math.max(value - 1, 0), DEVICE_EMOJIS.length - 1);
 
