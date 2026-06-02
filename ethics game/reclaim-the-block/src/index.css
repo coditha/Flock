@@ -1190,6 +1190,61 @@ input, select { font-family: inherit; }
   margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; text-align: left;
 }
 
+/* ── Surveillance Incident Overlay ──────────────────────── */
+@keyframes incident-flash {
+  0%   { opacity: 0; }
+  10%  { opacity: 0.7; }
+  30%  { opacity: 0.3; }
+  50%  { opacity: 0.65; }
+  70%  { opacity: 0.2; }
+  85%  { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+@keyframes incident-card-in {
+  0%   { transform: scale(0.7) translateY(40px); opacity: 0; }
+  60%  { transform: scale(1.04) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.incident-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.65);
+}
+.incident-flash {
+  position: absolute; inset: 0;
+  background: #ef4444;
+  animation: incident-flash 1.6s ease-out forwards;
+  pointer-events: none;
+}
+.incident-modal {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border: 3px solid #ef4444;
+  box-shadow: 0 0 40px rgba(239,68,68,0.6), 6px 6px 0 var(--px-dark);
+  padding: 2rem;
+  max-width: 420px; width: 90%;
+  display: flex; flex-direction: column; gap: 0.85rem;
+  animation: incident-card-in 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.incident-modal-title {
+  font-size: 1.1rem; font-weight: 700; color: var(--red);
+  text-align: center; letter-spacing: 0.5px;
+}
+.incident-modal-effect {
+  font-size: 0.85rem; color: var(--text); line-height: 1.5;
+}
+.incident-modal-edu {
+  font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;
+  border-top: 1px solid var(--border); padding-top: 0.5rem;
+}
+.incident-modal-label {
+  font-size: 0.8rem; font-weight: 700; color: var(--text);
+}
+.incident-modal-options {
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.incident-modal-btn { width: 100%; margin-top: 0.25rem; }
+
 /* ── Drawn Cards Overlay ─────────────────────────────────── */
 .drawn-cards-overlay {
   position: fixed; inset: 0; z-index: 200;

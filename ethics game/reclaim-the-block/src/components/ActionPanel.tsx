@@ -369,39 +369,7 @@ export default function ActionPanel({
         );
       })()}
 
-      {/* ── Incident resolution ─────────────────────────────── */}
-      {pendingIncident && (
-        <div className="ap-incident">
-          <div className="ap-incident-title">⚠️ {pendingIncident.card.name}</div>
-          <div className="ap-incident-effect">{pendingIncident.card.effect}</div>
-          <div className="ap-incident-edu">{pendingIncident.card.educationalNote}</div>
-          {pendingIncident.card.effectType === 'neighbor-reports-neighbor' ? (
-            player.hand.length > 0 ? (
-              <>
-                <div className="ap-discard-label">Discard a card:</div>
-                <div className="ap-discard-options">
-                  {player.hand.map((card) => (
-                    <button key={card.id} className="btn btn-discard-choice"
-                      onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse', discardCardId: card.id })}>
-                      <span className={`card-dot cat-${card.category}`} />{card.name}
-                    </button>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <button className="btn btn-danger"
-                onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
-                Acknowledge
-              </button>
-            )
-          ) : (
-            <button className="btn btn-danger"
-              onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
-              Acknowledge
-            </button>
-          )}
-        </div>
-      )}
+      {/* Incident is now handled by the full-screen overlay in App.tsx */}
 
       {/* ── Hand limit discard ──────────────────────────────── */}
       {pendingDiscard && (

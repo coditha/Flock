@@ -94,6 +94,47 @@ function CornerPanel({
   );
 }
 
+// ── Surveillance incident overlay ──────────────────────────────────────────
+
+function IncidentOverlay({
+  incident,
+  player,
+  dispatch,
+}: {
+  incident: import('./types/game').PendingIncident;
+  player: Player;
+  dispatch: (a: GameAction) => void;
+}) {
+  return (
+    <div className="incident-overlay">
+      <div className="incident-flash" />
+      <div className="incident-modal">
+        <div className="incident-modal-title">⚠️ {incident.card.name}</div>
+        <div className="incident-modal-effect">{incident.card.effect}</div>
+        <div className="incident-modal-edu">{incident.card.educationalNote}</div>
+        {incident.card.effectType === 'neighbor-reports-neighbor' && player.hand.length > 0 ? (
+          <>
+            <div className="incident-modal-label">Discard a card:</div>
+            <div className="incident-modal-options">
+              {player.hand.map((card) => (
+                <button key={card.id} className="btn btn-discard-choice"
+                  onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse', discardCardId: card.id })}>
+                  <span className={`card-dot cat-${card.category}`} />{card.name}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <button className="btn btn-danger incident-modal-btn"
+            onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
+            Acknowledge
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── Turn action popup ───────────────────────────────────────────────────────
 
 function TurnPopup({
@@ -482,6 +523,15 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         <TurnPopup position="br" roleId="council" state={state}
           selectedCardIds={selFor(councilPlayer)} selectedNeighborhood={selectedNeighborhood}
           selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
+      )}
+
+      {/* ── Surveillance incident overlay ────────────────────── */}
+      {state.pendingIncident && (
+        <IncidentOverlay
+          incident={state.pendingIncident}
+          player={state.players[state.currentPlayerIndex]}
+          dispatch={dispatch}
+        />
       )}
 
       {/* ── Drawn cards popup overlay ─────────────────────────── */}
