@@ -456,28 +456,31 @@ input, select { font-family: inherit; }
   background: var(--surface);
   background-image: none;
   border: 3px solid;
-  border-radius: 14px;
+  /* Organic, irregular land-patch shape — overridden per district below */
+  border-radius: 40px 30px 28px 24px / 26px 24px 22px 22px;
   overflow: hidden;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.28);
-  padding: 0.75rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.28);
+  padding: 0.85rem 0.8rem 0.7rem;
   cursor: pointer;
   width: 180px; min-width: 160px;
   user-select: none;
 }
-.neighborhood-tile:hover { filter: brightness(1.06); box-shadow: 0 7px 18px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.28); }
-.neighborhood-tile.selected { box-shadow: 0 5px 14px rgba(0,0,0,0.5), 0 0 0 3px white, inset 0 1px 0 rgba(255,255,255,0.28); }
-.neighborhood-tile.moveable { cursor: pointer; box-shadow: 0 5px 14px rgba(0,0,0,0.5), 0 0 0 3px var(--blue), inset 0 1px 0 rgba(255,255,255,0.28); }
-.neighborhood-tile.moveable:hover { box-shadow: 0 7px 18px rgba(0,0,0,0.55), 0 0 0 3px var(--blue), 0 0 18px rgba(91,154,245,0.4), inset 0 1px 0 rgba(255,255,255,0.28); }
+.neighborhood-tile:hover { filter: brightness(1.06); box-shadow: 0 10px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.28); }
+.neighborhood-tile.selected { box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 3px white, inset 0 1px 0 rgba(255,255,255,0.28); }
+.neighborhood-tile.moveable { cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 3px var(--blue), inset 0 1px 0 rgba(255,255,255,0.28); }
+.neighborhood-tile.moveable:hover { box-shadow: 0 10px 24px rgba(0,0,0,0.6), 0 0 0 3px var(--blue), 0 0 18px rgba(91,154,245,0.4), inset 0 1px 0 rgba(255,255,255,0.28); }
 .neighborhood-tile.full { animation: fullPulse 1s infinite; }
 @keyframes fullPulse {
-  0%,100% { box-shadow: 0 5px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.28), 0 0 0 0 rgba(217,79,79,0.7); }
-  50% { box-shadow: 0 5px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.28), 0 0 0 8px rgba(217,79,79,0); }
+  0%,100% { box-shadow: 0 8px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.28), 0 0 0 0 rgba(217,79,79,0.7); }
+  50% { box-shadow: 0 8px 20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.28), 0 0 0 8px rgba(217,79,79,0); }
 }
 
 .neighborhood-header {
   display: flex; justify-content: space-between; align-items: center;
-  margin: -0.75rem -0.75rem 0.5rem; padding: 0.4rem 0.75rem;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  margin: -0.85rem -0.8rem 0.55rem; padding: 0.4rem 0.9rem;
+  /* Floating banner sitting on the land patch — rounded bottom */
+  border-radius: 0 0 18px 16px;
+  box-shadow: 0 4px 7px rgba(0,0,0,0.35);
 }
 .neighborhood-name { font-weight: 700; font-size: 0.7rem; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 0.3px; }
 .neighborhood-density { font-weight: 700; font-size: 0.7rem; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.5); }
@@ -556,7 +559,8 @@ input, select { font-family: inherit; }
     radial-gradient(ellipse at 80% 20%, rgba(180,220,100,0.4) 0%, transparent 55%),
     linear-gradient(160deg, #b8d878 0%, #a8c868 45%, #94b454 100%);
   border: 3px solid #3e2c08 !important;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #6a9428, inset 0 1px 0 rgba(200,240,120,0.35) !important;
+  border-radius: 42px 26px 26px 22px / 26px 22px 20px 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 1px #6a9428, inset 0 1px 0 rgba(200,240,120,0.35) !important;
 }
 .district-suburb .neighborhood-header {
   background: linear-gradient(135deg, #c07010 0%, #e09020 50%, #a85e0c 100%) !important;
@@ -569,7 +573,8 @@ input, select { font-family: inherit; }
     repeating-linear-gradient(90deg, transparent 0px, transparent 10px, rgba(255,255,255,0.06) 10px, rgba(255,255,255,0.06) 11px),
     linear-gradient(160deg, #a8b8cc 0%, #98aabf 45%, #8898b0 100%);
   border: 3px solid #1e2c3e !important;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #4868a0, inset 0 1px 0 rgba(180,210,255,0.25) !important;
+  border-radius: 24px 42px 22px 30px / 22px 26px 22px 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 1px #4868a0, inset 0 1px 0 rgba(180,210,255,0.25) !important;
 }
 .district-courthouse .neighborhood-header {
   background: linear-gradient(135deg, #102848 0%, #1e4898 50%, #081c38 100%) !important;
@@ -582,7 +587,8 @@ input, select { font-family: inherit; }
     repeating-linear-gradient(0deg, transparent 0px, transparent 8px, rgba(0,0,0,0.05) 8px, rgba(0,0,0,0.05) 9px),
     linear-gradient(160deg, #a0ad98 0%, #909d88 45%, #808d78 100%);
   border: 3px solid #182e10 !important;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #2a6820, inset 0 1px 0 rgba(160,220,140,0.2) !important;
+  border-radius: 30px 40px 24px 26px / 24px 26px 20px 22px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 1px #2a6820, inset 0 1px 0 rgba(160,220,140,0.2) !important;
 }
 .district-media .neighborhood-header {
   background: linear-gradient(135deg, #105018 0%, #1a8830 50%, #083c10 100%) !important;
@@ -595,7 +601,8 @@ input, select { font-family: inherit; }
     radial-gradient(ellipse at 20% 80%, rgba(180,120,90,0.3) 0%, transparent 55%),
     linear-gradient(160deg, #b89880 0%, #a88870 45%, #987860 100%);
   border: 3px solid #380408 !important;
-  box-shadow: 0 5px 14px rgba(0,0,0,0.55), 0 0 0 1px #801028, inset 0 1px 0 rgba(240,180,160,0.25) !important;
+  border-radius: 40px 24px 24px 30px / 24px 26px 20px 22px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 1px #801028, inset 0 1px 0 rgba(240,180,160,0.25) !important;
 }
 .district-politics .neighborhood-header {
   background: linear-gradient(135deg, #680808 0%, #981020 50%, #480404 100%) !important;
