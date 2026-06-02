@@ -1437,7 +1437,7 @@ input, select { font-family: inherit; }
 .drawn-card-body { padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
 .drawn-card-name {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem; color: var(--px-dark); line-height: 1.6;
+  font-size: 0.75rem; color: var(--px-dark); line-height: 1.6;
 }
 .drawn-card-edu {
   font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; font-style: italic;
