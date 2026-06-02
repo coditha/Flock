@@ -1369,50 +1369,11 @@ input, select { font-family: inherit; }
     "corner-tl  top-center  corner-tr"
     "pm         board-zone  dt"
     "corner-bl  board-zone  corner-br";
-  /* Stardew Valley pixel art map — layered terrain */
-  background-color: #4a8e2c;
-  background-image:
-    /* Pink cherry blossom tree canopies at screen edges */
-    radial-gradient(circle, rgba(240,155,175,0.65) 0%, rgba(225,110,140,0.22) 45%, transparent 70%),
-    radial-gradient(circle, rgba(240,155,175,0.58) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
-    radial-gradient(circle, rgba(240,155,175,0.65) 0%, rgba(225,110,140,0.22) 45%, transparent 70%),
-    radial-gradient(circle, rgba(240,155,175,0.58) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
-    radial-gradient(circle, rgba(240,155,175,0.55) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
-    radial-gradient(circle, rgba(240,155,175,0.55) 0%, rgba(225,110,140,0.18) 45%, transparent 70%),
-    /* Dark forest tree canopy patches framing corners and edges */
-    radial-gradient(ellipse, rgba(15,46,6,0.80) 0%, rgba(15,46,6,0.30) 50%, transparent 100%),
-    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
-    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
-    radial-gradient(ellipse, rgba(15,46,6,0.75) 0%, rgba(15,46,6,0.26) 50%, transparent 100%),
-    radial-gradient(ellipse, rgba(15,46,6,0.44) 0%, transparent 100%),
-    radial-gradient(ellipse, rgba(15,46,6,0.44) 0%, transparent 100%),
-    /* Pixel tile grid — Stardew map tile feel */
-    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, rgba(0,0,0,0.075) 15px, rgba(0,0,0,0.075) 16px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 15px, rgba(0,0,0,0.075) 15px, rgba(0,0,0,0.075) 16px),
-    /* Fine grass variation — two-tone ground detail */
-    radial-gradient(circle at 2px 2px, rgba(38,105,16,0.30) 1px, transparent 0),
-    radial-gradient(circle at 7px 6px, rgba(60,118,22,0.16) 1px, transparent 0);
-  background-position:
-    5% 22%,   7% 25%,
-    95% 18%,  93% 21%,
-    3% 80%,   97% 77%,
-    0% 0%,    100% 0%,   0% 100%,  100% 100%,
-    50% 0%,   50% 100%,
-    0 0,      0 0,
-    0 0,      0 0;
-  background-size:
-    9vw 14vh,  6vw 10vh,
-    9vw 14vh,  6vw 10vh,
-    8vw 12vh,  8vw 12vh,
-    25vw 28vh, 22vw 24vh, 22vw 24vh, 22vw 24vh,
-    36vw 16vh, 36vw 16vh,
-    16px 16px, 16px 16px,
-    9px 9px,   9px 9px;
-  background-repeat:
-    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat,
-    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat,
-    repeat, repeat,
-    repeat, repeat;
+  background-image: url('/grass-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
 }
 
 /* ── Grid area assignments ─────────────────────────────────── */
