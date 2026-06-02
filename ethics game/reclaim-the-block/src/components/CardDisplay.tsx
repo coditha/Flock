@@ -53,18 +53,6 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
       <div className="card-desc">{card.educationalContent}</div>
       <div className="card-effect">{card.effect}</div>
 
-      {/* Read All button */}
-      <button
-        className="card-view-btn"
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowModal(true);
-        }}
-        title="Read the full card details"
-      >
-        📖 Read All
-      </button>
-
       {/* Enlarged detail popup — portaled to body so it escapes the fan's overflow clipping */}
       {showModal &&
         createPortal(
