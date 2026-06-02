@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Props {
   value: number;
@@ -7,15 +7,30 @@ interface Props {
 
 export default function PrivacyMeter({ value, vertical }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const [decreasing, setDecreasing] = useState(false);
+  const prevValue = useRef(value);
+  const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (value < prevValue.current) {
+      setDecreasing(true);
+      setExpanded(true);
+      if (collapseTimer.current) clearTimeout(collapseTimer.current);
+      collapseTimer.current = setTimeout(() => {
+        setDecreasing(false);
+        setExpanded(false);
+      }, 2200);
+    }
+    prevValue.current = value;
+  }, [value]);
+
   const pct = (value / 30) * 100;
   const color = value <= 5 ? '#ef4444' : value <= 10 ? '#f97316' : value <= 15 ? '#eab308' : '#22c55e';
-  // Severity dot: green safe → yellow caution → orange high-risk → red critical (loss at 0)
   const dot = value <= 5 ? '🔴' : value <= 10 ? '🟠' : value <= 15 ? '🟡' : '🟢';
 
   if (vertical) {
     return (
-      <div className={`pm-inline ${expanded ? 'expanded' : ''}`}>
-        {/* Compact badge — spaces remaining + severity color; tap to toggle in place */}
+      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''}`}>
         <button
           className="pm-inline-badge"
           onClick={() => setExpanded((e) => !e)}
@@ -27,7 +42,6 @@ export default function PrivacyMeter({ value, vertical }: Props) {
           <span className="pm-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 
-        {/* In-place expansion — the full meter, unfolded horizontally beside the badge */}
         {expanded && (
           <div className="pm-hmeter">
             <span className="pm-hmeter-end lose">0</span>
@@ -44,7 +58,7 @@ export default function PrivacyMeter({ value, vertical }: Props) {
   }
 
   return (
-    <div className="privacy-meter">
+    <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''}`}>
       <div className="meter-header">
         <span className="meter-title">Privacy &amp; Community Trust</span>
         <span className="meter-value" style={{ color }}>
