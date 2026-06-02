@@ -1802,8 +1802,8 @@ input, select { font-family: inherit; }
 .turn-popup-br { right: 0; bottom: 22vh; }
 
 /* Top corners — top edge flush with bottom of corner card area */
-.turn-popup-tl { left: 0;  top: 14vh; }
-.turn-popup-tr { right: 0; top: 14vh; }
+.turn-popup-tl { left: 0;  top: 22vh; }
+.turn-popup-tr { right: 0; top: 22vh; }
 
 /* Rotate content so top-corner players read it right-side-up */
 .popup-inner-rotated { transform: rotate(180deg); }
