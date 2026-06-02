@@ -173,7 +173,7 @@ export default function ActionPanel({
           setDiceTransition(`transform ${delay * 0.7}ms ease-in-out`);
           setDicePos({ x, y });
           setRollingFace(Math.floor(Math.random() * 6) + 1);
-          const buzzLen = Math.round(8 + t * 14);
+          const buzzLen = Math.round(8 + t * t * t * 80); // cubic ease: 8ms → 88ms
           navigator.vibrate?.(buzzLen);
           scheduleStep(step + 1);
         }
