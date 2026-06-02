@@ -389,15 +389,10 @@ input, select { font-family: inherit; }
 /* ── Board ────────────────────────────────────────────────── */
 .board-area {
   flex: 2; min-width: 0;
-  background: #c8aa70;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.08) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(0,0,0,0.08) 2px, transparent 2px),
-    linear-gradient(rgba(154,100,8,0.06) 16px, transparent 16px),
-    linear-gradient(90deg, rgba(154,100,8,0.06) 16px, transparent 16px);
-  background-size: 8px 8px, 8px 8px, 64px 64px, 64px 64px;
-  border: 3px solid var(--border);
-  box-shadow: inset 4px 4px 0 rgba(0,0,0,0.15), 3px 3px 0 var(--px-dark);
+  /* No board frame — neighborhoods sit directly on the grass background */
+  background: transparent;
+  border: none;
+  box-shadow: none;
   padding: 0.75rem;
 }
 
