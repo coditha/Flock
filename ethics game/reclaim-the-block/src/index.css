@@ -1610,7 +1610,7 @@ input, select { font-family: inherit; }
 /* Bottom copy — fixed so the board's transform can't hide it */
 .board-trackers-bottom {
   position: fixed;
-  bottom: 8vh;
+  bottom: 3vh;
   left: 23vw;
   right: 23vw;
   z-index: 50;
