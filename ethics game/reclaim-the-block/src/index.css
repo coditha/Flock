@@ -1367,7 +1367,7 @@ input, select { font-family: inherit; }
   font-size: 0.72rem; font-weight: 700; color: var(--text); text-align: center;
 }
 .incident-card-discard-options { display: flex; flex-direction: column; gap: 0.35rem; }
-.incident-card-btn { width: 100%; }
+.incident-card-btn { width: 100%; font-size: 1rem; padding: 0.65rem 1rem; }
 
 /* ── Drawn Cards Overlay ─────────────────────────────────── */
 .drawn-cards-overlay {
