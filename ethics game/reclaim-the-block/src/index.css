@@ -561,10 +561,14 @@ input, select { font-family: inherit; }
    font-size:0 hides the emoji fallback; enlarged so the building reads. */
 .district-landmark.lm-courthouse {
   background-image: url('/courthouse.png');
-  width: 78px; height: 78px;
+  width: 96px; height: 96px;
   font-size: 0;
+  /* Rise up so the base overlaps the back of the road → reads as standing
+     in front of it (3D depth). z-index keeps it above the path ring. */
+  transform: translate(-50%, -56%);
+  filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
-.tv-game .district-landmark.lm-courthouse { width: 68px; height: 68px; }
+.tv-game .district-landmark.lm-courthouse { width: 84px; height: 84px; }
 /* Houses (slots) at N / E / S / W around the landmark */
 .device-slot.sq-slot-1, .device-slot.sq-slot-2,
 .device-slot.sq-slot-3, .device-slot.sq-slot-4 {
