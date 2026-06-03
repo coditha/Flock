@@ -15,6 +15,10 @@
   --purple: #7830a8;
   --orange: #b84c10;
   --radius: 0px;
+  /* Width of each side hand-panel column. Widened so a full 7-card hand
+     spreads out with less overlap. The center board is height-limited, so
+     it keeps its size until the corners get much wider than this. */
+  --corner-w: 30vw;
   --px-dark: #3a2410;
   --px-gold: #9a6408;
   --px-highlight: rgba(255,255,255,0.6);
@@ -1476,7 +1480,7 @@ input, select { font-family: inherit; }
   overflow: hidden;
   display: grid;
   /* Corner columns sized for the player hands; board fills the center cell */
-  grid-template-columns: 23vw 1fr 23vw;
+  grid-template-columns: var(--corner-w) 1fr var(--corner-w);
   grid-template-rows: 22vh 1fr 22vh;
   grid-template-areas:
     "corner-tl  top-center  corner-tr"
@@ -1616,8 +1620,8 @@ input, select { font-family: inherit; }
 .board-trackers-bottom {
   position: fixed;
   bottom: 0.5vh;
-  left: 23vw;
-  right: 23vw;
+  left: var(--corner-w);
+  right: var(--corner-w);
   z-index: 50;
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
 }
@@ -1799,7 +1803,7 @@ input, select { font-family: inherit; }
 /* Base popup — fixed overlay sitting on top of the corner card area */
 .turn-popup {
   position: fixed;
-  width: 23vw;
+  width: var(--corner-w);
   z-index: 100;
   overflow-y: auto;
   max-height: 78vh;
