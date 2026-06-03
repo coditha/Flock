@@ -238,8 +238,9 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
   const [showLog, setShowLog] = useState(false);
 
-  // Auto-fit the board to the available centre zone so it scales up to fill
-  // large screens (TV / TUI) but never overflows the borders on any size.
+  // Auto-fit the board into the vertical band BETWEEN the top trackers and the
+  // bottom trackers, centered in that band, scaling up to fill large TV/TUI
+  // screens without overlapping either tracker.
   const boardZoneRef = useRef<HTMLDivElement>(null);
   const boardAreaRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -249,22 +250,31 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
     const grid = area.querySelector('.board-grid') as HTMLElement | null;
     const fit = () => {
       if (!grid) return;
-      area.style.transform = 'scale(1)';              // reset to measure natural size
+      area.style.transform = 'none';                  // reset to measure natural size
       const naturalW = grid.offsetWidth;
-      const naturalH = grid.offsetHeight;
+      // Houses/landmark are absolutely positioned and overflow the grid box,
+      // so pad the measured height to avoid under-scaling.
+      const naturalH = grid.offsetHeight + 56;
       if (!naturalW || !naturalH) return;
-      // Bottom tracker is position:fixed (out of flow), so the board can use the
-      // full zone height. Small margin keeps it off the edges.
-      const availW = zone.clientWidth - 24;
-      const availH = zone.clientHeight - 16;
-      const scale = Math.max(0.6, Math.min(2.6, availW / naturalW, availH / naturalH));
-      area.style.transform = `scale(${scale})`;
+      const zoneRect = zone.getBoundingClientRect();
+      const zoneCenterY = zoneRect.top + zoneRect.height / 2;
+      const topEl = document.querySelector('.board-trackers-header') as HTMLElement | null;
+      const bottomEl = document.querySelector('.board-trackers-bottom') as HTMLElement | null;
+      const topLimit = topEl ? topEl.getBoundingClientRect().bottom : zoneRect.top;
+      const bottomLimit = bottomEl ? bottomEl.getBoundingClientRect().top : zoneRect.bottom;
+      const bandCenter = (topLimit + bottomLimit) / 2;
+      const availH = (bottomLimit - topLimit) - 28;   // leave a margin off each tracker
+      const availW = zoneRect.width - 24;
+      const scale = Math.max(0.5, Math.min(2.6, availW / naturalW, availH / naturalH));
+      const offsetY = bandCenter - zoneCenterY;        // center the board within the band
+      area.style.transform = `translateY(${offsetY}px) scale(${scale})`;
     };
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(zone);
     window.addEventListener('resize', fit);
-    return () => { ro.disconnect(); window.removeEventListener('resize', fit); };
+    const t = setTimeout(fit, 300);                    // refit after fonts/sprites settle
+    return () => { ro.disconnect(); window.removeEventListener('resize', fit); clearTimeout(t); };
   }, []);
 
   const handleCardClick = useCallback((card: CommunityCard) => {
