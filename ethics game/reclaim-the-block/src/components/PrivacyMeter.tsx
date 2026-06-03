@@ -56,7 +56,7 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
           title={expanded ? 'Collapse meter' : 'Expand full meter'}
         >
           <span className="pm-inline-dot">{dot}</span>
-          <span className="pm-inline-num" style={{ color }}>{value}</span>
+          <span className={`pm-inline-num${critical ? ' pm-critical-text' : ''}`} style={{ color }}>{value}</span>
           <span className={`pm-inline-label${critical ? ' pm-critical-text' : ''}`}>Remaining</span>
           <span className="pm-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
@@ -80,7 +80,7 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
     <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''}`}>
       <div className="meter-header">
         <span className={`meter-title${critical ? ' pm-critical-text' : ''}`}>Privacy &amp; Community Trust</span>
-        <span className="meter-value" style={{ color }}>
+        <span className={`meter-value${critical ? ' pm-critical-text' : ''}`} style={{ color }}>
           {value} / 30
         </span>
       </div>
@@ -92,7 +92,6 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
         <span className="meter-label-lose">0 LOSE</span>
         <span className="meter-label-safe">30 SAFE</span>
       </div>
-      {value <= 5 && <div className="meter-warning">⚠️ CRITICAL — one bad round ends the game!</div>}
     </div>
   );
 }
