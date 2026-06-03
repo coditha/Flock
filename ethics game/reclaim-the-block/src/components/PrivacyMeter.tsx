@@ -65,13 +65,22 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
 
         {expanded && (
           <div className="pm-hmeter">
-            <span className="pm-hmeter-end lose">0</span>
-            <div className="pm-hmeter-track">
-              <div className="pm-hmeter-fill" style={{ width: `${pct}%`, background: color }} />
-              <div className="pm-hmeter-marker" style={{ left: `${pct}%` }} title={`Current (${value})`} />
+            <div className="pm-hmeter-track-wrap">
+              <div className="pm-hmeter-track">
+                <div className="pm-hmeter-fill" style={{ width: `${pct}%`, background: color }} />
+                <div className="pm-hmeter-marker" style={{ left: `${pct}%` }} title={`Current (${value})`} />
+                {[0, 5, 10, 15, 20, 25, 30].map((n) => (
+                  <div key={n} className="pm-hmeter-tick" style={{ left: `${(n / 30) * 100}%` }} />
+                ))}
+              </div>
+              <div className="pm-hmeter-nums">
+                {[0, 5, 10, 15, 20, 25, 30].map((n) => (
+                  <span key={n} className={`pm-hmeter-num${n === value ? ' pm-hmeter-num-current' : ''}`} style={{ left: `${(n / 30) * 100}%`, color: n <= 5 ? 'var(--red)' : n <= 15 ? 'var(--text-muted)' : 'var(--green)' }}>
+                    {n}
+                  </span>
+                ))}
+              </div>
             </div>
-            <span className="pm-hmeter-end safe">30</span>
-            {value <= 5 && <span className="pm-hmeter-warning">⚠️</span>}
           </div>
         )}
       </div>
