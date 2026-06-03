@@ -63,18 +63,17 @@ export interface IncidentCard {
   id: string;
   type: 'incident';
   name: string;
-  effect: string;
-  effectType: IncidentEffectType;
-  educationalNote: string;
+  effect: string;          // human-readable rules text shown on the card
+  educationalNote: string; // flavor / real-world description
+  // ── Data-driven resolution ──
+  // Devices added when the incident resolves (omit for none).
+  // 'all' = every neighborhood. deviceCount defaults to 1 per target.
+  deviceTarget?: NeighborhoodId | 'all';
+  deviceCount?: number;
+  // Explicit meter change applied on top of any per-device penalties.
+  // Negative moves the meter toward zero (worse for the players).
+  meterDelta?: number;
 }
-
-export type IncidentEffectType =
-  | 'add-devices-to-neighborhood'
-  | 'meter-minus'
-  | 'police-footage-request'
-  | 'add-device-all-neighborhoods'
-  | 'neighbor-reports-neighbor'
-  | 'government-contract';
 
 export type Card = CommunityCard | IncidentCard;
 

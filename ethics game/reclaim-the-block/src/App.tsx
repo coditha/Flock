@@ -108,16 +108,11 @@ function CornerPanel({
 
 function IncidentOverlay({
   incident,
-  player,
   dispatch,
 }: {
   incident: import('./types/game').PendingIncident;
-  player: Player;
   dispatch: (a: GameAction) => void;
 }) {
-  const [showDiscard, setShowDiscard] = useState(false);
-  const needsDiscard = incident.card.effectType === 'neighbor-reports-neighbor' && player.hand.length > 0;
-
   return (
     <div className="incident-overlay">
       <div className="incident-flash" />
@@ -141,24 +136,10 @@ function IncidentOverlay({
 
         {/* Action footer */}
         <div className="incident-card-footer">
-          {showDiscard ? (
-            <>
-              <div className="incident-card-discard-label">Discard a card to resolve:</div>
-              <div className="incident-card-discard-options">
-                {player.hand.map((card) => (
-                  <button key={card.id} className="btn btn-discard-choice"
-                    onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse', discardCardId: card.id })}>
-                    <span className={`card-dot cat-${card.category}`} />{card.name}
-                  </button>
-                ))}
-              </div>
-            </>
-          ) : (
-            <button className="btn btn-danger incident-card-btn"
-              onClick={() => needsDiscard ? setShowDiscard(true) : dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
-              Acknowledge
-            </button>
-          )}
+          <button className="btn btn-danger incident-card-btn"
+            onClick={() => dispatch({ type: 'INCIDENT_VOTE', choice: 'refuse' })}>
+            Acknowledge
+          </button>
         </div>
       </div>
     </div>
@@ -628,7 +609,6 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
       {state.pendingIncident && !state.pendingDrawnCards && (
         <IncidentOverlay
           incident={state.pendingIncident}
-          player={state.players[state.currentPlayerIndex]}
           dispatch={dispatch}
         />
       )}

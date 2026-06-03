@@ -433,78 +433,31 @@ function placeDevice(
 
 // ── Incident Resolution ───────────────────────────────────────────────────
 
-function resolveIncident(state: GameState, incident: IncidentCard, discardCardId?: string): GameState {
+function resolveIncident(state: GameState, incident: IncidentCard): GameState {
   let s: GameState = { ...state, pendingIncident: null };
   s = log(s, `Resolving incident: ${incident.name}`);
 
-  switch (incident.effectType) {
-    case 'add-devices-to-neighborhood': {
-      // Add 2 devices to the most-filled neighborhood
-      const target = [...s.neighborhoods].sort((a, b) => b.densityTrack - a.densityTrack)[0];
-      const device = deviceForTracker(s.densityTracker);
-      for (let i = 0; i < 2; i++) {
-        const emptySlotIdx = s.neighborhoods.find(n => n.id === target.id)!.slots.findIndex((sl) => sl === null);
-        if (emptySlotIdx === -1) break;
-        s = placeDevice(s, target.id, emptySlotIdx as SlotIndex, device);
-      }
-      s = shiftMeter(s, -2, 'Breaking News: Crime Reported');
-      break;
-    }
-    case 'meter-minus': {
-      const target = [...s.neighborhoods].sort((a, b) => b.densityTrack - a.densityTrack)[0];
-      const emptySlot = s.neighborhoods.find((n) => n.id === target.id)!.slots.findIndex((sl) => sl === null);
-      if (emptySlot !== -1) s = placeDevice(s, target.id, emptySlot as SlotIndex, deviceForTracker(s.densityTracker));
-      s = shiftMeter(s, -3, 'Innocent Person Flagged');
-      break;
-    }
-    case 'police-footage-request': {
-      const target = [...s.neighborhoods].sort((a, b) => b.densityTrack - a.densityTrack)[0];
-      const emptySlot = s.neighborhoods.find((n) => n.id === target.id)!.slots.findIndex((sl) => sl === null);
-      if (emptySlot !== -1) s = placeDevice(s, target.id, emptySlot as SlotIndex, deviceForTracker(s.densityTracker));
-      s = shiftMeter(s, -3, 'Police Footage Request — footage handed over');
-      break;
-    }
-    case 'add-device-all-neighborhoods': {
-      const device = deviceForTracker(s.densityTracker);
-      for (const n of s.neighborhoods) {
-        const emptySlot = n.slots.findIndex((sl) => sl === null);
-        if (emptySlot !== -1) {
-          s = placeDevice(s, n.id, emptySlot as SlotIndex, device);
-          s = shiftMeter(s, -2, `Surveillance Expansion in ${n.name}`);
-        }
-      }
-      break;
-    }
-    case 'neighbor-reports-neighbor': {
-      const target = [...s.neighborhoods].sort((a, b) => b.densityTrack - a.densityTrack)[0];
-      const emptySlot = s.neighborhoods.find((n) => n.id === target.id)!.slots.findIndex((sl) => sl === null);
-      if (emptySlot !== -1) s = placeDevice(s, target.id, emptySlot as SlotIndex, deviceForTracker(s.densityTracker));
-      s = shiftMeter(s, -2, 'Neighbor Reports Neighbor');
-      const activePlayer = s.players[s.currentPlayerIndex];
-      if (activePlayer.hand.length > 0) {
-        const toDiscard = discardCardId
-          ? activePlayer.hand.find((c) => c.id === discardCardId)
-          : activePlayer.hand[0];
-        if (toDiscard) {
-          s = removeCardFromHand(s, activePlayer.id, [toDiscard.id]);
-          s = log(s, `${activePlayer.role.name} discarded "${toDiscard.name}"`);
-        }
-      }
-      break;
-    }
-    case 'government-contract': {
-      // Add 3 devices to the neighborhood with fewest devices
-      const targetId = [...s.neighborhoods].sort((a, b) => a.densityTrack - b.densityTrack)[0].id;
-      const device = deviceForTracker(s.densityTracker);
-      for (let i = 0; i < 3; i++) {
-        const emptySlot = s.neighborhoods.find((n) => n.id === targetId)!.slots.findIndex((sl) => sl === null);
+  // 1) Place devices (placeDevice applies its own per-device meter penalty).
+  if (incident.deviceTarget) {
+    const targetIds: NeighborhoodId[] =
+      incident.deviceTarget === 'all'
+        ? s.neighborhoods.map((n) => n.id)
+        : [incident.deviceTarget];
+    const count = incident.deviceCount ?? 1;
+    for (const nId of targetIds) {
+      for (let i = 0; i < count; i++) {
+        const emptySlot = s.neighborhoods
+          .find((n) => n.id === nId)!
+          .slots.findIndex((sl) => sl === null);
         if (emptySlot === -1) break;
-        s = placeDevice(s, targetId, emptySlot as SlotIndex, device);
+        s = placeDevice(s, nId, emptySlot as SlotIndex, deviceForTracker(s.densityTracker));
       }
-      s = { ...s, densityTracker: Math.min(8, s.densityTracker + 1) };
-      s = log(s, `Density Tracker increased to ${s.densityTracker}`);
-      break;
     }
+  }
+
+  // 2) Apply the card's explicit meter change, if any.
+  if (incident.meterDelta) {
+    s = shiftMeter(s, incident.meterDelta, incident.name);
   }
 
   return s;
@@ -1133,7 +1086,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'INCIDENT_VOTE': {
       if (!state.pendingIncident) return state;
       const incident = state.pendingIncident.card;
-      return resolveIncident(state, incident, action.discardCardId);
+      return resolveIncident(state, incident);
     }
 
     // ── Discard card ──────────────────────────────────────────────────
