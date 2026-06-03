@@ -512,7 +512,7 @@ input, select { font-family: inherit; }
   border-radius: 0;
   box-shadow: none;
   padding: 0.5rem 0.5rem 0.25rem;
-  overflow: hidden;
+  overflow: visible;          /* let the road spur reach out to Town Square */
   cursor: pointer;
   width: 210px; min-width: 190px;
   position: relative;
