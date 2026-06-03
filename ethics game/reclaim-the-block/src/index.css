@@ -162,7 +162,7 @@ input, select { font-family: inherit; }
 
 /* Top-bar action buttons (Log + New Game sit together at the right) */
 .tv-top-actions { display: flex; align-items: center; gap: 0.5rem; }
-.tv-top-bar-row { display: flex; align-items: center; gap: 0.5rem; }
+.tv-top-bar-row { display: flex; align-items: center; gap: 0.5rem; pointer-events: all; }
 .settings-menu { position: relative; }
 .settings-dropdown {
   position: absolute;
@@ -1718,7 +1718,7 @@ input, select { font-family: inherit; }
   align-items: center;
   /* No solid background — only the title bar div inside has one,
      so the unused portion of the row cell stays transparent */
-  overflow: hidden;
+  overflow: visible;
   pointer-events: none;   /* let clicks pass through empty area to board */
 }
 .tv-top-bar {
@@ -1738,7 +1738,7 @@ input, select { font-family: inherit; }
    top of the table. The bottom copy (.tv-bottom-center) stays upright. */
 .tv-top-center .tv-top-bar .privacy-meter { transform: rotate(180deg); }
 .tv-top-center .tv-top-bar .tv-top-actions { transform: rotate(180deg); }
-.tv-top-center .tv-top-bar .settings-menu { transform: rotate(180deg); }
+.tv-top-center .settings-dropdown { bottom: auto; top: calc(100% + 4px); left: auto; right: 0; transform: rotate(180deg); }
 
 /* ── Board zone (centre middle cell) ───────────────────────── */
 .tv-board-zone {

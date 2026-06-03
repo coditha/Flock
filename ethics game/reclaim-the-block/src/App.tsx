@@ -374,9 +374,10 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                   className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
                   onClick={() => setShowLog((s) => !s)}
                 >
-                  📜 Log
+                  Game Log
                 </button>
-                <button className="btn-quit" onClick={onRestart}>← New Game</button>
+                <button className="btn-quit" onClick={onRestart}>New Game</button>
+                <button className="btn-quit" onClick={() => { setShowIntro(true); setShowSettings(false); }}>Tutorial</button>
               </div>
             )}
           </div>
@@ -576,9 +577,10 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                     className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
                     onClick={() => setShowLog((s) => !s)}
                   >
-                    📜 Log
+                    Game Log
                   </button>
-                  <button className="btn-quit" onClick={onRestart}>← New Game</button>
+                  <button className="btn-quit" onClick={onRestart}>New Game</button>
+                  <button className="btn-quit" onClick={() => { setShowIntro(true); setShowSettings(false); }}>Tutorial</button>
                 </div>
               )}
             </div>
