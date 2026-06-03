@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   value: number;
@@ -7,7 +7,6 @@ interface Props {
 }
 
 export default function PrivacyMeter({ value, vertical, blocked }: Props) {
-  const [expanded, setExpanded] = useState(true);
   const [decreasing, setDecreasing] = useState(false);
   const prevValue = useRef(value);
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -47,33 +46,22 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
 
   if (vertical) {
     return (
-      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''}`}>
-        <button
-          className="pm-inline-badge"
-          onClick={() => setExpanded((e) => !e)}
-          title={expanded ? 'Collapse meter' : 'Expand full meter'}
-        >
-          <span className="pm-inline-dot">{dot}</span>
-          <span className={`pm-critical-group${critical && !blocked ? ' pm-critical-active' : ''}`}>
-            <span className="pm-inline-num" style={{ color }}>{value}</span>
-            <span className="pm-inline-label">Remaining</span>
-          </span>
-          <span className="pm-inline-chevron">{expanded ? '◂' : '▸'}</span>
-        </button>
-
-        {expanded && (
-          <div className="pm-segments">
-            {[5, 10, 15, 20, 25, 30].map((threshold) => {
-              const filled = value >= threshold;
-              const segColor = threshold <= 5 ? '#ef4444' : threshold <= 10 ? '#f97316' : threshold <= 15 ? '#eab308' : '#22c55e';
-              return (
-                <div key={threshold} className={`pm-seg${filled ? ' pm-seg-filled' : ''}`} style={filled ? { background: segColor, borderColor: segColor } : {}}>
-                  <span className="pm-seg-num">{threshold}</span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+      <div className={`pm-seg-meter ${decreasing ? 'pm-decreasing' : ''}`}>
+        <div className={`pm-seg-title${critical && !blocked ? ' pm-critical-active' : ''}`}>
+          {dot} Privacy &amp; Trust
+        </div>
+        <div className="pm-segments">
+          {[5, 10, 15, 20, 25, 30].map((threshold) => {
+            const filled = value >= threshold;
+            const segColor = threshold <= 5 ? '#ef4444' : threshold <= 10 ? '#f97316' : threshold <= 15 ? '#eab308' : '#22c55e';
+            return (
+              <div key={threshold} className={`pm-seg${filled ? ' pm-seg-filled' : ''}`}
+                style={filled ? { background: segColor, borderColor: segColor } : {}}>
+                <span className="pm-seg-num">{threshold}</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

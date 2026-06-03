@@ -275,6 +275,14 @@ input, select { font-family: inherit; }
 .pm-inline-label { font-size: 0.62rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
 .pm-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }
 /* Horizontal meter — unfolds to the side of the badge (0 → 30, with current marker) */
+.pm-seg-meter {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.pm-seg-title {
+  font-size: 0.52rem; font-weight: 700; text-align: center;
+  color: var(--text); text-transform: uppercase; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
 .pm-segments {
   display: flex; gap: 3px; padding: 0.3rem 0.4rem;
   background: var(--surface); border: 2px solid var(--border);
