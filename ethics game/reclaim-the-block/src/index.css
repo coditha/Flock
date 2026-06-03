@@ -1510,6 +1510,15 @@ input, select { font-family: inherit; }
   align-self: center; margin-top: 0.5rem;
   padding: 0.6rem 2rem; font-size: 0.85rem;
 }
+.drawn-card-powerup { overflow: hidden; position: relative; border-color: var(--purple) !important; }
+.drawn-card-powerup::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+  width: 40%;
+  animation: card-shimmer 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
 
 /* ── Scrollbars ───────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
