@@ -122,7 +122,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Balance the Meter',
     educationalContent:
       'Sustained legal challenges and public-records fights can restore community trust and roll back surveillance overreach.',
-    effect: '⭐ Shift the Privacy & Trust Meter back 3 spaces.',
+    effect: 'Shift the Privacy & Trust Meter back 3 spaces.',
     effectType: 'meter-plus-immediate',
     effectValue: 3,
     isPowerUp: true,
@@ -134,7 +134,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Warrant Requirement',
     educationalContent:
       'Requiring a warrant before police can access surveillance footage is a key legal protection communities organize to secure.',
-    effect: '⭐ Ignore the effects of the next Incident Card (if you are in the affected neighborhood).',
+    effect: 'Ignore the effects of the next Incident Card (if you are in the affected neighborhood).',
     effectType: 'cancel-next-incident',
     isPowerUp: true,
   },
@@ -215,7 +215,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Rally the Block',
     educationalContent:
       'Bringing neighbors together for collective action energizes the whole community and multiplies its capacity to push back against surveillance.',
-    effect: '⭐ Each player immediately draws 1 Community Card.',
+    effect: 'Each player immediately draws 1 Community Card.',
     effectType: 'draw-cards-all',
     effectValue: 1,
     isPowerUp: true,
@@ -227,7 +227,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Community Watch',
     educationalContent:
       'Community watch programs built on mutual support and trust strengthen neighborhood safety far more effectively than constant monitoring.',
-    effect: '⭐ Increase the Privacy & Trust Meter by 1.',
+    effect: 'Increase the Privacy & Trust Meter by 1.',
     effectType: 'meter-plus-immediate',
     effectValue: 1,
     isPowerUp: true,
@@ -402,7 +402,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Breaking Story',
     educationalContent:
       'Investigative journalism has repeatedly uncovered surveillance programs residents had no idea existed.',
-    effect: '⭐ Reveal top 3 Surveillance Cards. Group sees what is coming for next 3 rounds.',
+    effect: 'Reveal top 3 Surveillance Cards. Group sees what is coming for next 3 rounds.',
     effectType: 'reveal-surveillance',
     effectValue: 3,
     isPowerUp: true,
@@ -414,7 +414,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Viral Campaign',
     educationalContent:
       'Public pressure forces an immediate rollback. Nationwide campaigns have achieved in days what years of traditional advocacy could not.',
-    effect: '⭐ +3 meter immediately.',
+    effect: '+3 meter immediately.',
     effectType: 'meter-plus-immediate',
     effectValue: 3,
     isPowerUp: true,
@@ -546,7 +546,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Fast-Track Ordinance',
     educationalContent:
       'San Francisco passed a surveillance ordinance in under 90 days when council members championed it as an urgent priority.',
-    effect: '⭐ Next Town Square deposit requires only 4 cards instead of 5.',
+    effect: 'Next Town Square deposit requires only 4 cards instead of 5.',
     effectType: 'reduced-deposit',
     isPowerUp: true,
   },
@@ -557,7 +557,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Council Vote',
     educationalContent:
       'Unanimous council votes against surveillance have sent powerful signals that influenced neighboring cities to follow suit.',
-    effect: '⭐ +4 meter immediately.',
+    effect: '+4 meter immediately.',
     effectType: 'meter-plus-immediate',
     effectValue: 4,
     isPowerUp: true,
@@ -687,7 +687,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Block Party',
     educationalContent:
       'Neighborhood events have been the catalyst for some of the most successful anti-surveillance campaigns in US history.',
-    effect: '⭐ All players draw 2 cards and may swap freely regardless of location.',
+    effect: 'All players draw 2 cards and may swap freely regardless of location.',
     effectType: 'draw-cards-all',
     effectValue: 2,
     isPowerUp: true,
@@ -699,7 +699,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Community Watch',
     educationalContent:
       'Organized watch programs have delayed surveillance expansion long enough for legal challenges to succeed.',
-    effect: '⭐ Prevent devices from being placed in any one neighborhood for 2 full rounds.',
+    effect: 'Prevent devices from being placed in any one neighborhood for 2 full rounds.',
     effectType: 'cancel-next-2-surveillance',
     isPowerUp: true,
   },
