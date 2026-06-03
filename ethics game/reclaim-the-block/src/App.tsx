@@ -374,21 +374,28 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             <button className="btn-quit" onClick={onRestart}>← New Game</button>
           </div>
         </div>
-        {/* Surveillance (density) tracker, shown upright under the top bar so the
-           Activist & Parent players can read it. The privacy meter now lives in
-           the top bar and is no longer duplicated here. */}
+        {/* Surveillance (density) tracker for the Activist & Parent players, rotated
+           180° (see .board-trackers-header) so it faces their side of the table. */}
         <div className="board-trackers board-trackers-header">
           <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
         </div>
         <RevealedCards cards={state.revealedSurveillanceCards} />
       </div>
 
-      {/* ── Game Log dropdown — expands in place under the Log button ── */}
+      {/* ── Game Log dropdown — one copy per side, both toggled by the Log button.
+          Far copy (flipped, top) faces the Activist & Parent; near copy (upright,
+          bottom) faces the Lawyer & City Council. ── */}
       {showLog && (
-        <div className="log-dropdown">
-          <div className="log-dropdown-title">📜 Game Log</div>
-          <GameLog log={state.gameLog} />
-        </div>
+        <>
+          <div className="log-dropdown log-dropdown-far">
+            <div className="log-dropdown-title">📜 Game Log</div>
+            <GameLog log={state.gameLog} />
+          </div>
+          <div className="log-dropdown log-dropdown-near">
+            <div className="log-dropdown-title">📜 Game Log</div>
+            <GameLog log={state.gameLog} />
+          </div>
+        </>
       )}
 
       {/* ── TOP-RIGHT: Neighborhood Captain (rotated 180°) ────── */}
@@ -536,10 +543,25 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
           </div>
         </div>
 
-        {/* Surveillance (density) tracker for the bottom-side players. The privacy
-           meter now lives in the top bar and is no longer duplicated here. */}
-        <div className="board-trackers board-trackers-bottom">
-          <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
+        {/* Near-side stack for the Lawyer & City Council players: the Surveillance
+           tracker above an upright copy of the top bar (Privacy meter + Log /
+           New Game) so they get the same controls facing their side of the table. */}
+        <div className="tv-bottom-center">
+          <div className="board-trackers board-trackers-bottom">
+            <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
+          </div>
+          <div className="tv-top-bar">
+            <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
+            <div className="tv-top-actions">
+              <button
+                className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
+                onClick={() => setShowLog((s) => !s)}
+              >
+                📜 Log
+              </button>
+              <button className="btn-quit" onClick={onRestart}>← New Game</button>
+            </div>
+          </div>
         </div>
       </div>
 

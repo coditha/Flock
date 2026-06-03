@@ -174,6 +174,10 @@ input, select { font-family: inherit; }
   border: 3px solid var(--px-gold);
   box-shadow: 4px 4px 0 var(--px-dark);
 }
+/* Far-side copy: flipped to face the Activist & Parent at the top edge. */
+.log-dropdown-far { transform: rotate(180deg); }
+/* Near-side copy: upright, anchored to the bottom edge for the Lawyer & Council. */
+.log-dropdown-near { top: auto; bottom: 52px; }
 .log-dropdown-title {
   padding: 0.5rem 0.75rem; background: var(--surface2);
   border-bottom: 2px solid var(--border);
@@ -1604,6 +1608,11 @@ input, select { font-family: inherit; }
   box-shadow: 0 4px 0 var(--px-dark), 4px 4px 0 var(--px-dark);
   pointer-events: all;    /* restore interactivity for the bar itself */
 }
+/* Flip the TOP copy of the bar's contents 180° so the Privacy meter and the
+   Log / New Game buttons all face the Activist & Parent players seated at the
+   top of the table. The bottom copy (.tv-bottom-center) stays upright. */
+.tv-top-center .tv-top-bar .privacy-meter { transform: rotate(180deg); }
+.tv-top-center .tv-top-bar .tv-top-actions { transform: rotate(180deg); }
 
 /* ── Board zone (centre middle cell) ───────────────────────── */
 .tv-board-zone {
@@ -1625,18 +1634,27 @@ input, select { font-family: inherit; }
 }
 /* Top copy: flipped 180° for far-side players, anchored flush to the board's top edge */
 .board-trackers-top { transform: rotate(180deg); }
-/* Bottom copy — fixed so the board's transform can't hide it */
+/* Bottom copy — sits inside .tv-bottom-center (which handles positioning). */
 .board-trackers-bottom {
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+/* Near-side stack for the Lawyer & City Council players: the Surveillance
+   tracker above an upright copy of the top bar, anchored to the bottom edge
+   between the corner panels (fixed so the board's transform can't hide it). */
+.tv-bottom-center {
   position: fixed;
   bottom: 0.5vh;
   left: var(--corner-w);
   right: var(--corner-w);
   z-index: 50;
   display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  pointer-events: none;
 }
-/* Header copy: surveillance tracker shown upright under the top bar so it reads
-   the same way up as the Privacy meter above it (top-center has pointer-events:none). */
-.board-trackers-header { pointer-events: auto; padding: 0.4rem 0; }
+.tv-bottom-center > * { pointer-events: auto; }
+.tv-bottom-center .tv-top-bar { width: 100%; }
+/* Header copy: Privacy meter + Surveillance tracker for the Activist & Parent,
+   rotated 180° so they face the players on the far side of the table. */
+.board-trackers-header { pointer-events: auto; padding: 0.4rem 0; transform: rotate(180deg); }
 
 /* Scale board elements down so the board fits the middle row.
    Rule of thumb: 23vh rows leave ~54vh for the board at 1080p ≈ 583px.
