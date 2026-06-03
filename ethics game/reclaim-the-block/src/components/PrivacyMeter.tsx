@@ -49,7 +49,7 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
 
   if (vertical) {
     return (
-      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''} ${critical ? 'pm-critical' : ''}`}>
+      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''}`}>
         <button
           className="pm-inline-badge"
           onClick={() => setExpanded((e) => !e)}
@@ -57,7 +57,7 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
         >
           <span className="pm-inline-dot">{dot}</span>
           <span className="pm-inline-num" style={{ color }}>{value}</span>
-          <span className="pm-inline-label">Remaining</span>
+          <span className={`pm-inline-label${critical ? ' pm-critical-text' : ''}`}>Remaining</span>
           <span className="pm-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 
@@ -77,9 +77,9 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
   }
 
   return (
-    <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''} ${critical ? 'pm-critical' : ''}`}>
+    <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''}`}>
       <div className="meter-header">
-        <span className="meter-title">Privacy &amp; Community Trust</span>
+        <span className={`meter-title${critical ? ' pm-critical-text' : ''}`}>Privacy &amp; Community Trust</span>
         <span className="meter-value" style={{ color }}>
           {value} / 30
         </span>
