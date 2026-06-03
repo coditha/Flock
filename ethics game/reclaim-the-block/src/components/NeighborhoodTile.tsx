@@ -38,8 +38,8 @@ const NEIGHBORHOOD_COLORS: Record<string, string> = {
 // Placeholder emoji — swap `.district-landmark.lm-<id>` to a background
 // sprite in CSS later without touching this component.
 const LANDMARK_EMOJI: Record<string, string> = {
-  suburb: '🏘️',      // Community center / residential
-  courthouse: '',      // Courthouse
+  suburb: '',         // Community center (uses sprite)
+  courthouse: '',      // Courthouse (uses sprite)
   media: '📰',        // News office
   politics: '🗳️',     // Government / political building
 };
