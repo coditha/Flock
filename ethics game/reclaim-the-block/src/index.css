@@ -1480,6 +1480,8 @@ input, select { font-family: inherit; }
     10px 100%, 6px calc(100% - 4px), 4px calc(100% - 6px), 0 calc(100% - 10px)
   );
   width: 200px; flex-shrink: 0;
+  align-self: flex-start;
+  display: flex; flex-direction: column;
 }
 .cat-wrap-blue   { background: var(--blue); }
 .cat-wrap-yellow { background: var(--yellow); }
@@ -1527,7 +1529,11 @@ input, select { font-family: inherit; }
   padding: 0.6rem 2rem; font-size: 0.85rem;
 }
 .drawn-card-powerup { position: relative; }
-.drawn-card-powerup::after {
+/* Shimmer on inner card only — wrapper border stays solid */
+.drawn-card-powerup > .drawn-card {
+  position: relative; overflow: hidden;
+}
+.drawn-card-powerup > .drawn-card::after {
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
