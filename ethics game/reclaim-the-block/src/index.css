@@ -603,6 +603,15 @@ input, select { font-family: inherit; }
   filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
 .tv-game .district-landmark.lm-politics { width: 84px; height: 84px; }
+/* Media District uses the news-agency building sprite */
+.district-landmark.lm-media {
+  background-image: url('/news-agency.png');
+  width: 96px; height: 96px;
+  font-size: 0;
+  transform: translate(-50%, -56%);
+  filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
+}
+.tv-game .district-landmark.lm-media { width: 84px; height: 84px; }
 /* Houses (slots) at N / E / S / W around the landmark */
 .device-slot.sq-slot-1, .device-slot.sq-slot-2,
 .device-slot.sq-slot-3, .device-slot.sq-slot-4 {

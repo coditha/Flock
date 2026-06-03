@@ -40,7 +40,7 @@ const NEIGHBORHOOD_COLORS: Record<string, string> = {
 const LANDMARK_EMOJI: Record<string, string> = {
   suburb: '',         // Community center (uses sprite)
   courthouse: '',      // Courthouse (uses sprite)
-  media: '📰',        // News office
+  media: '',          // News agency (uses sprite)
   politics: '',       // Government building (uses city-hall sprite)
 };
 
