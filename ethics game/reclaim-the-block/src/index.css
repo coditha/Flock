@@ -440,9 +440,8 @@ input, select { font-family: inherit; }
 /* Connecting roads — same tan street + dark pixel outline as neighborhood roads */
 .road-line-v {
   width: 8px; flex: 1;
-  background: transparent;
-  box-shadow: none;
-  display: none;
+  background: #c8a060;
+  box-shadow: 2px 0 0 var(--px-dark), -2px 0 0 var(--px-dark);
 }
 .road-line-h {
   height: 8px; width: 16px;
