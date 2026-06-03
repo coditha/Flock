@@ -193,12 +193,6 @@ export default function NeighborhoodTile({
         <div className="sq-center" />
       </div>
 
-      {/* Density track */}
-      <div className="density-row">
-        {Array(4).fill(null).map((_, i) => (
-          <div key={i} className={`density-pip ${i < filledSlots ? 'filled' : ''}`} />
-        ))}
-      </div>
 
       {/* Players here — removed: players now always start at N1 and show on slots */}
     </div>
