@@ -299,11 +299,11 @@ export default function ActionPanel({
     },
     {
       id: 'playcard',
-      icon: '⭐',
+      icon: '✨',
       label: 'Play Card',
       tooltip: [
         'Cost: 1 action.',
-        'Select exactly one ⭐ power-up card from your hand.',
+        'Select exactly one shimmer card from your hand.',
         'Power-up cards have special team effects.',
         'Tap a card to select it, then tap Play Card.',
       ].join('\n'),
