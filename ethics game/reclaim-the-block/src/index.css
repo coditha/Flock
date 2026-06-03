@@ -434,7 +434,7 @@ input, select { font-family: inherit; }
 
 .board-grid { display: flex; flex-direction: column; align-items: center; gap: 0; }
 .board-n1 { display: flex; justify-content: center; width: 100%; }
-.board-roads-top, .board-roads-bottom { display: flex; justify-content: center; height: 60px; }
+.board-roads-top, .board-roads-bottom { display: flex; justify-content: center; align-items: center; height: 44px; }
 .road-segment-v { display: flex; flex-direction: column; align-items: center; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 /* Connecting roads — same tan street + dark pixel outline as neighborhood roads */
@@ -513,6 +513,7 @@ input, select { font-family: inherit; }
   border-radius: 0;
   box-shadow: none;
   padding: 0.5rem 0.5rem 0.25rem;
+  overflow: hidden;
   cursor: pointer;
   width: 210px; min-width: 190px;
   position: relative;
@@ -1721,7 +1722,7 @@ input, select { font-family: inherit; }
 }
 .tv-game .board-roads-top,
 .tv-game .board-roads-bottom {
-  height: 56px;
+  height: 44px;
 }
 .tv-game .city-hall {
   width: 142px; height: 158px; min-width: 142px;
