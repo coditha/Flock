@@ -45,9 +45,11 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
   const color = value <= 5 ? '#ef4444' : value <= 10 ? '#f97316' : value <= 15 ? '#eab308' : '#22c55e';
   const dot = value <= 5 ? '🔴' : value <= 10 ? '🟠' : value <= 15 ? '🟡' : '🟢';
 
+  const critical = value <= 5;
+
   if (vertical) {
     return (
-      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''}`}>
+      <div className={`pm-inline ${expanded ? 'expanded' : ''} ${decreasing ? 'pm-decreasing' : ''} ${critical ? 'pm-critical' : ''}`}>
         <button
           className="pm-inline-badge"
           onClick={() => setExpanded((e) => !e)}
@@ -75,7 +77,7 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
   }
 
   return (
-    <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''}`}>
+    <div className={`privacy-meter ${decreasing ? 'pm-decreasing' : ''} ${critical ? 'pm-critical' : ''}`}>
       <div className="meter-header">
         <span className="meter-title">Privacy &amp; Community Trust</span>
         <span className="meter-value" style={{ color }}>
