@@ -247,15 +247,16 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
     const area = boardAreaRef.current;
     if (!zone || !area) return;
     const grid = area.querySelector('.board-grid') as HTMLElement | null;
-    const trackers = zone.querySelector('.board-trackers-bottom') as HTMLElement | null;
     const fit = () => {
       if (!grid) return;
       area.style.transform = 'scale(1)';              // reset to measure natural size
       const naturalW = grid.offsetWidth;
       const naturalH = grid.offsetHeight;
       if (!naturalW || !naturalH) return;
+      // Bottom tracker is position:fixed (out of flow), so the board can use the
+      // full zone height. Small margin keeps it off the edges.
       const availW = zone.clientWidth - 24;
-      const availH = zone.clientHeight - (trackers?.offsetHeight ?? 0) - 24;
+      const availH = zone.clientHeight - 16;
       const scale = Math.max(0.6, Math.min(2.6, availW / naturalW, availH / naturalH));
       area.style.transform = `scale(${scale})`;
     };
