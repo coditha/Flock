@@ -51,16 +51,20 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
           {dot} Privacy &amp; Trust
         </div>
         <div className="pm-segments">
-          {[5, 10, 15, 20, 25, 30].map((threshold) => {
-            const filled = value >= threshold;
-            const segColor = threshold <= 5 ? '#ef4444' : threshold <= 10 ? '#f97316' : threshold <= 15 ? '#eab308' : '#22c55e';
+          {Array.from({ length: 30 }, (_, i) => i + 1).map((n) => {
+            const filled = value >= n;
+            const segColor = n <= 5 ? '#ef4444' : n <= 10 ? '#f97316' : n <= 15 ? '#eab308' : '#22c55e';
             return (
-              <div key={threshold} className={`pm-seg${filled ? ' pm-seg-filled' : ''}`}
+              <div key={n} className={`pm-seg${filled ? ' pm-seg-filled' : ''}`}
                 style={filled ? { background: segColor, borderColor: segColor } : {}}>
-                <span className="pm-seg-num">{threshold}</span>
               </div>
             );
           })}
+        </div>
+        <div className="pm-seg-labels">
+          <span style={{ color: 'var(--red)' }}>0</span>
+          <span style={{ color: 'var(--text-muted)' }}>15</span>
+          <span style={{ color: 'var(--green)' }}>30</span>
         </div>
       </div>
     );

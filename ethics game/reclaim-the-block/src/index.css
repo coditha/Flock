@@ -284,20 +284,18 @@ input, select { font-family: inherit; }
   white-space: nowrap;
 }
 .pm-segments {
-  display: flex; gap: 3px; padding: 0.3rem 0.4rem;
-  background: var(--surface); border: 2px solid var(--border);
-  box-shadow: inset 1px 1px 0 var(--px-highlight);
+  display: flex; gap: 2px; flex-wrap: nowrap;
 }
 .pm-seg {
-  width: 28px; height: 28px; flex-shrink: 0;
-  background: var(--surface2); border: 2px solid var(--border);
-  box-shadow: inset 1px 1px 0 var(--px-highlight);
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 2px; transition: background 0.3s, border-color 0.3s;
+  width: 10px; height: 22px; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border);
+  transition: background 0.2s, border-color 0.2s;
 }
-.pm-seg-filled { box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3); }
-.pm-seg-num { font-size: 0.48rem; font-weight: 700; color: rgba(0,0,0,0.7); line-height: 1; }
-.pm-seg-filled .pm-seg-num { color: rgba(255,255,255,0.9); }
+.pm-seg-filled { border-color: transparent; }
+.pm-seg-labels {
+  display: flex; justify-content: space-between; width: 100%;
+  font-size: 0.48rem; font-weight: 700; padding: 1px 0;
+}
 .pm-hmeter-warning { font-size: 0.9rem; animation: pulse 1s infinite; }
 
 /* Vertical Density Tracker */
