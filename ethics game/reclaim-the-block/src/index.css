@@ -1857,7 +1857,7 @@ input, select { font-family: inherit; }
   position: fixed;
   width: var(--corner-w);
   z-index: 100;
-  overflow-y: auto;
+  overflow: hidden;
   max-height: 78vh;
   background: var(--surface);
   border: 3px solid var(--border);
