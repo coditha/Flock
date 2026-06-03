@@ -1252,7 +1252,7 @@ input, select { font-family: inherit; }
 .card-selected { transform: translateY(-8px) !important; border-color: white !important; filter: drop-shadow(3px 11px 0 var(--px-dark)) !important; }
 .card-disabled { opacity: 0.4; cursor: not-allowed; }
 .card-disabled:hover { transform: none !important; filter: drop-shadow(3px 3px 0 var(--px-dark)) !important; }
-.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); border-color: var(--purple) !important; overflow: hidden; position: relative; }
+.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); overflow: hidden; position: relative; }
 @keyframes card-shimmer {
   0%   { transform: translateX(-150%) skewX(-20deg); }
   100% { transform: translateX(350%) skewX(-20deg); }
