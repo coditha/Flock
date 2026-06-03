@@ -451,7 +451,7 @@ input, select { font-family: inherit; }
 .road-waypoint {
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  width: 54px; height: 54px;
+  width: 80px; height: 80px;
   background: url('/pebble.png') center/cover no-repeat;
   border: none;
   border-radius: 50%;
@@ -1715,8 +1715,8 @@ input, select { font-family: inherit; }
   height: 40px;
 }
 .tv-game .road-waypoint {
-  width: 32px;
-  height: 32px;
+  width: 56px;
+  height: 56px;
 }
 .tv-game .board-roads-top,
 .tv-game .board-roads-bottom {
