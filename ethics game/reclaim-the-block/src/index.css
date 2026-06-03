@@ -1473,7 +1473,6 @@ input, select { font-family: inherit; }
   background: var(--surface);
   border: 2px solid var(--border);
   box-shadow: inset 2px 2px 0 var(--px-highlight);
-  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
   display: flex; flex-direction: column;
   width: 200px; flex-shrink: 0; overflow: hidden;
 }
