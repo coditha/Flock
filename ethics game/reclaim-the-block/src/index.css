@@ -452,16 +452,17 @@ input, select { font-family: inherit; }
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
   width: 54px; height: 54px;
-  background: #d4b880;
-  border: 2px solid var(--px-dark);
+  background: url('/pebble.png') center/cover no-repeat;
+  border: none;
   border-radius: 50%;
-  box-shadow: 2px 2px 0 var(--px-dark);
+  box-shadow: none;
   font-size: 1.4rem;
   z-index: 1;
+  image-rendering: pixelated;
 }
-.road-waypoint.moveable { cursor: pointer; border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 1px var(--blue); }
-.road-waypoint.moveable:hover { box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue), 0 0 10px rgba(30,90,176,0.25); }
-.road-waypoint.active-player-here { border-color: var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--px-dark); }
+.road-waypoint.moveable { cursor: pointer; outline: 2px solid var(--blue); outline-offset: 1px; }
+.road-waypoint.moveable:hover { filter: brightness(1.2); }
+.road-waypoint.active-player-here { outline: 2px solid white; outline-offset: 1px; }
 .road-v { width: 8px; height: 100%; background: #c8a060; box-shadow: 2px 0 0 var(--px-dark), -2px 0 0 var(--px-dark); }
 .road-h { height: 8px; width: 40px; background: #c8a060; box-shadow: 0 2px 0 var(--px-dark), 0 -2px 0 var(--px-dark); }
 
