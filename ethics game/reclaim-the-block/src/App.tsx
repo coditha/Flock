@@ -218,6 +218,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodId | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
   const [showLog, setShowLog] = useState(false);
+  // Intro story — shown once when a fresh game mounts, before Round 1.
+  const [showIntro, setShowIntro] = useState(true);
 
   // Auto-fit the board into the vertical band BETWEEN the top trackers and the
   // bottom trackers, centered in that band, scaling up to fill large TV/TUI
@@ -654,6 +656,26 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         </div>
         );
       })()}
+
+      {/* ── Intro story overlay (shown once at the start of a new game) ── */}
+      {showIntro && (
+        <div className="intro-overlay">
+          <div className="intro-panel">
+            <h1 className="intro-title">THE CITY IS WATCHING</h1>
+            <p className="intro-body">
+              Your city's local government has begun rapidly installing surveillance cameras,
+              license plate readers, and monitoring devices across every neighborhood. Officials
+              claim it is for public safety, but residents know the truth. Privacy is disappearing,
+              community trust is eroding, and certain neighborhoods are bearing the burden more than
+              others. You and your neighbors have had enough. Work together to organize, advocate,
+              and push back before surveillance overwhelms your city entirely.
+            </p>
+            <button className="intro-btn" onClick={() => setShowIntro(false)}>
+              Begin Game
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
