@@ -222,6 +222,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodId | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
   const [showLog, setShowLog] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   // Intro story — shown once when a fresh game mounts, before Round 1.
   const [showIntro, setShowIntro] = useState(true);
 
@@ -356,16 +357,28 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
 
       {/* ── TOP CENTER: Title bar + Revealed cards ────────────── */}
       <div className="tv-top-center">
-        <div className="tv-top-bar">
-          <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
-          <div className="tv-top-actions">
+        <div className="tv-top-bar-row">
+          <div className="tv-top-bar">
+            <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
+          </div>
+          <div className="settings-menu">
             <button
-              className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
-              onClick={() => setShowLog((s) => !s)}
+              className={`btn-quit ${showSettings ? 'active' : ''}`}
+              onClick={() => setShowSettings((s) => !s)}
             >
-              📜 Log
+              ⚙️
             </button>
-            <button className="btn-quit" onClick={onRestart}>← New Game</button>
+            {showSettings && (
+              <div className="settings-dropdown">
+                <button
+                  className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
+                  onClick={() => setShowLog((s) => !s)}
+                >
+                  📜 Log
+                </button>
+                <button className="btn-quit" onClick={onRestart}>← New Game</button>
+              </div>
+            )}
           </div>
         </div>
         {/* Surveillance (density) tracker for the Activist & Parent players, rotated
@@ -546,16 +559,28 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
           <div className="board-trackers board-trackers-bottom">
             <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
           </div>
-          <div className="tv-top-bar">
-            <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
-            <div className="tv-top-actions">
+          <div className="tv-top-bar-row">
+            <div className="tv-top-bar">
+              <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
+            </div>
+            <div className="settings-menu">
               <button
-                className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
-                onClick={() => setShowLog((s) => !s)}
+                className={`btn-quit ${showSettings ? 'active' : ''}`}
+                onClick={() => setShowSettings((s) => !s)}
               >
-                📜 Log
+                ⚙️
               </button>
-              <button className="btn-quit" onClick={onRestart}>← New Game</button>
+              {showSettings && (
+                <div className="settings-dropdown">
+                  <button
+                    className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
+                    onClick={() => setShowLog((s) => !s)}
+                  >
+                    📜 Log
+                  </button>
+                  <button className="btn-quit" onClick={onRestart}>← New Game</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -647,7 +672,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                     <span className="drawn-card-art-icon">{DRAWN_CARD_ICONS[card.category]}</span>
                   </div>
                   <div className="drawn-card-body">
-                    <div className="drawn-card-name">{card.name}</div>
+                    <div className="drawn-card-name" style={{ color: DRAWN_CARD_COLORS[card.category] }}>{card.name}</div>
                     <div className="drawn-card-edu">{card.educationalContent}</div>
                     <div className="drawn-card-effect">{card.effect}</div>
                   </div>

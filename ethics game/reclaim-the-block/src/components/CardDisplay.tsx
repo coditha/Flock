@@ -48,7 +48,7 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
         <span className="card-category">{CATEGORY_LABELS[card.category]}</span>
       </div>
       {/* Body */}
-      <div className="card-name">{card.name}</div>
+      <div className="card-name" style={{ color }}>{card.name}</div>
       <div className="card-desc">{card.educationalContent}</div>
       <div className="card-effect">{card.effect}</div>
 
