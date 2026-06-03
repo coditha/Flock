@@ -55,17 +55,6 @@ const ROADS_PATH =
   'C73.8,87 60,92 50,92 C40,92 26.2,87 20,80 C13.8,73 13,60 13,50 ' +
   'C13,40 13.8,27 20,20 C26.2,13 40,8 50,8 Z';
 
-// Spur extending the ring out toward Town Square so it connects to the
-// external road with no gap. Direction depends on which side faces the center:
-// Suburb=down, Politics=up, Courthouse=right, Media=left. (Drawn past the
-// 0–100 viewBox; the tile is overflow:visible so it reaches the road.)
-const ROAD_SPUR: Record<string, string> = {
-  suburb: 'M50,92 L50,140',
-  politics: 'M50,8 L50,-32',
-  courthouse: 'M87,50 L138,50',
-  media: 'M13,50 L-38,50',
-};
-
 function slotPositionOf(position: string, neighborhoodId: string): number | null {
   const match = position.match(new RegExp(`^${neighborhoodId}-n(\\d)$`));
   return match ? parseInt(match[1]) - 1 : null;
@@ -124,9 +113,7 @@ export default function NeighborhoodTile({
         {/* Winding streets — drawn behind the houses and landmark */}
         <svg className="district-roads" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <path className="road-edge" d={ROADS_PATH} />
-          {ROAD_SPUR[neighborhood.id] && <path className="road-edge" d={ROAD_SPUR[neighborhood.id]} />}
           <path className="road-fill" d={ROADS_PATH} />
-          {ROAD_SPUR[neighborhood.id] && <path className="road-fill" d={ROAD_SPUR[neighborhood.id]} />}
         </svg>
         {/* Central landmark — the district's identity. Swap to a sprite via
             .district-landmark.lm-<id> { background-image: url(...) } later. */}

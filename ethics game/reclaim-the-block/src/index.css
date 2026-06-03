@@ -434,7 +434,13 @@ input, select { font-family: inherit; }
 
 .board-grid { display: flex; flex-direction: column; align-items: center; gap: 0; }
 .board-n1 { display: flex; justify-content: center; width: 100%; }
-.board-roads-top, .board-roads-bottom { display: flex; justify-content: center; align-items: center; height: 44px; }
+.board-roads-top, .board-roads-bottom { display: flex; justify-content: center; align-items: center; height: 70px; }
+/* Bias each road pebble toward Town Square so it sits mid-road, not under the
+   neighborhood's nearest device slot. (longer line on the neighborhood side) */
+.board-roads-top .road-line-v:first-child { flex: 3; }
+.board-roads-top .road-line-v:last-child { flex: 1; }
+.board-roads-bottom .road-line-v:first-child { flex: 1; }
+.board-roads-bottom .road-line-v:last-child { flex: 3; }
 .road-segment-v { display: flex; flex-direction: column; align-items: center; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 /* Connecting roads — same tan street + dark pixel outline as neighborhood roads */
@@ -512,7 +518,7 @@ input, select { font-family: inherit; }
   border-radius: 0;
   box-shadow: none;
   padding: 0.5rem 0.5rem 0.25rem;
-  overflow: visible;          /* let the road spur reach out to Town Square */
+  overflow: hidden;
   cursor: pointer;
   width: 210px; min-width: 190px;
   position: relative;
@@ -1768,7 +1774,7 @@ input, select { font-family: inherit; }
 }
 .tv-game .board-roads-top,
 .tv-game .board-roads-bottom {
-  height: 44px;
+  height: 78px;
 }
 /* ── Connect the inter-district roads to each neighbourhood ──────────────
    Purely cosmetic nudges (margins + transform). The movement graph, the
