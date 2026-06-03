@@ -980,7 +980,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
         case 'captain': {
           // Handled via CAPTAIN_REVERSE_OVERFLOW
-          s = log(s, 'Use the Parent ability via the Reverse Overflow action.');
+          s = log(s, 'Use the Activist ability via the Reverse Overflow action.');
           break;
         }
         case 'council': {

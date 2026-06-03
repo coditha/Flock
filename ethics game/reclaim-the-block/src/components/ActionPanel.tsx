@@ -345,7 +345,7 @@ export default function ActionPanel({
       label: 'Reverse Overflow',
       tooltip: [
         'Cost: 1 action + discard any 2 cards (once per turn).',
-        'Parent special ability.',
+        'Activist special ability.',
         'Lower the Surveillance Density Tracker by 1.',
         'Select any 2 cards to discard.',
       ].join('\n'),
