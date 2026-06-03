@@ -465,23 +465,28 @@ input, select { font-family: inherit; }
 .ch-road-v { flex: 1 1 0; min-height: 10px; width: 8px; background: #c8a060; box-shadow: 2px 0 0 var(--px-dark), -2px 0 0 var(--px-dark); }
 
 .city-hall {
-  background: linear-gradient(180deg, #ecdcb0 0%, #dcc890 100%);
-  border: 3px solid var(--yellow);
-  box-shadow:
-    0 0 0 2px var(--px-dark),
-    inset 2px 2px 0 var(--px-highlight),
-    inset -2px -2px 0 var(--px-shadow),
-    4px 4px 0 var(--px-dark);
-  padding: 0.75rem;
-  text-align: center; min-width: 100px;
+  background: url('/cityhall.png') no-repeat top center;
+  background-size: contain;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  width: 104px; height: 122px; min-width: 104px;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  text-align: center;
+  filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.45));
 }
-.city-hall.has-players { border-color: var(--green); }
-.city-hall.moveable { cursor: pointer; box-shadow: 0 0 0 2px var(--px-dark), 0 0 0 4px var(--blue), 4px 4px 0 var(--px-dark); }
-.city-hall.moveable:hover { box-shadow: 0 0 0 2px var(--px-dark), 0 0 0 4px var(--blue), 4px 4px 0 var(--px-dark), 0 0 14px rgba(91,154,245,0.3); }
-.city-hall.active-player-here { box-shadow: 0 0 0 2px var(--px-dark), 0 0 0 4px white, 4px 4px 0 var(--px-dark); }
-.city-hall-label { font-weight: 700; font-size: 0.68rem; color: var(--px-dark); text-shadow: 1px 1px 0 rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
-.city-hall-sublabel { font-size: 0.58rem; color: var(--text-muted); }
-.city-hall-players { font-size: 1.2rem; margin-top: 4px; min-height: 1.4rem; }
+.city-hall.has-players { filter: drop-shadow(0 0 4px var(--green)) drop-shadow(2px 4px 2px rgba(0,0,0,0.45)); }
+.city-hall.moveable { cursor: pointer; filter: drop-shadow(0 0 5px var(--blue)) drop-shadow(2px 4px 2px rgba(0,0,0,0.45)); }
+.city-hall.moveable:hover { filter: drop-shadow(0 0 9px var(--blue)) drop-shadow(2px 4px 2px rgba(0,0,0,0.45)); }
+.city-hall.active-player-here { filter: drop-shadow(0 0 5px #fff) drop-shadow(2px 4px 2px rgba(0,0,0,0.45)); }
+.city-hall-label {
+  font-weight: 700; font-size: 0.46rem; color: #fff;
+  background: rgba(46,28,10,0.88); border: 1px solid var(--px-dark);
+  padding: 1px 5px; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap;
+}
+.city-hall-sublabel { display: none; }
+.city-hall-players { font-size: 1rem; margin-top: 1px; min-height: 1.1rem; }
 .city-hall-road-players { font-size: 0.8rem; color: var(--text-muted); }
 .road-player { margin: 0 2px; }
 
@@ -1664,12 +1669,11 @@ input, select { font-family: inherit; }
   height: 56px;
 }
 .tv-game .city-hall {
-  min-width: 104px;
-  padding: 0.65rem;
+  width: 116px; height: 136px; min-width: 116px;
+  padding: 0;
 }
-.tv-game .city-hall-label { font-size: 0.72rem; }
-.tv-game .city-hall-sublabel { font-size: 0.6rem; }
-.tv-game .city-hall-players { font-size: 1.2rem; margin-top: 2px; }
+.tv-game .city-hall-label { font-size: 0.5rem; }
+.tv-game .city-hall-players { font-size: 1.1rem; margin-top: 2px; }
 .tv-game .neighborhood-header {
   margin: 0 0 16px;
   padding: 3px 10px;
