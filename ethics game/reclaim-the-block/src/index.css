@@ -441,7 +441,7 @@ input, select { font-family: inherit; }
 .board-roads-top .road-line-v:last-child { flex: 1; }
 .board-roads-bottom .road-line-v:first-child { flex: 1; }
 .board-roads-bottom .road-line-v:last-child { flex: 3; }
-.road-segment-v { display: flex; flex-direction: column; align-items: center; }
+.road-segment-v { display: flex; flex-direction: column; align-items: center; height: 100%; }
 .road-segment-h { display: flex; flex-direction: row; align-items: center; }
 /* Connecting roads — same tan street + dark pixel outline as neighborhood roads */
 .road-line-v {
