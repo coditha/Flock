@@ -328,7 +328,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
   const captainPlayer   = byRole('captain');
   const councilPlayer   = byRole('council');
 
-  const isActive = (p?: Player) => !!p && p.id === activePlayer.id;
+  const isActive = (p?: Player) => !!p && p.id === activePlayer.id && !state.pendingDiceRoll;
   const selFor   = (p?: Player) => (isActive(p) ? selectedCardIds : []);
   const clickFor = (p?: Player) => (isActive(p) ? handleCardClick : () => {});
 
