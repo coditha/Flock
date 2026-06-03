@@ -1510,7 +1510,7 @@ input, select { font-family: inherit; }
   align-self: center; margin-top: 0.5rem;
   padding: 0.6rem 2rem; font-size: 0.85rem;
 }
-.drawn-card-powerup { overflow: hidden; position: relative; border-color: var(--purple) !important; }
+.drawn-card-powerup { overflow: hidden; position: relative; }
 .drawn-card-powerup::after {
   content: '';
   position: absolute; inset: 0;
