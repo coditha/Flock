@@ -213,9 +213,10 @@ function TurnPopup({
 interface GameScreenProps {
   playerCount: 2 | 3 | 4;
   onRestart: () => void;
+  onNewGame: () => void;
 }
 
-function GameScreen({ playerCount, onRestart }: GameScreenProps) {
+function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const [state, dispatch] = useReducer(gameReducer, playerCount, buildInitialState);
 
   const [selectedCardIds, setSelectedCardIds] = useState<string[]>([]);
@@ -376,7 +377,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                 >
                   Game Log
                 </button>
-                <button className="btn-quit" onClick={onRestart}>New Game</button>
+                <button className="btn-quit" onClick={onNewGame}>New Game</button>
+                <button className="btn-quit" onClick={onRestart}>Exit</button>
                 <button className="btn-quit" onClick={() => { setShowIntro(true); setShowSettings(false); }}>Tutorial</button>
               </div>
             )}
@@ -579,7 +581,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                   >
                     Game Log
                   </button>
-                  <button className="btn-quit" onClick={onRestart}>New Game</button>
+                  <button className="btn-quit" onClick={onNewGame}>New Game</button>
+                <button className="btn-quit" onClick={onRestart}>Exit</button>
                   <button className="btn-quit" onClick={() => { setShowIntro(true); setShowSettings(false); }}>Tutorial</button>
                 </div>
               )}
@@ -726,8 +729,9 @@ export default function App() {
   };
 
   const handleRestart = () => setSession(null);
+  const handleNewGame = () => setSession((prev) => prev ? { count: prev.count, key: prev.key + 1 } : null);
 
   if (!session) return <GameSetup onStart={handleStart} />;
 
-  return <GameScreen key={session.key} playerCount={session.count} onRestart={handleRestart} />;
+  return <GameScreen key={session.key} playerCount={session.count} onRestart={handleRestart} onNewGame={handleNewGame} />;
 }
