@@ -285,7 +285,7 @@ export default function ActionPanel({
       label: 'Deposit',
       tooltip: [
         `Cost: 1 action + ${depositRequired} unique-color cards.`,
-        'Must be at City Hall.',
+        'Must be at the Town Square.',
         player.role.id === 'council'
           ? 'Council bonus: any 4 different colors.'
           : 'Need one of each: blue · yellow · green · red · purple.',

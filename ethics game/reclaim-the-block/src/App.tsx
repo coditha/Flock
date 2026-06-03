@@ -38,7 +38,7 @@ function CornerPanel({
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
 
   const POSITION_SHORT: Record<string, string> = {
-    'city-hall': 'City Hall',
+    'city-hall': 'Town Square',
     suburb: 'Suburb', courthouse: 'Courthouse', media: 'Media', politics: 'Politics',
     'suburb-n1': 'Sub N1', 'suburb-n2': 'Sub N2', 'suburb-n3': 'Sub N3', 'suburb-n4': 'Sub N4',
     'courthouse-n1': 'Court N1', 'courthouse-n2': 'Court N2', 'courthouse-n3': 'Court N3', 'courthouse-n4': 'Court N4',
@@ -476,7 +476,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                   className={`city-hall ${state.players.some((p) => p.position === 'city-hall') ? 'has-players' : ''} ${reachable('city-hall') ? 'moveable' : ''} ${activePlayer.position === 'city-hall' ? 'active-player-here' : ''}`}
                   onClick={() => { if (reachable('city-hall')) handleMove('city-hall'); }}
                 >
-                  <div className="city-hall-label">🏛️ CITY HALL</div>
+                  <div className="town-square-icon" aria-hidden="true">⛲</div>
+                  <div className="city-hall-label">TOWN SQUARE</div>
                   <div className="city-hall-sublabel">Deposit Zone</div>
                   <div className="city-hall-players">
                     {state.players.filter((p) => p.position === 'city-hall').map((p) => (

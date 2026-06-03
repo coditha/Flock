@@ -41,7 +41,7 @@ const LANDMARK_EMOJI: Record<string, string> = {
   suburb: '',         // Community center (uses sprite)
   courthouse: '',      // Courthouse (uses sprite)
   media: '📰',        // News office
-  politics: '🗳️',     // Government / political building
+  politics: '',       // Government building (uses city-hall sprite)
 };
 
 const SLOT_LABELS = ['N1', 'N2', 'N3', 'N4'];

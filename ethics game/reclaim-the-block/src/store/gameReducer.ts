@@ -681,7 +681,7 @@ function applyCardEffect(
 
     case 'reduced-deposit':
       s = { ...s, reducedNextDeposit: true };
-      s = log(s, 'Next City Hall deposit only needs 4 cards!');
+      s = log(s, 'Next Town Square deposit only needs 4 cards!');
       break;
 
     case 'board-phase-reduced':
@@ -950,11 +950,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           s = removeDeviceFromSlot(s, target.id, i as SlotIndex);
         }
       }
-      s = shiftMeter(s, 4, 'City Hall deposit');
+      s = shiftMeter(s, 4, 'Town Square deposit');
       s = { ...s, densityTracker: Math.max(1, s.densityTracker - 1) };
       s = shiftMeter(s, 1, 'Density Tracker decreased');
       s = spendActions(s, 1);
-      s = log(s, `${player.role.name} deposited at City Hall — ${target.name} cleared!`);
+      s = log(s, `${player.role.name} deposited at the Town Square — ${target.name} cleared!`);
       return checkWinLoss(s);
     }
 
@@ -985,7 +985,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
         case 'council': {
           // Handled via deposit — no standalone action
-          s = log(s, 'Council Member deposit bonus applied automatically at City Hall.');
+          s = log(s, 'Council Member deposit bonus applied automatically at the Town Square.');
           break;
         }
         case 'legal': {

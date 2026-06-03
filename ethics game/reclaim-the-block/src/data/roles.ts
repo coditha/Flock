@@ -33,7 +33,7 @@ export const ROLES: Role[] = [
     id: 'council',
     name: 'City Council Member',
     homeNeighborhood: 'politics',
-    specialAbility: 'Deposit only 4 Community Cards at City Hall instead of 5 when performing a neighborhood reset.',
+    specialAbility: 'Deposit only 4 Community Cards at the Town Square instead of 5 when performing a neighborhood reset.',
     color: 'red',
     colorHex: '#ef4444',
     emoji: '🔴',

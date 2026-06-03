@@ -546,7 +546,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     name: 'Fast-Track Ordinance',
     educationalContent:
       'San Francisco passed a surveillance ordinance in under 90 days when council members championed it as an urgent priority.',
-    effect: '⭐ Next City Hall deposit requires only 4 cards instead of 5.',
+    effect: '⭐ Next Town Square deposit requires only 4 cards instead of 5.',
     effectType: 'reduced-deposit',
     isPowerUp: true,
   },

@@ -10,7 +10,7 @@ interface Props {
 
 const POSITION_LABELS: Record<string, string> = {
   suburb: 'Suburb', courthouse: 'Courthouse', media: 'Media District', politics: 'Politics Row',
-  'city-hall': 'City Hall',
+  'city-hall': 'Town Square',
   'suburb-n1': 'Suburb N1', 'suburb-n2': 'Suburb N2', 'suburb-n3': 'Suburb N3', 'suburb-n4': 'Suburb N4',
   'courthouse-n1': 'Courthouse N1', 'courthouse-n2': 'Courthouse N2', 'courthouse-n3': 'Courthouse N3', 'courthouse-n4': 'Courthouse N4',
   'media-n1': 'Media N1', 'media-n2': 'Media N2', 'media-n3': 'Media N3', 'media-n4': 'Media N4',
