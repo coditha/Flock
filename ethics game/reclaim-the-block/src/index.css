@@ -1469,9 +1469,25 @@ input, select { font-family: inherit; }
 .drawn-cards-list {
   display: flex; flex-direction: row; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
 }
+/* Wrapper provides the "border" via background+padding, following the clip-path */
+.drawn-card-wrap {
+  padding: 2px;
+  background: var(--border);
+  clip-path: polygon(
+    0 10px, 4px 6px, 6px 4px, 10px 0,
+    calc(100% - 10px) 0, calc(100% - 6px) 4px, calc(100% - 4px) 6px, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 4px) calc(100% - 6px), calc(100% - 6px) calc(100% - 4px), calc(100% - 10px) 100%,
+    10px 100%, 6px calc(100% - 4px), 4px calc(100% - 6px), 0 calc(100% - 10px)
+  );
+  width: 200px; flex-shrink: 0;
+}
+.cat-wrap-blue   { background: var(--blue); }
+.cat-wrap-yellow { background: var(--yellow); }
+.cat-wrap-green  { background: var(--green); }
+.cat-wrap-red    { background: var(--red); }
+.cat-wrap-purple { background: var(--purple); }
 .drawn-card {
   background: var(--surface);
-  border: 2px solid var(--border);
   box-shadow: inset 2px 2px 0 var(--px-highlight);
   clip-path: polygon(
     0 10px, 4px 6px, 6px 4px, 10px 0,
@@ -1480,13 +1496,8 @@ input, select { font-family: inherit; }
     10px 100%, 6px calc(100% - 4px), 4px calc(100% - 6px), 0 calc(100% - 10px)
   );
   display: flex; flex-direction: column;
-  width: 200px; flex-shrink: 0; overflow: hidden;
+  width: 100%; overflow: hidden;
 }
-.drawn-card.cat-border-blue   { border-color: var(--blue); }
-.drawn-card.cat-border-yellow { border-color: var(--yellow); }
-.drawn-card.cat-border-green  { border-color: var(--green); }
-.drawn-card.cat-border-red    { border-color: var(--red); }
-.drawn-card.cat-border-purple { border-color: var(--purple); }
 /* Header band — filled with category color */
 .drawn-card-header {
   padding: 0.65rem 0.75rem;
@@ -1515,7 +1526,7 @@ input, select { font-family: inherit; }
   align-self: center; margin-top: 0.5rem;
   padding: 0.6rem 2rem; font-size: 0.85rem;
 }
-.drawn-card-powerup { overflow: hidden; position: relative; }
+.drawn-card-powerup { position: relative; }
 .drawn-card-powerup::after {
   content: '';
   position: absolute; inset: 0;

@@ -645,7 +645,8 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             </div>
             <div className="drawn-cards-list">
               {state.pendingDrawnCards.cards.map((card) => (
-                <div key={card.id} className={`drawn-card cat-border-${card.category}${card.isPowerUp ? ' drawn-card-powerup' : ''}`}>
+                <div key={card.id} className={`drawn-card-wrap cat-wrap-${card.category}${card.isPowerUp ? ' drawn-card-powerup' : ''}`}>
+                <div className={`drawn-card`}>
                   <div className="drawn-card-header" style={{ background: DRAWN_CARD_COLORS[card.category] }}>
                     <span className="drawn-card-category">{DRAWN_CARD_LABELS[card.category]}</span>
                     {card.isPowerUp && <span className="drawn-card-star">⭐</span>}
@@ -658,6 +659,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
                     <div className="drawn-card-edu">{card.educationalContent}</div>
                     <div className="drawn-card-effect">{card.effect}</div>
                   </div>
+                </div>
                 </div>
               ))}
             </div>
