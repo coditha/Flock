@@ -275,24 +275,21 @@ input, select { font-family: inherit; }
 .pm-inline-label { font-size: 0.62rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
 .pm-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }
 /* Horizontal meter — unfolds to the side of the badge (0 → 30, with current marker) */
-.pm-hmeter {
-  padding: 0.3rem 0.5rem 0.5rem;
+.pm-segments {
+  display: flex; gap: 3px; padding: 0.3rem 0.4rem;
   background: var(--surface); border: 2px solid var(--border);
   box-shadow: inset 1px 1px 0 var(--px-highlight);
 }
-.pm-hmeter-track-wrap { position: relative; width: 200px; }
-.pm-hmeter-track {
-  position: relative; width: 100%; height: 16px;
+.pm-seg {
+  width: 28px; height: 28px; flex-shrink: 0;
   background: var(--surface2); border: 2px solid var(--border);
-  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.15);
-  overflow: visible;
+  box-shadow: inset 1px 1px 0 var(--px-highlight);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 2px; transition: background 0.3s, border-color 0.3s;
 }
-.pm-hmeter-fill { position: absolute; left: 0; top: 0; height: 100%; transition: width 0.4s ease, background 0.4s ease; overflow: hidden; }
-.pm-hmeter-marker { position: absolute; top: 0; width: 2px; height: 100%; background: rgba(0,0,0,0.6); }
-.pm-hmeter-tick { position: absolute; top: 0; width: 1px; height: 100%; background: rgba(0,0,0,0.2); transform: translateX(-50%); }
-.pm-hmeter-nums { position: relative; height: 14px; }
-.pm-hmeter-num { position: absolute; transform: translateX(-50%); font-size: 0.5rem; font-weight: 700; line-height: 1; top: 2px; }
-.pm-hmeter-num-current { font-weight: 900; text-decoration: underline; }
+.pm-seg-filled { box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3); }
+.pm-seg-num { font-size: 0.48rem; font-weight: 700; color: rgba(0,0,0,0.7); line-height: 1; }
+.pm-seg-filled .pm-seg-num { color: rgba(255,255,255,0.9); }
 .pm-hmeter-warning { font-size: 0.9rem; animation: pulse 1s infinite; }
 
 /* Vertical Density Tracker */

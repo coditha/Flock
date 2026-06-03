@@ -64,23 +64,16 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
         </button>
 
         {expanded && (
-          <div className="pm-hmeter">
-            <div className="pm-hmeter-track-wrap">
-              <div className="pm-hmeter-track">
-                <div className="pm-hmeter-fill" style={{ width: `${pct}%`, background: color }} />
-                <div className="pm-hmeter-marker" style={{ left: `${pct}%` }} title={`Current (${value})`} />
-                {[0, 5, 10, 15, 20, 25, 30].map((n) => (
-                  <div key={n} className="pm-hmeter-tick" style={{ left: `${(n / 30) * 100}%` }} />
-                ))}
-              </div>
-              <div className="pm-hmeter-nums">
-                {[0, 5, 10, 15, 20, 25, 30].map((n) => (
-                  <span key={n} className={`pm-hmeter-num${n === value ? ' pm-hmeter-num-current' : ''}`} style={{ left: `${(n / 30) * 100}%`, color: n <= 5 ? 'var(--red)' : n <= 15 ? 'var(--text-muted)' : 'var(--green)' }}>
-                    {n}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="pm-segments">
+            {[5, 10, 15, 20, 25, 30].map((threshold) => {
+              const filled = value >= threshold;
+              const segColor = threshold <= 5 ? '#ef4444' : threshold <= 10 ? '#f97316' : threshold <= 15 ? '#eab308' : '#22c55e';
+              return (
+                <div key={threshold} className={`pm-seg${filled ? ' pm-seg-filled' : ''}`} style={filled ? { background: segColor, borderColor: segColor } : {}}>
+                  <span className="pm-seg-num">{threshold}</span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
