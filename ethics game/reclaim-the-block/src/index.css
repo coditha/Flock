@@ -1479,7 +1479,7 @@ input, select { font-family: inherit; }
     100% calc(100% - 10px), calc(100% - 4px) calc(100% - 6px), calc(100% - 6px) calc(100% - 4px), calc(100% - 10px) 100%,
     10px 100%, 6px calc(100% - 4px), 4px calc(100% - 6px), 0 calc(100% - 10px)
   );
-  width: 200px; flex-shrink: 0;
+  width: 200px; height: 320px; flex-shrink: 0;
   align-self: flex-start;
   display: flex; flex-direction: column;
 }
@@ -1498,7 +1498,7 @@ input, select { font-family: inherit; }
     10px 100%, 6px calc(100% - 4px), 4px calc(100% - 6px), 0 calc(100% - 10px)
   );
   display: flex; flex-direction: column;
-  width: 100%; overflow: hidden;
+  width: 100%; height: 100%; overflow: hidden;
 }
 /* Header band — filled with category color */
 .drawn-card-header {
@@ -1511,18 +1511,21 @@ input, select { font-family: inherit; }
 .drawn-card-art { background: transparent; display: flex; align-items: center; justify-content: center; padding: 0.6rem 0; }
 .drawn-card-art-icon { font-size: 2rem; line-height: 1; }
 /* Body */
-.drawn-card-body { padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.drawn-card-body { padding: 0.6rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; overflow: hidden; }
 .drawn-card-name {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.75rem; color: var(--px-dark); line-height: 1.6;
   text-align: center;
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
 }
 .drawn-card-edu {
   font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; font-style: italic;
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
 }
 .drawn-card-effect {
   font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.5;
   border-top: 1px solid var(--border); padding-top: 0.35rem;
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
 }
 .drawn-cards-confirm {
   align-self: center; margin-top: 0.5rem;

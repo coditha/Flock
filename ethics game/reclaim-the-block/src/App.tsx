@@ -638,10 +638,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
         <div className="drawn-cards-overlay">
           <div className={`drawn-cards-modal${facesTop ? ' drawn-cards-modal-rotated' : ''}`}>
             <div className="drawn-cards-title">
-              {drawingPlayer?.role.emoji}{' '}
-              {drawingPlayer?.role.name} drew{' '}
-              {state.pendingDrawnCards.cards.length} card
-              {state.pendingDrawnCards.cards.length !== 1 ? 's' : ''}
+              {state.pendingDrawnCards.cards.length} card{state.pendingDrawnCards.cards.length !== 1 ? 's' : ''} drawn
             </div>
             <div className="drawn-cards-list">
               {state.pendingDrawnCards.cards.map((card) => (
