@@ -646,13 +646,15 @@ input, select { font-family: inherit; }
 .int-waypoint {
   width: 18px; height: 18px; flex-shrink: 0; position: relative; z-index: 1;
   border-radius: 50%;
-  background: #d4b880; border: 2px solid var(--px-dark); box-shadow: 2px 2px 0 var(--px-dark);
+  background: url('/pebble.png') center/cover no-repeat;
+  border: none; box-shadow: none;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.6rem;
+  image-rendering: pixelated;
 }
 .int-road-seg.moveable { cursor: pointer; }
-.int-road-seg.moveable .int-waypoint { border-color: var(--blue); box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px var(--blue); }
-.int-road-seg.moveable:hover .int-waypoint { background: #c4e0f8; }
-.int-road-seg.active-player-here .int-waypoint { border-color: white; box-shadow: 2px 2px 0 var(--px-dark), 0 0 0 2px white; }
+.int-road-seg.moveable .int-waypoint { outline: 2px solid var(--blue); outline-offset: 1px; }
+.int-road-seg.moveable:hover .int-waypoint { filter: brightness(1.2); }
+.int-road-seg.active-player-here .int-waypoint { outline: 2px solid white; outline-offset: 1px; }
 .device-slot {
   flex: 1;
   height: 70px;
