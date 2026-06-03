@@ -1247,7 +1247,19 @@ input, select { font-family: inherit; }
 .card-selected { transform: translateY(-8px) !important; border-color: white !important; filter: drop-shadow(3px 11px 0 var(--px-dark)) !important; }
 .card-disabled { opacity: 0.4; cursor: not-allowed; }
 .card-disabled:hover { transform: none !important; filter: drop-shadow(3px 3px 0 var(--px-dark)) !important; }
-.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); border-color: var(--purple) !important; }
+.card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); border-color: var(--purple) !important; overflow: hidden; position: relative; }
+@keyframes card-shimmer {
+  0%   { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(350%) skewX(-20deg); }
+}
+.card-powerup::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+  width: 40%;
+  animation: card-shimmer 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
 
 .card-top { padding: 4px 6px; display: flex; justify-content: space-between; align-items: center; }
 .card-category { font-size: 0.52rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: rgba(0,0,0,0.85); }
