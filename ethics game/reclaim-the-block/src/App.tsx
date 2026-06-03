@@ -29,9 +29,11 @@ function CornerPanel({
   isActive,
   selectedCardIds,
   onCardClick,
+  pendingDiscard,
 }: {
   player: Player;
   isActive: boolean;
+  pendingDiscard?: boolean;
   selectedCardIds: string[];
   onCardClick: (card: CommunityCard) => void;
 }) {
@@ -54,7 +56,7 @@ function CornerPanel({
 
   return (
     <div
-      className={`corner-panel ${isActive ? 'corner-active' : ''}`}
+      className={`corner-panel ${isActive ? 'corner-active' : ''} ${pendingDiscard ? 'corner-discarding' : ''}`}
       style={{ borderColor: player.role.colorHex }}
     >
       <div className="corner-header" style={{ background: player.role.colorHex }}>
@@ -80,7 +82,7 @@ function CornerPanel({
             return (
               <div
                 key={card.id}
-                className={`fan-card-wrap${isFocused ? ' fan-focused' : ''}`}
+                className={`fan-card-wrap${isFocused ? ' fan-focused' : ''}${pendingDiscard && !selectedCardIds.includes(card.id) ? ' fan-card-dim' : ''}`}
                 style={{
                   left,
                   zIndex: isFocused ? 30 : i + 1,
@@ -339,6 +341,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             isActive={isActive(organizerPlayer)}
             selectedCardIds={selFor(organizerPlayer)}
             onCardClick={clickFor(organizerPlayer)}
+            pendingDiscard={isActive(organizerPlayer) && !!state.pendingDiscard}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>
@@ -394,6 +397,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             isActive={isActive(captainPlayer)}
             selectedCardIds={selFor(captainPlayer)}
             onCardClick={clickFor(captainPlayer)}
+            pendingDiscard={isActive(captainPlayer) && !!state.pendingDiscard}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>
@@ -565,6 +569,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             isActive={isActive(legalPlayer)}
             selectedCardIds={selFor(legalPlayer)}
             onCardClick={clickFor(legalPlayer)}
+            pendingDiscard={isActive(legalPlayer) && !!state.pendingDiscard}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>
@@ -579,6 +584,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             isActive={isActive(councilPlayer)}
             selectedCardIds={selFor(councilPlayer)}
             onCardClick={clickFor(councilPlayer)}
+            pendingDiscard={isActive(councilPlayer) && !!state.pendingDiscard}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>

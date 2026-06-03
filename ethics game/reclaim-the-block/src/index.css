@@ -1827,6 +1827,8 @@ input, select { font-family: inherit; }
   opacity: 0.9;
   transition: opacity 0.2s;
 }
+.corner-panel.corner-discarding { background: rgba(0,0,0,0.08); filter: brightness(0.82); }
+.fan-card-dim { opacity: 0.35; transition: opacity 0.15s; }
 .corner-panel.corner-active {
   opacity: 1;
   box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark), 0 0 0 3px white;
