@@ -363,10 +363,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
       {/* ── TOP CENTER: Title bar + Revealed cards ────────────── */}
       <div className="tv-top-center">
         <div className="tv-top-bar">
-          <div className="game-title">RECLAIM THE BLOCK</div>
-          <div className="round-info">
-            Round {state.round} — {activePlayer.role.emoji} {activePlayer.role.name}'s turn
-          </div>
+          <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
           <div className="tv-top-actions">
             <button
               className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
