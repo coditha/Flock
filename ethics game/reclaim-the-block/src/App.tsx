@@ -30,10 +30,12 @@ function CornerPanel({
   selectedCardIds,
   onCardClick,
   pendingDiscard,
+  pendingDiscardCount,
 }: {
   player: Player;
   isActive: boolean;
   pendingDiscard?: boolean;
+  pendingDiscardCount?: number;
   selectedCardIds: string[];
   onCardClick: (card: CommunityCard) => void;
 }) {
@@ -82,10 +84,10 @@ function CornerPanel({
             return (
               <div
                 key={card.id}
-                className={`fan-card-wrap${isFocused ? ' fan-focused' : ''}${pendingDiscard && !selectedCardIds.includes(card.id) ? ' fan-card-dim' : ''}`}
+                className={`fan-card-wrap${isFocused ? ' fan-focused' : ''}${pendingDiscard && !selectedCardIds.includes(card.id) ? ' fan-card-dim' : ''}${pendingDiscard && !selectedCardIds.includes(card.id) && selectedCardIds.length >= (pendingDiscardCount ?? 0) ? ' fan-card-blocked' : ''}`}
                 style={{
                   left,
-                  zIndex: isFocused ? 30 : i + 1,
+                  zIndex: isFocused ? 30 : selectedCardIds.includes(card.id) ? 20 : i + 1,
                 }}
               >
                 <CardDisplay
@@ -342,6 +344,7 @@ function GameScreen({ playerCount, onRestart }: GameScreenProps) {
             selectedCardIds={selFor(organizerPlayer)}
             onCardClick={clickFor(organizerPlayer)}
             pendingDiscard={isActive(organizerPlayer) && !!state.pendingDiscard}
+            pendingDiscardCount={state.pendingDiscard?.count}
           />
         ) : (
           <div className="corner-empty-slot">No player</div>
