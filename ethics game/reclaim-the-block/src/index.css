@@ -1882,7 +1882,10 @@ input, select { font-family: inherit; }
   position: relative;
   flex: 1;
   min-height: 90px;
-  overflow: hidden; /* no scroll — overlap increases instead */
+  /* Let a selected/lifted card rise over the header instead of being clipped
+     under it. The .corner-panel still has overflow:hidden, so cards can't
+     escape the panel itself. */
+  overflow: visible;
 }
 .corner-empty {
   color: var(--text-muted);
