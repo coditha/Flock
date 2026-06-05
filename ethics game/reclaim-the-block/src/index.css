@@ -1900,7 +1900,7 @@ input, select { font-family: inherit; }
   transition: opacity 0.2s, filter 0.2s;
 }
 .corner-panel.corner-discarding { background: rgba(0,0,0,0.08); filter: brightness(0.82); }
-.fan-card-dim { opacity: 0.35; transition: opacity 0.15s; }
+.fan-card-dim { filter: brightness(0.4) saturate(0.4); transition: filter 0.15s; }
 .corner-panel.corner-active {
   opacity: 1;
   filter: brightness(1);
@@ -1988,9 +1988,9 @@ input, select { font-family: inherit; }
   display: flex; flex-direction: column;
 }
 /* Wider cards → more readable text, description shown inline (no dropdown) */
-.corner-hand .card-name   { font-size: 0.72rem; line-height: 1.25; padding: 4px 6px; }
+.corner-hand .card-name   { font-size: 0.52rem; line-height: 1.25; padding: 4px 6px; }
 .corner-hand .card-effect { font-size: 0.62rem; padding: 0 6px 3px; font-weight: 700; color: var(--text); }
-.corner-hand .card-desc   { font-size: 0.58rem; padding: 0 6px 4px; flex: 1; }
+.corner-hand .card-desc   { font-size: 0.58rem; padding: 8px 6px 4px; flex: 1; text-align: left; }
 .corner-hand .card-top    { padding: 3px 6px; }
 .corner-hand .card-category { font-size: 0.56rem; }
 .corner-hand .card-selected { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 3px 11px 0 var(--px-dark), 0 0 0 2px white !important; }

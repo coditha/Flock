@@ -559,7 +559,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
            tracker above an upright copy of the top bar (Privacy meter + Log /
            New Game) so they get the same controls facing their side of the table. */}
         <div className="tv-bottom-center">
-          <div className="board-trackers board-trackers-bottom">
+<div className="board-trackers board-trackers-bottom">
             <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
           </div>
           <div className="tv-top-bar-row">
