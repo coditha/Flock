@@ -1317,6 +1317,8 @@ input, select { font-family: inherit; }
 .card-selected { transform: translateY(-8px) !important; border-color: white !important; filter: drop-shadow(3px 11px 0 var(--px-dark)) !important; }
 .card-disabled { opacity: 0.4; cursor: not-allowed; }
 .card-disabled:hover { transform: none !important; filter: drop-shadow(3px 3px 0 var(--px-dark)) !important; }
+/* Inside the corner hand the panel-level brightness already signals inactive — keep cards opaque so they don't bleed through each other when overlapping */
+.corner-hand .card-disabled { opacity: 1; }
 .card-powerup { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow); overflow: hidden; position: relative; }
 @keyframes card-shimmer {
   0%   { transform: translateX(-150%) skewX(-20deg); }
