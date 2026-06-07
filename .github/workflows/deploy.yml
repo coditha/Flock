@@ -24,8 +24,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: npm ci
+          node-version: 22
+      # package.json has an eslint peer-dep conflict (@eslint/js@10 vs eslint@9);
+      # eslint isn't needed to build, so install leniently.
+      - run: npm install --legacy-peer-deps
       # Build with the bundler directly (skip `tsc -b`, which currently fails on
       # unused dead code) so the deploy isn't blocked by type-only lint errors.
       - run: npx vite build
