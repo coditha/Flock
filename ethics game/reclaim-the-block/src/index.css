@@ -61,7 +61,7 @@ input, select { font-family: inherit; }
     inset 2px 2px 0 var(--px-highlight),
     inset -2px -2px 0 var(--px-shadow);
   padding: clamp(0.75rem, 2vh, 1.5rem) clamp(1rem, 2vw, 1.75rem);
-  max-width: 680px; width: 100%;
+  max-width: 780px; width: 100%;
   max-height: 94dvh;
   overflow: hidden;
   display: flex; flex-direction: column;
@@ -118,6 +118,17 @@ input, select { font-family: inherit; }
 .setup-rules li { color: var(--text-muted); padding-left: 1.2rem; position: relative; font-size: clamp(0.68rem, 1.2vmin, 0.84rem); }
 .setup-rules li::before { content: '▸'; position: absolute; left: 0; color: var(--px-gold); }
 
+.tutorial-btn {
+  width: 100%; padding: clamp(0.4rem, 0.9vh, 0.7rem);
+  background: #5a7a3a; color: #fff;
+  border: 2px solid var(--px-dark);
+  box-shadow: 3px 3px 0 var(--px-dark);
+  font-size: clamp(0.68rem, 1.3vmin, 0.82rem); font-weight: 700; letter-spacing: 1px;
+  margin-top: clamp(0.3rem, 0.7vh, 0.6rem); flex-shrink: 0;
+  transition: all 0.1s; cursor: pointer; font-family: inherit;
+}
+.tutorial-btn:hover { background: #6a8f48; transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--px-dark); }
+
 .start-btn {
   width: 100%; padding: clamp(0.5rem, 1.2vh, 0.9rem);
   background: var(--yellow); color: #fff;
@@ -129,6 +140,20 @@ input, select { font-family: inherit; }
 }
 .start-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--px-dark); }
 .start-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--px-dark); }
+
+/* ── Tutorial ─────────────────────────────────────────────── */
+.tutorial-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(0.5rem, 1vh, 0.8rem); }
+.tutorial-back-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; font-family: inherit; font-weight: 700; padding: 0; }
+.tutorial-back-btn:hover { color: var(--text); }
+.tutorial-progress { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; }
+.tutorial-step { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: clamp(1.2rem, 3vh, 2.5rem) 0; }
+.tutorial-step-title { font-size: clamp(1rem, 2.2vmin, 1.4rem); font-weight: 700; margin-bottom: clamp(0.7rem, 1.5vh, 1.2rem); color: var(--text); }
+.tutorial-step-body { color: var(--text-muted); line-height: 1.7; font-size: clamp(0.85rem, 1.7vmin, 1.05rem); }
+.tutorial-dots { display: flex; justify-content: center; gap: 6px; margin: clamp(0.4rem, 1vh, 0.8rem) 0; }
+.tutorial-dot { width: 8px; height: 8px; border-radius: 0; border: 2px solid var(--border); background: transparent; cursor: pointer; padding: 0; transition: background 0.1s, border-color 0.1s; }
+.tutorial-dot.active { background: var(--yellow); border-color: var(--yellow); }
+.tutorial-nav { display: flex; align-items: center; gap: 0.5rem; }
+.tutorial-done-btn { flex: 1; margin-top: 0; }
 
 /* ── Game Layout ──────────────────────────────────────────── */
 .game-layout {
@@ -2062,6 +2087,54 @@ input, select { font-family: inherit; }
 
 /* Board scaling is handled by JS auto-fit (see useLayoutEffect in App.tsx),
    which measures the centre zone and scales .board-area to fit any screen. */
+
+/* ── In-game tutorial overlay ───────────────────────────────── */
+.tutorial-overlay {
+  position: fixed; inset: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(18,10,2,0.55);
+}
+.tutorial-overlay-panel {
+  width: min(480px, 88vw);
+  background: var(--surface);
+  border: 3px solid var(--px-gold);
+  box-shadow: 0 0 0 2px var(--px-dark), 4px 4px 0 var(--px-dark);
+  padding: 1.25rem 1.5rem 1rem;
+  display: flex; flex-direction: column; gap: 0.8rem;
+}
+.tutorial-overlay-header {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.tutorial-overlay-title {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--px-gold);
+}
+.tutorial-overlay-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1;
+}
+.tutorial-overlay-close:hover { color: var(--text); }
+.tutorial-overlay-step { min-height: 100px; }
+.tutorial-overlay-step-title {
+  font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text);
+}
+.tutorial-overlay-step-body {
+  font-size: 0.8rem; color: var(--text-muted); line-height: 1.65;
+}
+.tutorial-overlay-nav {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tutorial-overlay-nav-btn {
+  background: var(--surface2); border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--px-dark); color: var(--text);
+  font-size: 0.75rem; font-weight: 700; font-family: inherit;
+  padding: 0.3rem 0.75rem; cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.tutorial-overlay-nav-btn:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--px-dark); }
+.tutorial-overlay-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.tutorial-overlay-done { background: #5a7a3a; color: #fff; border-color: var(--px-dark); }
+.tutorial-overlay-done:hover { background: #6a8f48; }
 
 /* ── Intro story overlay (start of a new game) ──────────────── */
 .intro-overlay {

@@ -5,8 +5,96 @@ interface Props {
   onStart: (playerCount: 2 | 3 | 4) => void;
 }
 
+const TUTORIAL_STEPS = [
+  {
+    title: 'The Situation',
+    body: 'Your city is installing surveillance cameras, license plate readers, and smart devices across every neighborhood. Privacy is eroding and community trust is falling. You and your neighbors must work together to push back.',
+  },
+  {
+    title: 'Your Goal',
+    body: 'Remove all excess surveillance devices from all 4 neighborhoods before the Privacy & Community Trust meter hits 0. All players win or lose together.',
+  },
+  {
+    title: 'Your Turn',
+    body: 'Each turn: Roll the dice to get action points. Spend them to move around the board, remove devices, or play community cards. End your turn to draw 2 new cards.',
+  },
+  {
+    title: 'Moving',
+    body: 'Each move costs 1 action. You can move to adjacent road segments or device slots. Reach the Town Square to deposit cards and trigger a neighborhood reset.',
+  },
+  {
+    title: 'Community Cards',
+    body: 'Play 2 matching-color cards to remove a device from a neighborhood. Cards come in 5 types: Legal (blue), Organizing (yellow), Media (green), Political (red), and Neighborhood (purple).',
+  },
+  {
+    title: 'Privacy Meter',
+    body: 'The meter starts at 20/30. Every surveillance device placed drops it. If it hits 0, you lose. Removing devices and completing neighborhoods helps protect it.',
+  },
+  {
+    title: 'Incident Cards',
+    body: 'When a neighborhood fills up, an incident card is drawn. These create setbacks like dropping the trust meter or blocking a board phase. Resolve them quickly!',
+  },
+  {
+    title: 'Winning',
+    body: 'Clear all 4 neighborhoods of excess devices before the meter hits 0. Each role has a unique special ability — use them together strategically to win!',
+  },
+];
+
 export default function GameSetup({ onStart }: Props) {
   const [count, setCount] = useState<2 | 3 | 4>(4);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+
+  if (showTutorial) {
+    const step = TUTORIAL_STEPS[tutorialStep];
+    const isLast = tutorialStep === TUTORIAL_STEPS.length - 1;
+    return (
+      <div className="setup-screen">
+        <div className="setup-card">
+          <div className="tutorial-header">
+            <button className="tutorial-back-btn" onClick={() => { setShowTutorial(false); setTutorialStep(0); }}>
+              ← Back
+            </button>
+            <span className="tutorial-progress">{tutorialStep + 1} / {TUTORIAL_STEPS.length}</span>
+          </div>
+
+          <div className="tutorial-step">
+            <h2 className="tutorial-step-title">{step.title}</h2>
+            <p className="tutorial-step-body">{step.body}</p>
+          </div>
+
+          <div className="tutorial-dots">
+            {TUTORIAL_STEPS.map((_, i) => (
+              <button
+                key={i}
+                className={`tutorial-dot ${i === tutorialStep ? 'active' : ''}`}
+                onClick={() => setTutorialStep(i)}
+              />
+            ))}
+          </div>
+
+          <div className="tutorial-nav">
+            <button
+              className="count-btn"
+              onClick={() => setTutorialStep(s => Math.max(0, s - 1))}
+              disabled={tutorialStep === 0}
+            >
+              ←
+            </button>
+            {isLast ? (
+              <button className="start-btn tutorial-done-btn" onClick={() => { setShowTutorial(false); setTutorialStep(0); }}>
+                Got it!
+              </button>
+            ) : (
+              <button className="start-btn tutorial-done-btn" onClick={() => setTutorialStep(s => s + 1)}>
+                Next →
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="setup-screen">
@@ -49,17 +137,9 @@ export default function GameSetup({ onStart }: Props) {
           </div>
         </div>
 
-        <div className="setup-section">
-          <h2>Objective</h2>
-          <p className="setup-objective">
-            Work together to remove all excess surveillance devices from all 4 neighborhoods before the{' '}
-            <strong>Privacy &amp; Community Trust Meter</strong> hits 0.
-          </p>
-          <ul className="setup-rules">
-            <li>🏆 <strong>Win:</strong> All 4 neighborhoods cleared (0 device tokens in incoming slots)</li>
-            <li>💀 <strong>Lose:</strong> Meter drops to 0</li>
-          </ul>
-        </div>
+        <button className="tutorial-btn" onClick={() => setShowTutorial(true)}>
+          How to Play
+        </button>
 
         <button className="start-btn" onClick={() => onStart(count)}>
           Start Game
