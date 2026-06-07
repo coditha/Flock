@@ -57,16 +57,6 @@ export default function TutorialOverlay({ onClose }: Props) {
           <p className="tutorial-overlay-step-body">{current.body}</p>
         </div>
 
-        <div className="tutorial-dots">
-          {STEPS.map((_, i) => (
-            <button
-              key={i}
-              className={`tutorial-dot ${i === step ? 'active' : ''}`}
-              onClick={() => setStep(i)}
-            />
-          ))}
-        </div>
-
         <div className="tutorial-overlay-nav">
           <button
             className="tutorial-overlay-nav-btn"
@@ -75,7 +65,15 @@ export default function TutorialOverlay({ onClose }: Props) {
           >
             ←
           </button>
-          <span className="tutorial-progress">{step + 1} / {STEPS.length}</span>
+          <div className="tutorial-dots">
+            {STEPS.map((_, i) => (
+              <button
+                key={i}
+                className={`tutorial-dot ${i === step ? 'active' : ''}`}
+                onClick={() => setStep(i)}
+              />
+            ))}
+          </div>
           {isLast ? (
             <button className="tutorial-overlay-nav-btn tutorial-overlay-done" onClick={onClose}>
               Done

@@ -374,12 +374,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
             </button>
             {showSettings && (
               <div className="settings-dropdown">
-                <button
-                  className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
-                  onClick={() => setShowLog((s) => !s)}
-                >
-                  Game Log
-                </button>
+                <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(false); }}>Game Log</button>
                 <button className="btn-quit" onClick={onNewGame}>New Game</button>
                 <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(false); }}>Role</button>
                 <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(false); }}>Tutorial</button>
@@ -400,16 +395,15 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           Far copy (flipped, top) faces the Activist & Parent; near copy (upright,
           bottom) faces the Lawyer & City Council. ── */}
       {showLog && (
-        <>
-          <div className="log-dropdown log-dropdown-far">
-            <div className="log-dropdown-title">📜 Game Log</div>
+        <div className="tutorial-overlay" onClick={() => setShowLog(false)}>
+          <div className="role-overlay-panel" onClick={e => e.stopPropagation()}>
+            <div className="tutorial-overlay-header">
+              <span className="tutorial-overlay-title">Game Log</span>
+              <button className="tutorial-overlay-close" onClick={() => setShowLog(false)}>✕</button>
+            </div>
             <GameLog log={state.gameLog} />
           </div>
-          <div className="log-dropdown log-dropdown-near">
-            <div className="log-dropdown-title">📜 Game Log</div>
-            <GameLog log={state.gameLog} />
-          </div>
-        </>
+        </div>
       )}
 
       {/* ── TOP-RIGHT: Neighborhood Captain (rotated 180°) ────── */}
@@ -579,16 +573,11 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
               </button>
               {showSettings && (
                 <div className="settings-dropdown">
-                  <button
-                    className={`btn-quit btn-log ${showLog ? 'active' : ''}`}
-                    onClick={() => setShowLog((s) => !s)}
-                  >
-                    Game Log
-                  </button>
+                  <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(false); }}>Game Log</button>
                   <button className="btn-quit" onClick={onNewGame}>New Game</button>
-                <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(false); }}>Role</button>
+                  <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(false); }}>Role</button>
                   <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(false); }}>Tutorial</button>
-                <button className="btn-quit" onClick={onRestart}>Exit</button>
+                  <button className="btn-quit" onClick={onRestart}>Exit</button>
                 </div>
               )}
             </div>

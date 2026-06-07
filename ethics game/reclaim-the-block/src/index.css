@@ -205,6 +205,19 @@ input, select { font-family: inherit; }
   min-width: 120px;
 }
 .btn-log.active { background: var(--yellow); color: #fff; border-color: var(--px-dark); }
+.settings-feature-bar {
+  display: flex; gap: 4px; padding-bottom: 4px;
+  border-bottom: 2px solid var(--border); margin-bottom: 2px;
+}
+.settings-feature-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: var(--surface2); border: 2px solid var(--border);
+  padding: 0.4rem 0.3rem; cursor: pointer; font-family: inherit;
+  color: var(--text); font-size: 0.52rem; font-weight: 700;
+  transition: border-color 0.1s, background 0.1s;
+}
+.settings-feature-btn:hover { border-color: var(--yellow); background: var(--surface); }
+.settings-feature-icon { font-size: 1rem; line-height: 1; }
 
 /* Game Log dropdown — anchored under the top-right buttons, expands in place */
 .log-dropdown {
@@ -2104,16 +2117,23 @@ input, select { font-family: inherit; }
 }
 .tutorial-overlay-header {
   display: flex; justify-content: space-between; align-items: center;
+  background: var(--surface2);
+  border-bottom: 2px solid var(--border);
+  margin: -1.25rem -1.5rem 0;
+  padding: 0.5rem 1rem;
 }
 .tutorial-overlay-title {
   font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
   text-transform: uppercase; color: var(--px-gold);
 }
 .tutorial-overlay-close {
-  background: none; border: none; color: var(--text-muted);
-  font-size: 0.85rem; cursor: pointer; padding: 0; line-height: 1;
+  background: #5a7a3a; color: #fff; border: 2px solid var(--px-dark);
+  box-shadow: 2px 2px 0 var(--px-dark);
+  font-size: 0.7rem; font-weight: 700; cursor: pointer;
+  padding: 0.2rem 0.5rem; line-height: 1; font-family: inherit;
+  transition: background 0.1s, transform 0.1s;
 }
-.tutorial-overlay-close:hover { color: var(--text); }
+.tutorial-overlay-close:hover { background: #6a8f48; transform: translate(-1px,-1px); }
 .tutorial-overlay-step { min-height: 100px; }
 .tutorial-overlay-step-title {
   font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text);

@@ -55,22 +55,11 @@ export default function GameSetup({ onStart }: Props) {
             <button className="tutorial-back-btn" onClick={() => { setShowTutorial(false); setTutorialStep(0); }}>
               ← Back
             </button>
-            <span className="tutorial-progress">{tutorialStep + 1} / {TUTORIAL_STEPS.length}</span>
           </div>
 
           <div className="tutorial-step">
             <h2 className="tutorial-step-title">{step.title}</h2>
             <p className="tutorial-step-body">{step.body}</p>
-          </div>
-
-          <div className="tutorial-dots">
-            {TUTORIAL_STEPS.map((_, i) => (
-              <button
-                key={i}
-                className={`tutorial-dot ${i === tutorialStep ? 'active' : ''}`}
-                onClick={() => setTutorialStep(i)}
-              />
-            ))}
           </div>
 
           <div className="tutorial-nav">
@@ -81,6 +70,15 @@ export default function GameSetup({ onStart }: Props) {
             >
               ←
             </button>
+            <div className="tutorial-dots">
+              {TUTORIAL_STEPS.map((_, i) => (
+                <button
+                  key={i}
+                  className={`tutorial-dot ${i === tutorialStep ? 'active' : ''}`}
+                  onClick={() => setTutorialStep(i)}
+                />
+              ))}
+            </div>
             {isLast ? (
               <button className="start-btn tutorial-done-btn" onClick={() => { setShowTutorial(false); setTutorialStep(0); }}>
                 Got it!

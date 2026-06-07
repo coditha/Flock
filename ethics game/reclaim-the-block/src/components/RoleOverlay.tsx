@@ -42,7 +42,7 @@ export default function RoleOverlay({ state, onClose }: Props) {
               style={i === index ? { borderColor: r.colorHex, color: r.colorHex } : {}}
               onClick={() => setIndex(i)}
             >
-              {r.emoji} {r.name}
+              {r.name}
             </button>
           ))}
         </div>
@@ -60,13 +60,9 @@ export default function RoleOverlay({ state, onClose }: Props) {
 
             <div className="role-overlay-section-label" style={{ marginTop: '0.75rem' }}>Special Ability</div>
             <p className="role-overlay-ability">{role.specialAbility}</p>
-
           </div>
         </div>
 
-        <button className="tutorial-overlay-nav-btn tutorial-overlay-done" style={{ width: '100%', marginTop: '0.5rem' }} onClick={onClose}>
-          Close
-        </button>
       </div>
     </div>
   );
