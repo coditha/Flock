@@ -64,7 +64,7 @@ export default function GameSetup({ onStart }: Props) {
 
           <div className="tutorial-nav">
             <button
-              className="count-btn"
+              className="count-btn tutorial-arrow-btn"
               onClick={() => setTutorialStep(s => Math.max(0, s - 1))}
               disabled={tutorialStep === 0}
             >
@@ -79,16 +79,21 @@ export default function GameSetup({ onStart }: Props) {
                 />
               ))}
             </div>
-            {isLast ? (
-              <button className="start-btn tutorial-done-btn" onClick={() => { setShowTutorial(false); setTutorialStep(0); }}>
-                Got it!
-              </button>
-            ) : (
-              <button className="start-btn tutorial-done-btn" onClick={() => setTutorialStep(s => s + 1)}>
-                Next →
+            {!isLast && (
+              <button
+                className="count-btn tutorial-arrow-btn"
+                onClick={() => setTutorialStep(s => s + 1)}
+              >
+                →
               </button>
             )}
           </div>
+
+          {isLast && (
+            <button className="start-btn" onClick={() => onStart(count)}>
+              Start Game
+            </button>
+          )}
         </div>
       </div>
     );

@@ -143,16 +143,30 @@ input, select { font-family: inherit; }
 
 /* ── Tutorial ─────────────────────────────────────────────── */
 .tutorial-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(0.5rem, 1vh, 0.8rem); }
-.tutorial-back-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; font-family: inherit; font-weight: 700; padding: 0; }
-.tutorial-back-btn:hover { color: var(--text); }
+.tutorial-header {
+  background: var(--surface2);
+  margin: calc(-1 * clamp(0.75rem, 2vh, 1.5rem)) calc(-1 * clamp(1rem, 2vw, 1.75rem)) 0.75rem;
+  padding: 0.6rem clamp(1rem, 2vw, 1.75rem);
+  border-bottom: 3px solid var(--border);
+}
+.tutorial-back-btn {
+  background: #5a7a3a; color: #fff;
+  border: 2px solid var(--px-dark);
+  box-shadow: 2px 2px 0 var(--px-dark);
+  font-size: 0.7rem; cursor: pointer; font-family: inherit; font-weight: 700;
+  padding: 0.25rem 0.6rem; transition: background 0.1s, transform 0.1s;
+}
+.tutorial-back-btn:hover { background: #6a8f48; transform: translate(-1px,-1px); }
+.tutorial-arrow-btn { min-width: 2.5rem; }
 .tutorial-progress { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; }
 .tutorial-step { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: clamp(1.2rem, 3vh, 2.5rem) 0; }
 .tutorial-step-title { font-size: clamp(1rem, 2.2vmin, 1.4rem); font-weight: 700; margin-bottom: clamp(0.7rem, 1.5vh, 1.2rem); color: var(--text); }
 .tutorial-step-body { color: var(--text-muted); line-height: 1.7; font-size: clamp(0.85rem, 1.7vmin, 1.05rem); }
 .tutorial-dots { display: flex; justify-content: center; gap: 6px; margin: clamp(0.4rem, 1vh, 0.8rem) 0; }
-.tutorial-dot { width: 8px; height: 8px; border-radius: 0; border: 2px solid var(--border); background: transparent; cursor: pointer; padding: 0; transition: background 0.1s, border-color 0.1s; }
+.tutorial-dot { width: 16px; height: 16px; border-radius: 0; border: 2px solid var(--border); background: transparent; cursor: pointer; padding: 0; transition: background 0.1s, border-color 0.1s; }
 .tutorial-dot.active { background: var(--yellow); border-color: var(--yellow); }
-.tutorial-nav { display: flex; align-items: center; gap: 0.5rem; }
+.tutorial-nav { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.tutorial-nav .tutorial-dots { flex: 1; justify-content: center; }
 .tutorial-done-btn { flex: 1; margin-top: 0; }
 
 /* ── Game Layout ──────────────────────────────────────────── */
