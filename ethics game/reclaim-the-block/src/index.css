@@ -71,7 +71,7 @@ input, select { font-family: inherit; }
 .setup-logo { font-size: clamp(1.4rem, 3vh, 2.2rem); }
 .setup-title h1 {
   font-family: 'Press Start 2P', monospace;
-  font-size: clamp(0.65rem, 1.4vmin, 1rem);
+  font-size: clamp(2.2rem, 7vmin, 4.5rem);
   color: var(--yellow);
   margin: clamp(0.3rem, 0.7vh, 0.6rem) 0 clamp(0.2rem, 0.5vh, 0.4rem);
   line-height: 1.4;

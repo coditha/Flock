@@ -12,7 +12,7 @@ export default function GameSetup({ onStart }: Props) {
     <div className="setup-screen">
       <div className="setup-card">
         <div className="setup-title">
-          <h1>RECLAIM THE BLOCK</h1>
+          <h1>FLOCK</h1>
           <p className="setup-subtitle">A cooperative game about neighborhood surveillance</p>
           <p className="setup-credit">HCI 220 · UC Santa Cruz · Spring 2026</p>
         </div>
@@ -38,7 +38,7 @@ export default function GameSetup({ onStart }: Props) {
             {ROLES.slice(0, count).map((r) => (
               <div key={r.id} className="role-preview" style={{ borderColor: r.colorHex }}>
                 {r.characterImage
-                  ? <img src={r.characterImage} alt={r.name} className="role-character-img" />
+                  ? <img src={import.meta.env.BASE_URL + r.characterImage.replace(/^\//, '')} alt={r.name} className="role-character-img" />
                   : <span className="role-emoji">{r.emoji}</span>}
                 <div>
                   <div className="role-name">{r.name}</div>
