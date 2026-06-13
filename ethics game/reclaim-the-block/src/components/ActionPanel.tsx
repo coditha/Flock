@@ -74,13 +74,17 @@ const SIDE_FACES: Record<number, { top: number; right: number }> = {
 // Absolute children offset from the inner-border edge (the 44px padding box).
 // Centers at 44*1/4=11, 44*1/2=22, 44*3/4=33 → left/top = center - 4 → 7, 18, 29
 type DotXY = [number, number];
+// Custom d6: values 3–8. Face number (1–6) → pip layout for that value.
+// Face 1=3, Face 2=4, Face 3=5, Face 4=6, Face 5=7, Face 6=8
+const FACE_VALUE: Record<number, number> = { 1: 3, 2: 4, 3: 5, 4: 6, 5: 7, 6: 8 };
+const VALUE_TO_FACE: Record<number, number> = { 3: 1, 4: 2, 5: 3, 6: 4, 7: 5, 8: 6 };
 const CUBE_DOTS: Record<number, DotXY[]> = {
-  1: [[18, 18]],
-  2: [[7,  7],  [29, 29]],
   3: [[7,  7],  [18, 18], [29, 29]],
   4: [[7,  7],  [29, 7],  [7,  29], [29, 29]],
   5: [[7,  7],  [29, 7],  [18, 18], [7,  29], [29, 29]],
   6: [[7,  7],  [29, 7],  [7,  18], [29, 18], [7,  29], [29, 29]],
+  7: [[7,  7],  [29, 7],  [7,  18], [29, 18], [7,  29], [29, 29], [18, 18]],
+  8: [[7,  7],  [29, 7],  [18, 7],  [7,  18], [29, 18], [7,  29], [29, 29], [18, 29]],
 };
 // Face number → CSS transform to position it on the cube (half-size = 24px)
 const CUBE_FACES: [number, string][] = [
@@ -91,7 +95,7 @@ const CUBE_FACES: [number, string][] = [
   [2, 'rotateX(-90deg) translateZ(24px)'],
   [5, 'rotateX(90deg) translateZ(24px)'],
 ];
-// Target cube rotation so each face faces the camera
+// Target cube rotation so each face faces the camera (keyed by face number)
 const FACE_LANDING: Record<number, { rx: number; ry: number }> = {
   1: { rx: 0,   ry: 0   },
   2: { rx: 90,  ry: 0   },
@@ -105,7 +109,7 @@ function DieCube() {
     <div className="die3d-cube">
       {CUBE_FACES.map(([faceNum, faceTransform]) => (
         <div key={faceNum} className="die3d-face" style={{ transform: faceTransform }}>
-          {(CUBE_DOTS[faceNum] ?? []).map(([x, y], i) => (
+          {(CUBE_DOTS[FACE_VALUE[faceNum]] ?? []).map(([x, y], i) => (
             <div key={i} className="die3d-dot" style={{ left: x, top: y }} />
           ))}
         </div>
@@ -197,7 +201,7 @@ export default function ActionPanel({
 
   function handleDiceTap() {
     if (rolling || landed) return;
-    const finalRoll = Math.floor(Math.random() * 6) + 1;
+    const finalRoll = Math.floor(Math.random() * 6) + 3;
     setRolling(true);
     setLanded(false);
     rotAccum.current = { rx: 0, ry: 0, rz: 0 };
@@ -208,7 +212,7 @@ export default function ActionPanel({
       rollTimer.current = setTimeout(() => {
         if (step >= totalSteps) {
           // Rotate to nearest face-forward position for the rolled face
-          const target = FACE_LANDING[finalRoll];
+          const target = FACE_LANDING[VALUE_TO_FACE[finalRoll]];
           const nearest = (acc: number, t: number) => Math.round((acc - t) / 360) * 360 + t;
           const finalRot = {
             rx: nearest(rotAccum.current.rx, target.rx),
@@ -304,7 +308,7 @@ export default function ActionPanel({
     !player.hasUsedSpecialAbilityThisTurn && selectedCards.length >= 2 &&
     state.densityTracker > 1;
 
-  const depositRequired = (player.role.id === 'council' || state.reducedNextDeposit) ? 4 : 5;
+  const depositRequired = state.reducedNextDeposit ? 3 : 4;
   const depositCards = selectedCards.slice(0, depositRequired);
   const depositColors = new Set(depositCards.map((c) => c.category));
   const depositWildcards = depositCards.filter((c) => c.effectType === 'wildcard-deposit').length;
@@ -355,9 +359,7 @@ export default function ActionPanel({
       tooltip: [
         `Cost: 1 action + ${depositRequired} unique-color cards.`,
         'Must be at the Town Square.',
-        player.role.id === 'council'
-          ? 'Council bonus: any 4 different colors.'
-          : 'Need one of each: blue · yellow · green · red · purple.',
+        'Need one of each: blue · yellow · green · red.',
         'Raises the Privacy & Community Trust Meter.',
       ].join('\n'),
       available: canDeposit,
@@ -441,7 +443,7 @@ export default function ActionPanel({
     {
       id: 'share',
       icon: '🤝',
-      label: 'Share Knowledge',
+      label: 'Exchange Cards',
       tooltip: [
         'Cost: 1 action.',
         'Give 1 Community Card to a teammate on your tile.',
@@ -538,7 +540,7 @@ export default function ActionPanel({
             <div className="ap-share-picker">
               {shareStep === 'pick-player' ? (
                 <>
-                  <div className="ap-share-title">🤝 Who to share with?</div>
+                  <div className="ap-share-title">Who to share knowledge with?</div>
                   {colocatedPlayers.map((p) => (
                     <button
                       key={p.id}
@@ -549,11 +551,11 @@ export default function ActionPanel({
                       {p.role.emoji} {p.role.name}
                     </button>
                   ))}
-                  <button className="ap-share-cancel" onClick={() => setShareStep('idle')}>✕ Cancel</button>
+                  <button className="ap-share-cancel ap-share-cancel-green" onClick={() => setShareStep('idle')}>Cancel</button>
                 </>
               ) : (
                 <>
-                  <div className="ap-share-title">🤝 Which card to give?</div>
+                  <div className="ap-share-title">Which card to give?</div>
                   {player.hand.map((card) => (
                     <button
                       key={card.id}
@@ -567,7 +569,7 @@ export default function ActionPanel({
                       <span className={`card-dot cat-${card.category}`} /> {card.name}
                     </button>
                   ))}
-                  <button className="ap-share-cancel" onClick={() => { setShareStep('pick-player'); setShareTargetId(null); }}>← Back</button>
+                  <button className="ap-share-cancel ap-share-cancel-green" onClick={() => { setShareStep('pick-player'); setShareTargetId(null); }}>Back</button>
                 </>
               )}
             </div>
@@ -588,7 +590,7 @@ export default function ActionPanel({
                 {actionButtons.map((btn) => (
                   <button
                     key={btn.id}
-                    className={`ap-action-btn${btn.available ? '' : ' ap-disabled'}`}
+                    className={`ap-action-btn${btn.available ? '' : ' ap-disabled'}${btn.id === 'share' ? ' ap-action-btn-share' : ''}`}
                     onPointerDown={() => startHold(btn.id)}
                     onPointerUp={endHold}
                     onPointerLeave={endHold}

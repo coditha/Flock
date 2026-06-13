@@ -29,6 +29,7 @@ const DRAWN_CARD_COLORS: Record<string, string> = {
 function CornerPanel({
   player,
   isActive,
+  hasMoved,
   selectedCardIds,
   onCardClick,
   pendingDiscard,
@@ -36,6 +37,7 @@ function CornerPanel({
 }: {
   player: Player;
   isActive: boolean;
+  hasMoved?: boolean;
   pendingDiscard?: boolean;
   pendingDiscardCount?: number;
   selectedCardIds: string[];
@@ -60,14 +62,15 @@ function CornerPanel({
 
   return (
     <div
-      className={`corner-panel ${isActive ? 'corner-active' : ''} ${pendingDiscard ? 'corner-discarding' : ''}`}
+      className={`corner-panel ${isActive ? 'corner-active' : ''} ${isActive && hasMoved ? 'corner-moved' : ''} ${pendingDiscard ? 'corner-discarding' : ''}`}
       style={{ borderColor: player.role.colorHex }}
     >
       <div className="corner-header" style={{ background: player.role.colorHex }}>
-        <span className="corner-emoji">{player.role.emoji}</span>
+        {player.role.characterImage
+          ? <span className="corner-emoji corner-pawn-circle"><img src={player.role.characterImage} alt={player.role.name} className="pawn-img corner-pawn-img" /></span>
+          : <span className="corner-emoji">{player.role.emoji}</span>}
         <div className="corner-info">
           <span className="corner-name">{player.role.name}</span>
-          <span className="corner-pos">📍 {POSITION_SHORT[player.position] ?? player.position}</span>
         </div>
         <span className="corner-hand-count">{player.hand.length}/7</span>
       </div>
@@ -114,14 +117,16 @@ function CornerPanel({
 function IncidentOverlay({
   incident,
   dispatch,
+  facesTop,
 }: {
   incident: import('./types/game').PendingIncident;
   dispatch: (a: GameAction) => void;
+  facesTop?: boolean;
 }) {
   return (
     <div className="incident-overlay">
       <div className="incident-flash" />
-      <div className="incident-card">
+      <div className={`incident-card${facesTop ? ' incident-card-rotated' : ''}`}>
         {/* Card header band */}
         <div className="incident-card-header">
           <span className="incident-card-type-label">SURVEILLANCE INCIDENT</span>
@@ -334,6 +339,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const councilPlayer   = byRole('council');
 
   const isActive = (p?: Player) => !!p && p.id === activePlayer.id && !state.pendingDiceRoll;
+  const hasMoved = (p?: Player) => !!p && p.id === activePlayer.id && state.actionsRemaining < (state.lastDiceRoll ?? state.actionsRemaining + 1);
   const selFor   = (p?: Player) => (isActive(p) ? selectedCardIds : []);
   const clickFor = (p?: Player) => (isActive(p) ? handleCardClick : () => {});
 
@@ -346,6 +352,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <CornerPanel
             player={organizerPlayer}
             isActive={isActive(organizerPlayer)}
+            hasMoved={hasMoved(organizerPlayer)}
             selectedCardIds={selFor(organizerPlayer)}
             onCardClick={clickFor(organizerPlayer)}
             pendingDiscard={isActive(organizerPlayer) && !!state.pendingDiscard}
@@ -413,6 +420,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <CornerPanel
             player={captainPlayer}
             isActive={isActive(captainPlayer)}
+            hasMoved={hasMoved(captainPlayer)}
             selectedCardIds={selFor(captainPlayer)}
             onCardClick={clickFor(captainPlayer)}
             pendingDiscard={isActive(captainPlayer) && !!state.pendingDiscard}
@@ -436,6 +444,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 selectedSlot={selectedNeighborhood === 'suburb' ? selectedSlot : null}
                 canMove={canMove}
                 activePlayerPosition={activePlayer.position}
+                activePlayerId={activePlayer.id}
                 onMove={handleMove}
               />
             </div>
@@ -448,7 +457,9 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                   onClick={() => { if (reachable('suburb-road-1')) handleMove('suburb-road-1'); }}
                 >
                   {state.players.filter((p) => p.position === 'suburb-road-1').map((p) => (
-                    <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                    <span key={p.id} className={p.id === activePlayer.id ? 'active-pawn' : ''} title={p.role.name}>
+                      {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
+                    </span>
                   ))}
                 </div>
                 <div className="road-line-v" />
@@ -465,6 +476,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 selectedSlot={selectedNeighborhood === 'courthouse' ? selectedSlot : null}
                 canMove={canMove}
                 activePlayerPosition={activePlayer.position}
+                activePlayerId={activePlayer.id}
                 onMove={handleMove}
               />
               <div className="city-hall-area">
@@ -477,7 +489,9 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                     onClick={() => { if (reachable('courthouse-road-1')) handleMove('courthouse-road-1'); }}
                   >
                     {state.players.filter((p) => p.position === 'courthouse-road-1').map((p) => (
-                      <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                      <span key={p.id} className={p.id === activePlayer.id ? 'active-pawn' : ''} title={p.role.name}>
+                        {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
+                      </span>
                     ))}
                   </div>
                   <div className="road-line-h" />
@@ -491,7 +505,9 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                   <div className="city-hall-sublabel">Deposit Zone</div>
                   <div className="city-hall-players">
                     {state.players.filter((p) => p.position === 'city-hall').map((p) => (
-                      <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                      <span key={p.id} className={p.id === activePlayer.id ? 'active-pawn' : ''} title={p.role.name}>
+                        {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -502,7 +518,9 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                     onClick={() => { if (reachable('media-road-1')) handleMove('media-road-1'); }}
                   >
                     {state.players.filter((p) => p.position === 'media-road-1').map((p) => (
-                      <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                      <span key={p.id} className={p.id === activePlayer.id ? 'active-pawn' : ''} title={p.role.name}>
+                        {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
+                      </span>
                     ))}
                   </div>
                   <div className="road-line-h" />
@@ -519,6 +537,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 selectedSlot={selectedNeighborhood === 'media' ? selectedSlot : null}
                 canMove={canMove}
                 activePlayerPosition={activePlayer.position}
+                activePlayerId={activePlayer.id}
                 onMove={handleMove}
               />
             </div>
@@ -531,7 +550,9 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                   onClick={() => { if (reachable('politics-road-1')) handleMove('politics-road-1'); }}
                 >
                   {state.players.filter((p) => p.position === 'politics-road-1').map((p) => (
-                    <span key={p.id} title={p.role.name}>{p.role.emoji}</span>
+                    <span key={p.id} className={p.id === activePlayer.id ? 'active-pawn' : ''} title={p.role.name}>
+                      {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
+                    </span>
                   ))}
                 </div>
                 <div className="road-line-v" />
@@ -548,6 +569,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 selectedSlot={selectedNeighborhood === 'politics' ? selectedSlot : null}
                 canMove={canMove}
                 activePlayerPosition={activePlayer.position}
+                activePlayerId={activePlayer.id}
                 onMove={handleMove}
               />
             </div>
@@ -595,6 +617,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <CornerPanel
             player={legalPlayer}
             isActive={isActive(legalPlayer)}
+            hasMoved={hasMoved(legalPlayer)}
             selectedCardIds={selFor(legalPlayer)}
             onCardClick={clickFor(legalPlayer)}
             pendingDiscard={isActive(legalPlayer) && !!state.pendingDiscard}
@@ -610,6 +633,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <CornerPanel
             player={councilPlayer}
             isActive={isActive(councilPlayer)}
+            hasMoved={hasMoved(councilPlayer)}
             selectedCardIds={selFor(councilPlayer)}
             onCardClick={clickFor(councilPlayer)}
             pendingDiscard={isActive(councilPlayer) && !!state.pendingDiscard}
@@ -672,6 +696,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
         <IncidentOverlay
           incident={state.pendingIncident}
           dispatch={dispatch}
+          facesTop={['organizer', 'captain'].includes(activePlayer.role.id)}
         />
       )}
 

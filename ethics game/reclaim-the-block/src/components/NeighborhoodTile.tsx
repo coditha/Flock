@@ -10,6 +10,7 @@ interface Props {
   selectedSlot: SlotIndex | null;
   canMove: boolean;
   activePlayerPosition: string;
+  activePlayerId?: number;
   onMove: (position: Position) => void;
 }
 
@@ -18,6 +19,9 @@ const DEVICE_EMOJI: Record<DeviceType, string> = {
   'smart-speaker': '🔊',
   'traffic-camera': '🚦',
   'flock-reader': '🚗',
+};
+const DEVICE_IMAGE: Partial<Record<DeviceType, string>> = {
+  ring: '/ring.png',
 };
 
 const DEVICE_LABEL: Record<DeviceType, string> = {
@@ -69,6 +73,7 @@ export default function NeighborhoodTile({
   selectedSlot,
   canMove,
   activePlayerPosition,
+  activePlayerId,
   onMove,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
@@ -142,16 +147,20 @@ export default function NeighborhoodTile({
               title={device ? `${DEVICE_LABEL[device]} — click to target` : `Empty slot ${SLOT_LABELS[i]}`}
             >
               {device ? (
-                <span className="device-token">{DEVICE_EMOJI[device]}</span>
+                <span className="device-token">
+                  {DEVICE_IMAGE[device]
+                    ? <img src={DEVICE_IMAGE[device]} alt={DEVICE_LABEL[device]} className="device-token-img" />
+                    : DEVICE_EMOJI[device]}
+                </span>
               ) : (
                 <span className="slot-label">{SLOT_LABELS[i]}</span>
               )}
               {playersOnSlot.length > 0 && (
                 <div className="slot-pawns">
                   {playersOnSlot.map((p) => (
-                    <span key={p.id} className="slot-pawn" title={p.role.name}
+                    <span key={p.id} className={`slot-pawn${p.id === activePlayerId ? ' active-pawn' : ''}`} title={p.role.name}
                       style={{ color: p.role.colorHex }}>
-                      {p.role.emoji}
+                      {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
                     </span>
                   ))}
                 </div>
@@ -179,9 +188,9 @@ export default function NeighborhoodTile({
               <div className={isH ? 'int-line-h' : 'int-line-v'} />
               <div className="int-waypoint">
                 {playersOnRoad.map((p) => (
-                  <span key={p.id} className="slot-pawn" title={p.role.name}
+                  <span key={p.id} className={`slot-pawn${p.id === activePlayerId ? ' active-pawn' : ''}`} title={p.role.name}
                     style={{ color: p.role.colorHex }}>
-                    {p.role.emoji}
+                    {p.role.characterImage ? <img src={p.role.characterImage} alt={p.role.name} className="pawn-img" /> : p.role.emoji}
                   </span>
                 ))}
               </div>

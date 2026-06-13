@@ -871,18 +871,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const player = state.players[state.currentPlayerIndex];
       if (player.position !== 'city-hall') return state;
 
-      const isCouncil = player.role.id === 'council';
-      const required = (isCouncil || state.reducedNextDeposit) ? 4 : 5;
+      const required = state.reducedNextDeposit ? 3 : 4;
       const cards = action.cardIds.map((id) => player.hand.find((c) => c.id === id)!).filter(Boolean);
 
       if (cards.length < required) return state;
 
-      // Validate: one of each color (council member needs 4 distinct colors, others need 5)
+      // Validate: one of each color (blue, yellow, green, red — purple removed)
       const colors = new Set(cards.map((c) => c.category));
       const wildcards = cards.filter((c) => c.effectType === 'wildcard-deposit').length;
-      const needed = isCouncil ? 4 : 5;
-      if (colors.size + wildcards < needed) {
-        return log(state, `Deposit failed: need ${needed} different colors (have ${colors.size + wildcards}).`);
+      if (colors.size + wildcards < required) {
+        return log(state, `Deposit failed: need ${required} different colors (have ${colors.size + wildcards}).`);
       }
 
       // Find which neighborhood to clear (must be decided by UI — for now clear least dense)
