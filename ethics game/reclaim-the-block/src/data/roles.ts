@@ -39,5 +39,6 @@ export const ROLES: Role[] = [
     color: 'red',
     colorHex: '#ef4444',
     emoji: '🔴',
+    characterImage: '/characters/gavel.png',
   },
 ];
