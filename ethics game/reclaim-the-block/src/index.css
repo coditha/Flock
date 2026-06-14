@@ -2220,9 +2220,15 @@ input, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   pointer-events: none;
 }
-.center-dice-panel {
+.center-dice-bg {
+  position: absolute;
+  width: 460px; height: 460px;
   background: url('/diceroll.png') 52% center / contain no-repeat;
   image-rendering: pixelated;
+  pointer-events: none;
+}
+.center-dice-panel {
+  position: relative;
   border: none;
   min-width: 460px; min-height: 460px;
   padding: 7rem;

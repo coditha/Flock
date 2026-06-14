@@ -143,6 +143,7 @@ export default function CenterDiceRoll({ state, dispatch }: Props) {
 
   return (
     <div className="center-dice-overlay">
+      <div className="center-dice-bg" />
       <div className={`center-dice-panel${facesTop ? ' center-dice-panel-rotated' : ''}`} style={{ borderColor: player.role.colorHex }}>
         <div className="ap-dice-perspective">
           {landed && <div className="center-dice-result">{rollingFace}</div>}
