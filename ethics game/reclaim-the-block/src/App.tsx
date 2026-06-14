@@ -12,6 +12,7 @@ import ActionPanel from './components/ActionPanel';
 import GameLog from './components/GameLog';
 import RevealedCards from './components/RevealedCards';
 import TutorialOverlay from './components/TutorialOverlay';
+import CenterDiceRoll from './components/CenterDiceRoll';
 import RoleOverlay from './components/RoleOverlay';
 
 const DRAWN_CARD_LABELS: Record<string, string> = {
@@ -76,7 +77,7 @@ function CornerPanel({
       </div>
       <div className="corner-hand">
         {n === 0 ? (
-          <span className="corner-empty">No cards in hand</span>
+          <span />
         ) : (
           player.hand.map((card, i) => {
             const isFocused = focusedCardId === card.id;
@@ -126,7 +127,8 @@ function IncidentOverlay({
   return (
     <div className="incident-overlay">
       <div className="incident-flash" />
-      <div className={`incident-card${facesTop ? ' incident-card-rotated' : ''}`}>
+      <div className={facesTop ? 'incident-card-rotated' : ''}>
+      <div className="incident-card">
         {/* Card header band */}
         <div className="incident-card-header">
           <span className="incident-card-type-label">SURVEILLANCE INCIDENT</span>
@@ -151,6 +153,7 @@ function IncidentOverlay({
             Acknowledge
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
@@ -665,6 +668,11 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           selectedSlot={selectedSlot} dispatch={dispatch} onClearSelection={clearSelection} />
       )}
 
+      {/* ── Center dice roll ─────────────────────────────────────── */}
+      {state.phase === 'player-turn' && state.pendingDiceRoll && !state.pendingIncident && (
+        <CenterDiceRoll state={state} dispatch={dispatch} />
+      )}
+
       {/* ── In-game tutorial overlay ─────────────────────────────── */}
       {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
 
@@ -696,7 +704,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
         <IncidentOverlay
           incident={state.pendingIncident}
           dispatch={dispatch}
-          facesTop={['organizer', 'captain'].includes(activePlayer.role.id)}
+          facesTop={['organizer', 'captain'].includes(state.pendingIncident.triggeredByRoleId ?? '')}
         />
       )}
 

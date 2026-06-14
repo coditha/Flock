@@ -599,7 +599,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     id: 'incident-05',
     type: 'incident',
     name: 'Data Breach',
-    effect: 'Subtract 1 from Privacy & Community Trust.',
+    effect: 'Privacy & Community Trust decreases by 1.',
     meterDelta: -1,
     educationalNote:
       'Footage collected from neighborhood surveillance systems is leaked online, damaging public trust and raising concerns about data security.',
@@ -628,7 +628,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     id: 'incident-08',
     type: 'incident',
     name: 'Wildfire Evacuation Monitoring',
-    effect: 'Subtract 1 from Privacy & Community Trust.',
+    effect: 'Privacy & Community Trust decreases by 1.',
     meterDelta: -1,
     educationalNote:
       'Emergency response agencies deploy drones and automated tracking systems to monitor evacuation routes and population movement during a wildfire.',

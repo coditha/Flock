@@ -181,6 +181,7 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
     revealedSurveillanceCards: [],
 
     pendingIncident: null,
+    pendingDeferredIncident: null,
     pendingDrawnCards: null,
     pendingDiscard: null,
 
@@ -255,7 +256,7 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
 
   if (deferredIncident) {
     const newTracker = Math.min(8, s.densityTracker + 1);
-    s = { ...s, pendingIncident: { card: deferredIncident }, densityTracker: newTracker };
+    s = { ...s, pendingIncident: { card: deferredIncident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id }, densityTracker: newTracker };
     s = log(s, `⚠️ INCIDENT: ${deferredIncident.name}`);
     s = log(s, `Surveillance Density increased to ${newTracker}`);
   }
@@ -263,7 +264,7 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
   return { state: s, drawnCards };
 }
 
-function drawCommunityCards(state: GameState, playerId: number, count: number): GameState {
+function drawCommunityCards(state: GameState, playerId: number, count: number, defer = false): GameState {
   let s = { ...state };
   let deck = [...s.communityDeck];
   let discard = [...s.communityDiscard];
@@ -298,7 +299,12 @@ function drawCommunityCards(state: GameState, playerId: number, count: number): 
 
   if (deferredIncident) {
     const newTracker = Math.min(8, s.densityTracker + 1);
-    s = { ...s, pendingIncident: { card: deferredIncident }, densityTracker: newTracker };
+    const incident = { card: deferredIncident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id };
+    if (defer) {
+      s = { ...s, pendingDeferredIncident: incident, densityTracker: newTracker };
+    } else {
+      s = { ...s, pendingIncident: incident, densityTracker: newTracker };
+    }
     s = log(s, `⚠️ INCIDENT: ${deferredIncident.name}`);
     s = log(s, `Surveillance Density increased to ${newTracker}`);
   }
@@ -306,10 +312,10 @@ function drawCommunityCards(state: GameState, playerId: number, count: number): 
   return s;
 }
 
-function drawCommunityCardsForAll(state: GameState, count: number): GameState {
+function drawCommunityCardsForAll(state: GameState, count: number, defer = false): GameState {
   let s = state;
   for (const player of s.players) {
-    s = drawCommunityCards(s, player.id, count);
+    s = drawCommunityCards(s, player.id, count, defer);
   }
   return s;
 }
@@ -397,7 +403,7 @@ function placeDevice(
         discard.push(incident);
         if (!s.cancelNextIncident) {
           const newTracker = Math.min(8, s.densityTracker + 1);
-          s = { ...s, pendingIncident: { card: incident }, communityDeck, communityDiscard: discard, densityTracker: newTracker };
+          s = { ...s, pendingIncident: { card: incident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id }, communityDeck, communityDiscard: discard, densityTracker: newTracker };
           s = log(s, `⚠️ INCIDENT (neighborhood full): ${incident.name}`);
           s = log(s, `Surveillance Density increased to ${newTracker}`);
         } else {
@@ -479,12 +485,12 @@ function applyCardEffect(
       break;
 
     case 'draw-cards':
-      s = drawCommunityCards(s, playerId, card.effectValue ?? 1);
+      s = drawCommunityCards(s, playerId, card.effectValue ?? 1, true);
       break;
 
     case 'draw-cards-all':
     case 'draw-cards-swap':
-      s = drawCommunityCardsForAll(s, card.effectValue ?? 1);
+      s = drawCommunityCardsForAll(s, card.effectValue ?? 1, true);
       break;
 
     case 'remove-device-own': {
@@ -957,6 +963,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'END_TURN': {
       const player = state.players[state.currentPlayerIndex];
       let s = state;
+
+      // Promote any deferred incident (from card play) to active incident before end-of-turn draw
+      if (s.pendingDeferredIncident) {
+        s = { ...s, pendingIncident: s.pendingDeferredIncident, pendingDeferredIncident: null };
+        return s;
+      }
 
       // Peek 2 community cards — hold them for display before adding to hand
       const { state: s2, drawnCards } = peekDrawCards(s, 2);

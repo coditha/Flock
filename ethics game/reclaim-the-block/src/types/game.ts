@@ -119,6 +119,7 @@ export type GamePhase =
 
 export interface PendingIncident {
   card: IncidentCard;
+  triggeredByRoleId?: string;
   voteTally?: { comply: number; refuse: number };
 }
 
@@ -142,6 +143,7 @@ export interface GameState {
   revealedSurveillanceCards: SurveillanceCard[];
 
   pendingIncident: PendingIncident | null;
+  pendingDeferredIncident: PendingIncident | null;
   pendingDrawnCards: { playerId: number; cards: CommunityCard[] } | null;
   pendingDiscard: { playerId: number; count: number; advanceAfter: boolean } | null;
 
