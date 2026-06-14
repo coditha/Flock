@@ -700,7 +700,7 @@ input, select { font-family: inherit; }
   transform: translate(-50%, -56%);
   filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
-.tv-game .district-landmark.lm-courthouse { width: 84px; height: 84px; }
+.tv-game .district-landmark.lm-courthouse { width: 108px; height: 108px; }
 /* Suburb uses the community-center building sprite */
 .district-landmark.lm-suburb {
   background-image: url('/community-center.png');
@@ -709,7 +709,7 @@ input, select { font-family: inherit; }
   transform: translate(-50%, -56%);
   filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
-.tv-game .district-landmark.lm-suburb { width: 84px; height: 84px; }
+.tv-game .district-landmark.lm-suburb { width: 108px; height: 108px; }
 /* Politics Row uses the city-hall building sprite (government building) */
 .district-landmark.lm-politics {
   background-image: url('/cityhall.png');
@@ -718,7 +718,7 @@ input, select { font-family: inherit; }
   transform: translate(-50%, -56%);
   filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
-.tv-game .district-landmark.lm-politics { width: 84px; height: 84px; }
+.tv-game .district-landmark.lm-politics { width: 108px; height: 108px; }
 /* Media District uses the news-agency building sprite */
 .district-landmark.lm-media {
   background-image: url('/news-agency.png');
@@ -727,7 +727,7 @@ input, select { font-family: inherit; }
   transform: translate(-50%, -56%);
   filter: drop-shadow(2px 5px 3px rgba(0,0,0,0.5));
 }
-.tv-game .district-landmark.lm-media { width: 84px; height: 84px; }
+.tv-game .district-landmark.lm-media { width: 108px; height: 108px; }
 /* Houses (slots) at N / E / S / W around the landmark */
 .device-slot.sq-slot-1, .device-slot.sq-slot-2,
 .device-slot.sq-slot-3, .device-slot.sq-slot-4 {
@@ -1974,7 +1974,7 @@ input, select { font-family: inherit; }
 .tv-game .device-slot.sq-slot-2,
 .tv-game .device-slot.sq-slot-3,
 .tv-game .device-slot.sq-slot-4 { width: 54px; }
-.tv-game .district-landmark { width: 50px; height: 50px; font-size: 2rem; }
+.tv-game .district-landmark { width: 72px; height: 72px; font-size: 2.8rem; }
 .tv-game .district-tree { font-size: 1.05rem; }
 .tv-game .int-waypoint {
   width: 40px;
