@@ -235,6 +235,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const [showSettings, setShowSettings] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showRoles, setShowRoles] = useState(false);
+  const [flashTarget, setFlashTarget] = useState<{ neighborhood: string; slot: number } | null>(null);
   // Intro story — shown once when a fresh game mounts, before Round 1.
   const [showIntro, setShowIntro] = useState(true);
 
@@ -449,6 +450,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerPosition={activePlayer.position}
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
+                flashSlot={flashTarget?.neighborhood === 'suburb' ? flashTarget.slot : null}
               />
             </div>
 
@@ -481,6 +483,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerPosition={activePlayer.position}
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
+                flashSlot={flashTarget?.neighborhood === 'courthouse' ? flashTarget.slot : null}
               />
               <div className="city-hall-area">
                 <div className="ch-road-v" />
@@ -542,6 +545,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerPosition={activePlayer.position}
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
+                flashSlot={flashTarget?.neighborhood === 'media' ? flashTarget.slot : null}
               />
             </div>
 
@@ -574,6 +578,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerPosition={activePlayer.position}
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
+                flashSlot={flashTarget?.neighborhood === 'politics' ? flashTarget.slot : null}
               />
             </div>
           </div>
@@ -690,8 +695,24 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
               <p className="board-phase-text">All players have taken their turns. The city is placing the next surveillance device.</p>
             </div>
             <div className="board-phase-footer">
-              <button className="btn board-phase-btn" onClick={() => dispatch({ type: 'BOARD_PHASE' })}>
-                Place Device
+              <button
+                className="btn board-phase-btn"
+                disabled={!!flashTarget}
+                onClick={() => {
+                  const willPlace = state.blockedBoardPhases === 0 && state.cancelNextSurveillance === 0 && state.surveillanceDeck.length > 0;
+                  if (willPlace) {
+                    const top = state.surveillanceDeck[0];
+                    setFlashTarget({ neighborhood: top.neighborhood, slot: top.slot });
+                    setTimeout(() => {
+                      dispatch({ type: 'BOARD_PHASE' });
+                      setFlashTarget(null);
+                    }, 1500);
+                  } else {
+                    dispatch({ type: 'BOARD_PHASE' });
+                  }
+                }}
+              >
+                {flashTarget ? 'Placing...' : 'Place Device'}
               </button>
             </div>
           </div>

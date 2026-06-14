@@ -793,6 +793,11 @@ input, select { font-family: inherit; }
 .device-slot.active-player-here { box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 2px 2px 0 var(--px-dark); }
 .device-slot.slot-moveable { cursor: pointer; }
 .device-slot.slot-removeable { cursor: pointer; }
+@keyframes slot-flash-anim {
+  0%, 100% { box-shadow: 0 0 0 2px #ef4444, 0 0 8px rgba(239,68,68,0.5); background: rgba(239,68,68,0.15); }
+  50%       { box-shadow: 0 0 0 4px #ef4444, 0 0 20px rgba(239,68,68,0.9); background: rgba(239,68,68,0.35); }
+}
+.device-slot.slot-flash { animation: slot-flash-anim 0.45s ease-in-out infinite; z-index: 10; }
 .device-token { font-size: 1.1rem; }
 .slot-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
 .slot-pawns { display: flex; gap: 2px; line-height: 1; }

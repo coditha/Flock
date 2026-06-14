@@ -12,6 +12,7 @@ interface Props {
   activePlayerPosition: string;
   activePlayerId?: number;
   onMove: (position: Position) => void;
+  flashSlot?: number | null;
 }
 
 const DEVICE_EMOJI: Record<DeviceType, string> = {
@@ -75,6 +76,7 @@ export default function NeighborhoodTile({
   activePlayerPosition,
   activePlayerId,
   onMove,
+  flashSlot,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
   const filledSlots = neighborhood.slots.filter(Boolean).length;
@@ -138,7 +140,7 @@ export default function NeighborhoodTile({
           return (
             <div
               key={`slot-${i}`}
-              className={`device-slot sq-slot-${i + 1} ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''} ${slotMoveable ? 'slot-moveable' : ''} ${isActivePlayerHere ? 'active-player-here' : ''} ${slotRemoveable ? 'slot-removeable' : ''}`}
+              className={`device-slot sq-slot-${i + 1} ${device ? 'occupied' : 'empty'} ${selectedSlot === i ? 'slot-selected' : ''} ${playersOnSlot.length > 0 ? 'player-here' : ''} ${slotMoveable ? 'slot-moveable' : ''} ${isActivePlayerHere ? 'active-player-here' : ''} ${slotRemoveable ? 'slot-removeable' : ''} ${flashSlot === i ? 'slot-flash' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (slotMoveable) onMove(slotPos);
