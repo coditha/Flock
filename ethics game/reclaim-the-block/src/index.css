@@ -1133,6 +1133,7 @@ input, select { font-family: inherit; }
   width: 48px;
   height: 48px;
   image-rendering: pixelated;
+  filter: drop-shadow(6px 10px 8px rgba(0,0,0,0.55));
 }
 .ap-die-wrap:active:not(.jitter):not(.land) { transform: scale(0.9); }
 /* Rolling: JS controls 3D rotation via inline style */
