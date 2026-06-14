@@ -2236,8 +2236,8 @@ input, select { font-family: inherit; }
   position: absolute; left: 50%; top: -6px;
   transform: translateX(-50%);
   font-family: 'Press Start 2P', monospace;
-  font-size: 1.4rem; color: var(--yellow);
-  text-shadow: 2px 2px 0 var(--px-dark);
+  font-size: 2.4rem; color: #ffffff;
+  text-shadow: 2px 2px 0 var(--px-dark), 0 0 12px rgba(255,255,255,0.6);
   z-index: 20; pointer-events: none;
   animation: dice-result-pop 0.3s ease-out;
 }
