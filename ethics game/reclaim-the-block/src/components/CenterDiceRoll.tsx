@@ -74,9 +74,12 @@ export default function CenterDiceRoll({ state, dispatch }: Props) {
     // Physics-ish throw: pick a consistent launch direction + spin axis.
     // The die travels along a decaying arc and tumbles consistently, then settles.
     const dir = Math.random() * Math.PI * 2;
-    const throwDist = 90 + Math.random() * 50;
+    const throwDist = 170 + Math.random() * 70;
     const launchX = Math.cos(dir) * throwDist;
     const launchY = Math.sin(dir) * throwDist;
+    // A second wander direction so the die roams across the picture, not just out-and-back
+    const wanderX = (Math.random() * 2 - 1) * 130;
+    const wanderY = (Math.random() * 2 - 1) * 110;
     // Consistent spin velocity per axis (deg per step) — the die keeps spinning
     // the same way like a real thrown die, rather than jittering randomly.
     const spinX = (240 + Math.random() * 160) * (Math.random() < 0.5 ? 1 : -1);
@@ -115,12 +118,13 @@ export default function CenterDiceRoll({ state, dispatch }: Props) {
             ry: rotAccum.current.ry + spinY * decay,
             rz: rotAccum.current.rz + spinZ * decay,
           };
-          // Position follows a smooth arc out then back toward center (settle)
+          // Position roams the picture: an out-and-back arc plus a wandering
+          // figure that fades as the die settles back to center.
           const arc = Math.sin(t * Math.PI);            // 0 → 1 → 0 over the roll
-          const settle = 1 - t;                          // pull back to center
-          const x = launchX * arc * settle;
-          const hop = Math.abs(Math.sin(t * Math.PI * 3)) * 22 * (1 - t); // little bounces
-          const y = launchY * arc * settle - hop;
+          const settle = 1 - t * t;                      // stays wide longer, then pulls in
+          const x = (launchX * arc + wanderX * Math.sin(t * Math.PI * 2)) * settle;
+          const hop = Math.abs(Math.sin(t * Math.PI * 3)) * 24 * (1 - t); // little bounces
+          const y = (launchY * arc + wanderY * Math.cos(t * Math.PI * 2)) * settle - hop;
           const scale = 1.12 - t * 0.12;
           setDiceTransition(`transform ${delay}ms cubic-bezier(0.33, 0, 0.67, 1)`);
           setDicePos({ x, y });
