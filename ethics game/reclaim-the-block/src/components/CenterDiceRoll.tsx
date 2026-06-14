@@ -147,6 +147,7 @@ export default function CenterDiceRoll({ state, dispatch }: Props) {
       <div className={`center-dice-panel${facesTop ? ' center-dice-panel-rotated' : ''}`} style={{ borderColor: player.role.colorHex }}>
         <div className="ap-dice-perspective">
           {landed && <div className="center-dice-result">{rollingFace}</div>}
+          {landed && <div className="center-dice-ground-shadow" />}
           <div
             className={`ap-die-wrap${rolling ? ' jitter' : landed ? ' land' : ''}`}
             onClick={handleDiceTap}
