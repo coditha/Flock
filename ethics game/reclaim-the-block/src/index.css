@@ -121,11 +121,11 @@ input, select { font-family: inherit; }
   padding: clamp(0.35rem, 0.7vh, 0.55rem) clamp(0.4rem, 0.8vw, 0.6rem);
   display: flex; flex-direction: column; gap: 0.2rem; flex: 1;
   border-top: 2px solid var(--border);
-  background: var(--surface);
+  background: #f5f0e4;
 }
 .role-character-img { width: clamp(80px, 11vh, 110px); height: clamp(80px, 11vh, 110px); object-fit: contain; flex-shrink: 0; image-rendering: pixelated; }
 .role-name { font-weight: 700; font-size: clamp(0.6rem, 1.1vmin, 0.78rem); }
-.role-ability { color: var(--text-muted); font-size: clamp(0.55rem, 0.95vmin, 0.68rem); line-height: 1.45; }
+.role-ability { color: #5a4a2a; font-size: clamp(0.55rem, 0.95vmin, 0.68rem); line-height: 1.45; }
 
 .setup-objective { color: var(--text-muted); line-height: 1.5; font-size: clamp(0.68rem, 1.2vmin, 0.84rem); }
 .setup-rules { list-style: none; margin-top: clamp(0.3rem, 0.7vh, 0.6rem); display: flex; flex-direction: column; gap: clamp(0.2rem, 0.5vh, 0.4rem); }
