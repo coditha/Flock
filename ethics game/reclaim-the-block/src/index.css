@@ -2096,11 +2096,7 @@ input, select { font-family: inherit; }
   flex-shrink: 0;
 }
 .corner-emoji { font-size: 1.1rem; flex-shrink: 0; transition: transform 0.2s, filter 0.2s; }
-@keyframes emoji-pulse {
-  0%, 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.6)); }
-  50%       { filter: drop-shadow(0 0 10px rgba(255,255,255,1)) drop-shadow(0 0 4px rgba(255,255,255,0.8)); }
-}
-.active-pawn { animation: emoji-pulse 1s ease-in-out infinite; }
+.active-pawn { }
 .corner-info { flex: 1; min-width: 0; }
 .corner-name {
   display: block;
