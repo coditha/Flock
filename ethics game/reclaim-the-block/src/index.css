@@ -805,8 +805,8 @@ input, select { font-family: inherit; }
   50%       { box-shadow: 0 0 0 4px rgba(255,255,255,1),   2px 2px 0 var(--px-dark); }
 }
 @keyframes slot-flash-anim {
-  0%, 100% { box-shadow: 0 0 0 2px #ef4444, 0 0 8px rgba(239,68,68,0.5); background: rgba(239,68,68,0.15); }
-  50%       { box-shadow: 0 0 0 4px #ef4444, 0 0 20px rgba(239,68,68,0.9); background: rgba(239,68,68,0.35); }
+  0%, 100% { box-shadow: 0 0 0 2px #ef4444, 0 0 6px rgba(239,68,68,0.5); }
+  50%       { box-shadow: 0 0 0 5px #ef4444, 0 0 18px rgba(239,68,68,0.9); }
 }
 .device-slot.slot-flash { animation: slot-flash-anim 0.45s ease-in-out infinite; z-index: 10; }
 .device-token { font-size: 1.1rem; }
