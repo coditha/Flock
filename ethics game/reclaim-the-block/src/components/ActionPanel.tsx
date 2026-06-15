@@ -275,10 +275,9 @@ export default function ActionPanel({
       {/* ── Hand limit discard ──────────────────────────────── */}
       {pendingDiscard && (
         <div className="ap-incident">
-          <div className="ap-incident-title">✋ Hand Limit Exceeded</div>
+          <div className="ap-incident-title">Hand Limit Exceeded</div>
           <div className="ap-incident-effect">
-            Choose {pendingDiscard.count} card{pendingDiscard.count > 1 ? 's' : ''} to discard
-            (max 7 in hand). Tap cards in your hand to select.
+            Remove {pendingDiscard.count} card{pendingDiscard.count > 1 ? 's' : ''} to not exceed max 7 hand limit.
             ({selectedCardIds.length}/{pendingDiscard.count} selected)
           </div>
           <button className="btn btn-danger"
