@@ -96,7 +96,7 @@ export default function ActionPanel({
     !player.hasUsedSpecialAbilityThisTurn && selectedCards.length >= 2 &&
     state.densityTracker > 1;
 
-  const depositRequired = state.reducedNextDeposit ? 3 : 4;
+  const depositRequired = state.reducedNextDeposit ? 2 : player.role.id === 'council' ? 3 : 4;
   const depositCards = selectedCards.slice(0, depositRequired);
   const depositColors = new Set(depositCards.map((c) => c.category));
   const depositWildcards = depositCards.filter((c) => c.effectType === 'wildcard-deposit').length;
@@ -149,7 +149,8 @@ export default function ActionPanel({
         'Must be at the Town Square.',
         'Need one of each: blue · yellow · green · red.',
         'Raises the Privacy & Community Trust Meter.',
-      ].join('\n'),
+        player.role.id === 'council' ? '★ Council discount: only 3 cards needed.' : '',
+      ].filter(Boolean).join('\n'),
       available: canDeposit,
       onTap: () => {
         dispatch({ type: 'DEPOSIT_AT_CITY_HALL', cardIds: selectedCardIds.slice(0, depositRequired) });

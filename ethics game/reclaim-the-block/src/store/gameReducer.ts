@@ -877,7 +877,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const player = state.players[state.currentPlayerIndex];
       if (player.position !== 'city-hall') return state;
 
-      const required = state.reducedNextDeposit ? 3 : 4;
+      const required = state.reducedNextDeposit ? 2 : player.role.id === 'council' ? 3 : 4;
       const cards = action.cardIds.map((id) => player.hand.find((c) => c.id === id)!).filter(Boolean);
 
       if (cards.length < required) return state;
@@ -935,9 +935,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           break;
         }
         case 'council': {
-          // Handled via deposit — no standalone action
-          s = log(s, 'Council Member deposit bonus applied automatically at the Town Square.');
-          break;
+          // Auto-applied at deposit — no standalone action needed
+          return log(state, 'Council Member discount is applied automatically when depositing at the Town Square.');
         }
         case 'legal': {
           // Handled via LEGAL_REMOVE_DEVICE
