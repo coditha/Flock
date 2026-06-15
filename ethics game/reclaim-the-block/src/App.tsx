@@ -685,7 +685,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
       {showRoles && <RoleOverlay state={state} onClose={() => setShowRoles(false)} />}
 
       {/* ── Board phase overlay ──────────────────────────────── */}
-      {state.phase === 'board-phase' && !state.pendingIncident && (
+      {state.phase === 'board-phase' && !state.pendingIncident && !flashTarget && (
         <div className="board-phase-overlay">
           <div className="board-phase-border">
           <div className="board-phase-card">
