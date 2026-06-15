@@ -808,8 +808,8 @@ input, select { font-family: inherit; }
 .device-slot.slot-moveable { cursor: pointer; animation: moveable-ring 1.1s ease-in-out infinite; }
 .device-slot.slot-removeable { cursor: pointer; }
 @keyframes moveable-ring {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(250,220,60,0.5), 2px 2px 0 var(--px-dark); }
-  50%       { box-shadow: 0 0 0 4px rgba(250,220,60,1),   2px 2px 0 var(--px-dark); }
+  0%, 100% { box-shadow: 0 0 0 2px rgba(255,255,255,0.5), 2px 2px 0 var(--px-dark); }
+  50%       { box-shadow: 0 0 0 4px rgba(255,255,255,1),   2px 2px 0 var(--px-dark); }
 }
 @keyframes slot-flash-anim {
   0%, 100% { box-shadow: 0 0 0 2px #ef4444, 0 0 8px rgba(239,68,68,0.5); background: rgba(239,68,68,0.15); }
