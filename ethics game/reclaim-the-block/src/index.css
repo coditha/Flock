@@ -792,13 +792,6 @@ input, select { font-family: inherit; }
   box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow), 2px 2px 0 var(--px-dark);
   position: relative; gap: 2px;
 }
-/* Little pixel roof on each house */
-.device-slot::before {
-  content: ''; position: absolute; top: -7px; left: -3px; right: -3px; height: 8px;
-  background: #b5562a;
-  clip-path: polygon(0 100%, 50% 0, 100% 100%);
-  z-index: 1;
-}
 .device-slot.empty { background: #dcc8a0; color: var(--text-muted); }
 .device-slot.empty:hover { background: #cdb890; }
 .device-slot.occupied { background: #f0d0d0; border-color: var(--red); }
