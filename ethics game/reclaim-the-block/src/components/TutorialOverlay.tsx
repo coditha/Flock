@@ -8,35 +8,59 @@ interface Props {
 const STEPS = [
   {
     title: 'The Situation',
-    body: 'Your city is installing surveillance cameras, license plate readers, and smart devices across every neighborhood. Privacy is eroding and community trust is falling. Work together to push back.',
+    body: 'Your city is installing surveillance cameras, license plate readers, and smart devices across every neighborhood. Privacy is eroding and community trust is falling. You and your neighbors must work together to push back.',
   },
   {
     title: 'Your Goal',
-    body: 'Remove all excess surveillance devices from all 4 neighborhoods before the Privacy & Community Trust meter hits 0. All players win or lose together.',
+    body: 'Remove all excess surveillance devices from all 4 neighborhoods before the Privacy & Community Trust meter hits 0. All players win or lose together — coordinate your moves!',
   },
   {
-    title: 'Your Turn',
-    body: 'Each turn: Roll the dice to get action points. Spend them to move around the board, remove devices, or play community cards. End your turn to draw 2 new cards.',
+    title: 'Taking Your Turn',
+    body: 'Roll the dice to earn action points. Each action costs 1 point — spend them to move, remove devices, play cards, or use your special ability. When you are done, press End Turn to draw 2 new Community Cards.',
   },
   {
-    title: 'Moving',
-    body: 'Each move costs 1 action. You can move to adjacent road segments or device slots. Reach the Town Square to deposit cards and trigger a neighborhood reset.',
+    title: 'Moving Around',
+    body: 'Moving to an adjacent road tile or device slot costs 1 action. Highlighted tiles show where you can go. Navigate through the neighborhoods to reach devices you want to remove, or head to the Town Square in the center.',
+  },
+  {
+    title: 'Remove Device',
+    body: 'To remove a surveillance device: move into the neighborhood, tap the device slot to target it, select 2 Community Cards that match the neighborhood color, then press Remove Device. Costs 1 action. Removing a device raises the Privacy Meter!',
   },
   {
     title: 'Community Cards',
-    body: 'Play 2 matching-color cards to remove a device from a neighborhood. Cards come in 5 types: Legal (blue), Organizing (yellow), Media (green), Political (red), and Neighborhood (purple).',
+    body: 'Cards come in 5 colors: Legal (blue), Organizing (yellow), Media (green), Political (red), and Neighborhood (purple). You can hold up to 7 cards. Match colors to neighborhoods — Suburb needs yellow, Courthouse needs blue, Media needs green, Politics needs red.',
   },
   {
-    title: 'Privacy Meter',
-    body: 'The meter starts at 20/30. Every surveillance device placed drops it. If it hits 0, you lose. Removing devices and completing neighborhoods helps protect it.',
+    title: 'Shimmer Cards',
+    body: 'Some cards have a shimmer effect — these are powerful one-time power-ups. Select one shimmer card and press Play Card (costs 1 action). Effects include drawing extra cards, removing devices instantly, blocking the Board Phase, and more.',
+  },
+  {
+    title: 'Exchange Cards',
+    body: 'You can give a teammate 1 Community Card if you are both on the exact same tile. Press Exchange Cards, choose your teammate, then pick which card to give. Costs 1 action. Use this to pass the right color card to the right player!',
+  },
+  {
+    title: 'Town Square',
+    body: 'The Town Square is the center of the board. When you are there, select 4 cards (one of each color: blue, yellow, green, red) and press Deposit. This clears ALL devices from the most crowded neighborhood and gives the Privacy Meter a big boost!',
+  },
+  {
+    title: 'Board Phase',
+    body: 'After all players have taken their turns, the city places a new surveillance device. A flash will highlight exactly which slot gets the device. The more neighborhoods fill up, the worse the devices get — keep clearing them!',
   },
   {
     title: 'Incident Cards',
-    body: 'When a neighborhood fills up, an incident card is drawn. These create setbacks like dropping the trust meter or blocking a board phase. Resolve them quickly!',
+    body: 'When a neighborhood reaches maximum devices, an Incident Card is triggered. These cause setbacks: dropping the Privacy Meter, adding more devices, or blocking actions. Read the card carefully — sometimes you vote on how to respond.',
   },
   {
-    title: 'Winning',
-    body: 'Clear all 4 neighborhoods of excess devices before the meter hits 0. Each role has a unique special ability — use them together strategically to win!',
+    title: 'Player Special Powers',
+    body: 'Each role has a unique ability usable once per turn:\n🟡 Parent — Draw 1 extra card when on the same tile as a teammate.\n🔵 Lawyer — Use 2 different-color cards to remove a device from ANY neighborhood.\n🟢 Activist — Discard 2 cards to lower the Surveillance Density Tracker by 1.\n🔴 City Council — Deposit with only 3 cards instead of 4.',
+  },
+  {
+    title: 'Privacy Meter',
+    body: 'The meter starts at 20 out of 30. Every device placed by the city drops it. If it hits 0, everyone loses. Keep it healthy by removing devices, depositing at the Town Square, and playing shimmer cards. Watch for the red pulse — it means danger!',
+  },
+  {
+    title: 'Ready to Play!',
+    body: 'Work together, share cards, use your special powers, and clear all 4 neighborhoods before the Privacy Meter hits zero. Good luck — your community is counting on you!',
   },
 ];
 

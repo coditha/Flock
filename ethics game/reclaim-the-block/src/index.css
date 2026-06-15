@@ -2330,7 +2330,7 @@ input, select { font-family: inherit; }
   font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text);
 }
 .tutorial-overlay-step-body {
-  font-size: 0.8rem; color: var(--text-muted); line-height: 1.65;
+  font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; white-space: pre-line;
 }
 .tutorial-overlay-nav {
   display: flex; align-items: center; justify-content: space-between;
