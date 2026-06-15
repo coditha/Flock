@@ -109,7 +109,7 @@ export default function GameSetup({ onStart }: Props) {
         </div>
 
         <div className="setup-section">
-          <h2>How many players?</h2>
+          <h2>Number of Players</h2>
           <div className="player-count-buttons">
             {([2, 3, 4] as const).map((n) => (
               <button
@@ -124,13 +124,18 @@ export default function GameSetup({ onStart }: Props) {
         </div>
 
         <div className="setup-section">
-          <h2>Roles in play</h2>
+          <h2>Player Roles</h2>
           <div className="role-list">
             {ROLES.slice(0, count).map((r) => (
               <div key={r.id} className="role-preview" style={{ borderColor: r.colorHex }}>
-                <span className="role-emoji">{r.emoji}</span>
-                <div>
-                  <div className="role-name">{r.name}</div>
+                <div className="role-preview-header" style={{ background: r.colorHex }}>
+                  {r.characterImage
+                    ? <img src={r.characterImage} alt={r.name} className="role-preview-img" />
+                    : <span className="role-emoji">{r.emoji}</span>
+                  }
+                </div>
+                <div className="role-preview-body">
+                  <div className="role-name" style={{ color: r.colorHex }}>{r.name}</div>
                   <div className="role-ability">{r.specialAbility}</div>
                 </div>
               </div>

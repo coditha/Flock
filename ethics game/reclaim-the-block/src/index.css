@@ -100,18 +100,32 @@ input, select { font-family: inherit; }
 .count-btn:hover { border-color: var(--yellow); color: var(--yellow); transform: translate(-1px,-1px); box-shadow: inset 2px 2px 0 var(--px-highlight), inset -2px -2px 0 var(--px-shadow), 4px 4px 0 var(--px-dark); }
 .count-btn.selected { background: var(--yellow); border-color: var(--px-dark); color: #fff; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--px-dark); }
 
-.role-list { display: flex; flex-direction: row; gap: clamp(0.4rem, 0.8vh, 0.6rem); }
+.role-list { display: flex; flex-direction: row; gap: clamp(0.35rem, 0.7vh, 0.55rem); }
 .role-preview {
-  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  display: flex; flex-direction: column;
   background: var(--surface2); border: 2px solid;
-  box-shadow: inset 1px 1px 0 var(--px-highlight), inset -1px -1px 0 var(--px-shadow);
-  padding: clamp(0.5rem, 1vh, 0.8rem) 0.6rem;
-  flex: 1 1 0; min-width: 0; text-align: center;
+  box-shadow: 3px 3px 0 var(--px-dark);
+  flex: 1 1 0; min-width: 0; overflow: hidden;
 }
-.role-emoji { font-size: clamp(1rem, 2vh, 1.3rem); flex-shrink: 0; }
+.role-preview-header {
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(0.4rem, 0.9vh, 0.7rem);
+  min-height: clamp(56px, 9vh, 80px);
+}
+.role-preview-img {
+  width: clamp(40px, 7vh, 60px); height: clamp(40px, 7vh, 60px);
+  object-fit: contain; image-rendering: pixelated;
+}
+.role-emoji { font-size: clamp(1.2rem, 2.5vh, 1.8rem); }
+.role-preview-body {
+  padding: clamp(0.35rem, 0.7vh, 0.55rem) clamp(0.4rem, 0.8vw, 0.6rem);
+  display: flex; flex-direction: column; gap: 0.2rem; flex: 1;
+  border-top: 2px solid var(--border);
+  background: var(--surface);
+}
 .role-character-img { width: clamp(80px, 11vh, 110px); height: clamp(80px, 11vh, 110px); object-fit: contain; flex-shrink: 0; image-rendering: pixelated; }
-.role-name { font-weight: 700; font-size: clamp(0.72rem, 1.3vmin, 0.88rem); }
-.role-ability { color: var(--text-muted); font-size: clamp(0.62rem, 1.1vmin, 0.78rem); margin-top: 0.1rem; }
+.role-name { font-weight: 700; font-size: clamp(0.6rem, 1.1vmin, 0.78rem); }
+.role-ability { color: var(--text-muted); font-size: clamp(0.55rem, 0.95vmin, 0.68rem); line-height: 1.45; }
 
 .setup-objective { color: var(--text-muted); line-height: 1.5; font-size: clamp(0.68rem, 1.2vmin, 0.84rem); }
 .setup-rules { list-style: none; margin-top: clamp(0.3rem, 0.7vh, 0.6rem); display: flex; flex-direction: column; gap: clamp(0.2rem, 0.5vh, 0.4rem); }
@@ -136,7 +150,7 @@ input, select { font-family: inherit; }
   box-shadow: 4px 4px 0 var(--px-dark);
   font-size: clamp(0.75rem, 1.5vmin, 0.92rem); font-weight: 700; letter-spacing: 1px;
   margin-top: clamp(0.4rem, 1vh, 0.9rem); flex-shrink: 0;
-  transition: all 0.1s;
+  transition: all 0.1s; cursor: pointer; font-family: inherit;
 }
 .start-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--px-dark); }
 .start-btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--px-dark); }
