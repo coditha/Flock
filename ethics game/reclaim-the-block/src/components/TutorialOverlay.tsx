@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 interface Props {
   onClose: () => void;
+  rotated?: boolean;
 }
 
 const STEPS = [
@@ -39,13 +40,13 @@ const STEPS = [
   },
 ];
 
-export default function TutorialOverlay({ onClose }: Props) {
+export default function TutorialOverlay({ onClose, rotated }: Props) {
   const [step, setStep] = useState(0);
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
   return (
-    <div className="tutorial-overlay" onClick={onClose}>
+    <div className={`tutorial-overlay${rotated ? ' overlay-rotated' : ''}`} onClick={onClose}>
       <div className="tutorial-overlay-panel" onClick={e => e.stopPropagation()}>
         <div className="tutorial-overlay-header">
           <span className="tutorial-overlay-title">How to Play</span>

@@ -233,6 +233,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
   const [showLog, setShowLog] = useState(false);
   const [showSettings, setShowSettings] = useState<'top' | 'bottom' | null>(null);
+  const [rotatedOverlay, setRotatedOverlay] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showRoles, setShowRoles] = useState(false);
   const [flashTarget, setFlashTarget] = useState<{ neighborhood: string; slot: number } | null>(null);
@@ -385,10 +386,10 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
             </button>
             {showSettings === 'top' && (
               <div className="settings-dropdown">
-                <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(null); }}>Game Log</button>
+                <button className="btn-quit" onClick={() => { setShowLog(true); setRotatedOverlay(true); setShowSettings(null); }}>Game Log</button>
                 <button className="btn-quit" onClick={onNewGame}>New Game</button>
-                <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(null); }}>Role</button>
-                <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(null); }}>Tutorial</button>
+                <button className="btn-quit" onClick={() => { setShowRoles(true); setRotatedOverlay(true); setShowSettings(null); }}>Role</button>
+                <button className="btn-quit" onClick={() => { setShowTutorial(true); setRotatedOverlay(true); setShowSettings(null); }}>Tutorial</button>
                 <button className="btn-quit" onClick={onRestart}>Exit</button>
               </div>
             )}
@@ -406,7 +407,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           Far copy (flipped, top) faces the Activist & Parent; near copy (upright,
           bottom) faces the Lawyer & City Council. ── */}
       {showLog && (
-        <div className="tutorial-overlay" onClick={() => setShowLog(false)}>
+        <div className={`tutorial-overlay${rotatedOverlay ? ' overlay-rotated' : ''}`} onClick={() => setShowLog(false)}>
           <div className="role-overlay-panel" onClick={e => e.stopPropagation()}>
             <div className="tutorial-overlay-header">
               <span className="tutorial-overlay-title">Game Log</span>
@@ -604,10 +605,10 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
               </button>
               {showSettings === 'bottom' && (
                 <div className="settings-dropdown">
-                  <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(null); }}>Game Log</button>
+                  <button className="btn-quit" onClick={() => { setShowLog(true); setRotatedOverlay(false); setShowSettings(null); }}>Game Log</button>
                   <button className="btn-quit" onClick={onNewGame}>New Game</button>
-                  <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(null); }}>Role</button>
-                  <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(null); }}>Tutorial</button>
+                  <button className="btn-quit" onClick={() => { setShowRoles(true); setRotatedOverlay(false); setShowSettings(null); }}>Role</button>
+                  <button className="btn-quit" onClick={() => { setShowTutorial(true); setRotatedOverlay(false); setShowSettings(null); }}>Tutorial</button>
                   <button className="btn-quit" onClick={onRestart}>Exit</button>
                 </div>
               )}
@@ -679,10 +680,10 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
       )}
 
       {/* ── In-game tutorial overlay ─────────────────────────────── */}
-      {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} />}
+      {showTutorial && <TutorialOverlay onClose={() => setShowTutorial(false)} rotated={rotatedOverlay} />}
 
       {/* ── Role overview overlay ────────────────────────────────── */}
-      {showRoles && <RoleOverlay state={state} onClose={() => setShowRoles(false)} />}
+      {showRoles && <RoleOverlay state={state} onClose={() => setShowRoles(false)} rotated={rotatedOverlay} />}
 
       {/* ── Board phase overlay ──────────────────────────────── */}
       {state.phase === 'board-phase' && !state.pendingIncident && !flashTarget && (

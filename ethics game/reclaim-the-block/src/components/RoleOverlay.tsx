@@ -5,6 +5,7 @@ import type { GameState } from '../types/game';
 interface Props {
   state: GameState;
   onClose: () => void;
+  rotated?: boolean;
 }
 
 const ROLE_DESCRIPTIONS: Record<string, string> = {
@@ -15,7 +16,7 @@ const ROLE_DESCRIPTIONS: Record<string, string> = {
 };
 
 
-export default function RoleOverlay({ state, onClose }: Props) {
+export default function RoleOverlay({ state, onClose, rotated }: Props) {
   const activeRoleIds = new Set(state.players.map(p => p.role.id));
   const visibleRoles = ROLES.filter(r => activeRoleIds.has(r.id));
 
@@ -26,7 +27,7 @@ export default function RoleOverlay({ state, onClose }: Props) {
   if (!role) return null;
 
   return (
-    <div className="tutorial-overlay" onClick={onClose}>
+    <div className={`tutorial-overlay${rotated ? ' overlay-rotated' : ''}`} onClick={onClose}>
       <div className="role-overlay-panel" onClick={e => e.stopPropagation()}>
         <div className="tutorial-overlay-header">
           <span className="tutorial-overlay-title">Roles</span>

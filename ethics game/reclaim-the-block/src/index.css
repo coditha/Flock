@@ -2288,6 +2288,7 @@ input, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   background: rgba(18,10,2,0.55);
 }
+.tutorial-overlay.overlay-rotated { transform: rotate(180deg); }
 .tutorial-overlay-panel {
   width: min(480px, 88vw);
   background: var(--surface);
