@@ -232,7 +232,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodId | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<SlotIndex | null>(null);
   const [showLog, setShowLog] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState<'top' | 'bottom' | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [showRoles, setShowRoles] = useState(false);
   const [flashTarget, setFlashTarget] = useState<{ neighborhood: string; slot: number } | null>(null);
@@ -378,17 +378,17 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           </div>
           <div className="settings-menu">
             <button
-              className={`btn-quit ${showSettings ? 'active' : ''}`}
-              onClick={() => setShowSettings((s) => !s)}
+              className={`btn-quit ${showSettings === 'top' ? 'active' : ''}`}
+              onClick={() => setShowSettings((s) => s === 'top' ? null : 'top')}
             >
               ⚙️
             </button>
-            {showSettings && (
+            {showSettings === 'top' && (
               <div className="settings-dropdown">
-                <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(false); }}>Game Log</button>
+                <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(null); }}>Game Log</button>
                 <button className="btn-quit" onClick={onNewGame}>New Game</button>
-                <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(false); }}>Role</button>
-                <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(false); }}>Tutorial</button>
+                <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(null); }}>Role</button>
+                <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(null); }}>Tutorial</button>
                 <button className="btn-quit" onClick={onRestart}>Exit</button>
               </div>
             )}
@@ -597,17 +597,17 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
             </div>
             <div className="settings-menu">
               <button
-                className={`btn-quit ${showSettings ? 'active' : ''}`}
-                onClick={() => setShowSettings((s) => !s)}
+                className={`btn-quit ${showSettings === 'bottom' ? 'active' : ''}`}
+                onClick={() => setShowSettings((s) => s === 'bottom' ? null : 'bottom')}
               >
                 ⚙️
               </button>
-              {showSettings && (
+              {showSettings === 'bottom' && (
                 <div className="settings-dropdown">
-                  <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(false); }}>Game Log</button>
+                  <button className="btn-quit" onClick={() => { setShowLog(true); setShowSettings(null); }}>Game Log</button>
                   <button className="btn-quit" onClick={onNewGame}>New Game</button>
-                  <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(false); }}>Role</button>
-                  <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(false); }}>Tutorial</button>
+                  <button className="btn-quit" onClick={() => { setShowRoles(true); setShowSettings(null); }}>Role</button>
+                  <button className="btn-quit" onClick={() => { setShowTutorial(true); setShowSettings(null); }}>Tutorial</button>
                   <button className="btn-quit" onClick={onRestart}>Exit</button>
                 </div>
               )}

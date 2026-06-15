@@ -220,7 +220,7 @@ input, select { font-family: inherit; }
 .settings-menu { position: relative; }
 .settings-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
+  bottom: calc(100% + 4px);
   right: 0;
   display: flex;
   flex-direction: column;
@@ -1933,7 +1933,7 @@ input, select { font-family: inherit; }
    top of the table. The bottom copy (.tv-bottom-center) stays upright. */
 .tv-top-center .tv-top-bar .privacy-meter { transform: rotate(180deg); }
 .tv-top-center .tv-top-bar .tv-top-actions { transform: rotate(180deg); }
-.tv-top-center .settings-dropdown { top: auto; bottom: calc(100% + 4px); left: auto; right: 0; transform: rotate(180deg); }
+.tv-top-center .settings-dropdown { bottom: auto; top: calc(100% + 4px); left: auto; right: 0; transform: rotate(180deg); }
 
 /* ── Board zone (centre middle cell) ───────────────────────── */
 .tv-board-zone {
