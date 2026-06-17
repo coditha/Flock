@@ -1,5 +1,6 @@
 import type { Neighborhood, Player, DeviceType, SlotIndex, Position } from '../types/game';
 import { getReachablePositions } from '../store/gameReducer';
+import { asset } from '../utils/asset';
 
 interface Props {
   neighborhood: Neighborhood;
@@ -22,7 +23,7 @@ const DEVICE_EMOJI: Record<DeviceType, string> = {
   'flock-reader': '🚗',
 };
 const DEVICE_IMAGE: Partial<Record<DeviceType, string>> = {
-  ring: '/ring.png',
+  ring: asset('/ring.png'),
 };
 
 const DEVICE_LABEL: Record<DeviceType, string> = {

@@ -1,4 +1,5 @@
 import type { Role } from '../types/game';
+import { asset } from '../utils/asset';
 
 export const ROLES: Role[] = [
   {
@@ -9,7 +10,7 @@ export const ROLES: Role[] = [
     color: 'yellow',
     colorHex: '#f59e0b',
     emoji: '🟡',
-    characterImage: '/characters/bear.png',
+    characterImage: asset('/characters/bear.png'),
   },
   {
     id: 'legal',
@@ -19,7 +20,7 @@ export const ROLES: Role[] = [
     color: 'blue',
     colorHex: '#3b82f6',
     emoji: '🔵',
-    characterImage: '/characters/briefcase.png',
+    characterImage: asset('/characters/briefcase.png'),
   },
   {
     id: 'captain',
@@ -29,7 +30,7 @@ export const ROLES: Role[] = [
     color: 'green',
     colorHex: '#22c55e',
     emoji: '🟢',
-    characterImage: '/characters/megaphone.png',
+    characterImage: asset('/characters/megaphone.png'),
   },
   {
     id: 'council',
@@ -39,6 +40,6 @@ export const ROLES: Role[] = [
     color: 'red',
     colorHex: '#ef4444',
     emoji: '🔴',
-    characterImage: '/characters/gavel.png',
+    characterImage: asset('/characters/gavel.png'),
   },
 ];

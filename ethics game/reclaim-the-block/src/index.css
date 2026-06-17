@@ -578,7 +578,7 @@ input, select { font-family: inherit; }
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
   width: 40px; height: 40px;
-  background: url('/pebble.png') center/cover no-repeat;
+  background: url('../pebble.png') center/cover no-repeat;
   border: none;
   border-radius: 50%;
   box-shadow: none;
@@ -601,7 +601,7 @@ input, select { font-family: inherit; }
 
 /* Town Square — central deposit plaza (building sprite) */
 .city-hall {
-  background: url('/town-square.png') no-repeat center top;
+  background: url('../town-square.png') no-repeat center top;
   background-size: contain;
   border: none;
   box-shadow: none;
@@ -706,7 +706,7 @@ input, select { font-family: inherit; }
 /* Courthouse uses a real building sprite (save to public/courthouse.png).
    font-size:0 hides the emoji fallback; enlarged so the building reads. */
 .district-landmark.lm-courthouse {
-  background-image: url('/courthouse.png');
+  background-image: url('../courthouse.png');
   width: 96px; height: 96px;
   font-size: 0;
   /* Rise up so the base overlaps the back of the road → reads as standing
@@ -717,7 +717,7 @@ input, select { font-family: inherit; }
 .tv-game .district-landmark.lm-courthouse { width: 84px; height: 84px; }
 /* Suburb uses the community-center building sprite */
 .district-landmark.lm-suburb {
-  background-image: url('/community-center.png');
+  background-image: url('../community-center.png');
   width: 96px; height: 96px;
   font-size: 0;
   transform: translate(-50%, -56%);
@@ -726,7 +726,7 @@ input, select { font-family: inherit; }
 .tv-game .district-landmark.lm-suburb { width: 84px; height: 84px; }
 /* Politics Row uses the city-hall building sprite (government building) */
 .district-landmark.lm-politics {
-  background-image: url('/cityhall.png');
+  background-image: url('../cityhall.png');
   width: 96px; height: 96px;
   font-size: 0;
   transform: translate(-50%, -56%);
@@ -735,7 +735,7 @@ input, select { font-family: inherit; }
 .tv-game .district-landmark.lm-politics { width: 84px; height: 84px; }
 /* Media District uses the news-agency building sprite */
 .district-landmark.lm-media {
-  background-image: url('/news-agency.png');
+  background-image: url('../news-agency.png');
   width: 96px; height: 96px;
   font-size: 0;
   transform: translate(-50%, -56%);
@@ -774,7 +774,7 @@ input, select { font-family: inherit; }
 .int-waypoint {
   width: 32px; height: 32px; flex-shrink: 0; position: relative; z-index: 1;
   border-radius: 50%;
-  background: url('/pebble.png') center/cover no-repeat;
+  background: url('../pebble.png') center/cover no-repeat;
   border: none; box-shadow: none;
   display: flex; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.6rem;
   image-rendering: pixelated;
@@ -1818,7 +1818,7 @@ input, select { font-family: inherit; }
     "corner-tl  top-center  corner-tr"
     "pm         board-zone  dt"
     "corner-bl  board-zone  corner-br";
-  background-image: url('/grass-bg.png');
+  background-image: url('../grass-bg.png');
   background-size: auto;
   background-repeat: repeat;
   image-rendering: pixelated;
@@ -2247,7 +2247,7 @@ input, select { font-family: inherit; }
 .center-dice-bg {
   position: absolute;
   width: 460px; height: 460px;
-  background: url('/diceroll.png') 52% center / contain no-repeat;
+  background: url('../diceroll.png') 52% center / contain no-repeat;
   image-rendering: pixelated;
   pointer-events: none;
 }
