@@ -349,7 +349,7 @@ export default function ActionPanel({
                 {actionButtons.map((btn) => (
                   <button
                     key={btn.id}
-                    className={`ap-action-btn${btn.available ? '' : ' ap-disabled'}${btn.id === 'remove' && btn.available ? ' ap-action-btn-ready' : ''}`}
+                    className={`ap-action-btn${btn.available ? '' : ' ap-disabled'}`}
                     onPointerDown={() => startHold(btn.id)}
                     onPointerUp={endHold}
                     onPointerLeave={endHold}
