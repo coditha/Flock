@@ -356,7 +356,6 @@ export default function ActionPanel({
                     onPointerCancel={endHold}
                     onClick={() => { if (!tooltipShown.current && btn.available) btn.onTap(); }}
                   >
-                    <span className="ap-btn-icon">{btn.icon}</span>
                     <span className="ap-btn-label">{btn.label}</span>
                   </button>
                 ))}
