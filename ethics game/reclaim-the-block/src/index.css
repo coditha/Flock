@@ -1434,7 +1434,8 @@ input, select { font-family: inherit; }
   pointer-events: none;
 }
 
-.card-top { padding: 4px 6px; display: flex; justify-content: space-between; align-items: center; }
+.card-top { padding: 4px 6px; display: flex; justify-content: flex-start; align-items: center; gap: 4px; }
+.card-category-icon { font-size: 0.85rem; line-height: 1; flex-shrink: 0; }
 .card-category { font-size: 0.52rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: white; }
 .powerup-star { font-size: 0.75rem; }
 /* Art zone */
