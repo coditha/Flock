@@ -270,7 +270,7 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
   return { state: s, drawnCards };
 }
 
-function drawCommunityCards(state: GameState, playerId: number, count: number, defer = false): GameState {
+function drawCommunityCards(state: GameState, playerId: number, count: number, defer = false, noIncident = false): GameState {
   let s = { ...state };
   let deck = [...s.communityDeck];
   let discard = [...s.communityDiscard];
@@ -290,7 +290,9 @@ function drawCommunityCards(state: GameState, playerId: number, count: number, d
     const card = deck.shift()!;
     if (card.type === 'incident') {
       discard.push(card);
-      if (s.cancelNextIncident) {
+      if (noIncident) {
+        // Special ability draws skip incidents entirely
+      } else if (s.cancelNextIncident) {
         s = { ...s, cancelNextIncident: false };
         s = log(s, `Incident "${card.name}" cancelled by Class Action.`);
       } else if (!deferredIncident) {
@@ -935,7 +937,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           // Draw 1 extra card if co-located with another player
           const colocated = s.players.some((p) => p.id !== player.id && p.position === player.position);
           if (colocated) {
-            s = drawCommunityCards(s, player.id, 1);
+            s = drawCommunityCards(s, player.id, 1, false, true);
             s = log(s, `${player.role.name} drew 1 extra card (organizer ability)`);
           } else {
             return log(s, 'Organizer ability requires another player on same space.');

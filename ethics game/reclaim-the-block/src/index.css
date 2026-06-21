@@ -1248,6 +1248,15 @@ input, select { font-family: inherit; }
   box-shadow: none;
 }
 .ap-action-btn:not(.ap-disabled):hover { border-color: var(--yellow); }
+.ap-action-btn-ready {
+  border-color: var(--green) !important;
+  box-shadow: 0 0 0 2px var(--green), 2px 2px 0 var(--px-dark);
+  animation: btn-ready-pulse 1.4s ease-in-out infinite;
+}
+@keyframes btn-ready-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px var(--green), 2px 2px 0 var(--px-dark); }
+  50% { box-shadow: 0 0 0 4px var(--green), 2px 2px 0 var(--px-dark); }
+}
 
 /* Grayed-out unavailable state */
 .ap-disabled {
