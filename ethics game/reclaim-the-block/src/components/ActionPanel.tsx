@@ -232,7 +232,7 @@ export default function ActionPanel({
     {
       id: 'share',
       icon: '🤝',
-      label: 'Exchange Cards',
+      label: 'Share Knowledge',
       tooltip: [
         'Cost: 1 action.',
         'Give 1 Community Card to a teammate on your tile.',

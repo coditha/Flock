@@ -1261,17 +1261,13 @@ input, select { font-family: inherit; }
   line-height: 1;
 }
 .ap-btn-label {
-  font-size: 0.58rem;
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 0.65rem;
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
-  line-height: 1.2;
-}
-.ap-action-btn-share .ap-btn-label {
-  font-family: 'Nunito', system-ui, sans-serif;
-  font-size: 0.65rem;
   letter-spacing: 0.2px;
+  line-height: 1.2;
 }
 
 /* End Turn — full width, most prominent */
@@ -1286,6 +1282,7 @@ input, select { font-family: inherit; }
   color: #fff;
   border: 3px solid var(--px-dark);
   box-shadow: 3px 3px 0 var(--px-dark);
+  font-family: 'Nunito', system-ui, sans-serif;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.5px;

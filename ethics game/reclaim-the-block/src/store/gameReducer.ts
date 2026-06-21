@@ -233,7 +233,11 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
   let deferredIncident: IncidentCard | null = null;
   const drawnCards: CommunityCard[] = [];
 
-  for (let i = 0; i < count; i++) {
+  let communityDrawn = 0;
+  const maxIterations = count + 20;
+  let iterations = 0;
+  while (communityDrawn < count && iterations < maxIterations) {
+    iterations++;
     if (deck.length === 0) {
       if (discard.length === 0) break;
       deck = shuffle(discard);
@@ -251,6 +255,7 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
       }
     } else {
       drawnCards.push(card as CommunityCard);
+      communityDrawn++;
     }
   }
 
@@ -272,7 +277,11 @@ function drawCommunityCards(state: GameState, playerId: number, count: number, d
   let discard = [...s.communityDiscard];
   let deferredIncident: IncidentCard | null = null;
 
-  for (let i = 0; i < count; i++) {
+  let communityDrawn = 0;
+  const maxIterations = count + 20;
+  let iterations = 0;
+  while (communityDrawn < count && iterations < maxIterations) {
+    iterations++;
     if (deck.length === 0) {
       if (discard.length === 0) break;
       deck = shuffle(discard);
@@ -294,6 +303,7 @@ function drawCommunityCards(state: GameState, playerId: number, count: number, d
         p.id === playerId ? { ...p, hand: [...p.hand, card as CommunityCard] } : p
       );
       s = { ...s, players };
+      communityDrawn++;
     }
   }
 
