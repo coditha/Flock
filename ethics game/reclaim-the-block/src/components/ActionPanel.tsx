@@ -106,9 +106,9 @@ export default function ActionPanel({
     depositColors.size + depositWildcards >= depositRequired;
 
   const canPlayCard = canAct && selectedCards.length === 1 && selectedCards[0].isPowerUp;
-  const canSpecial = canAct && !player.hasUsedSpecialAbilityThisTurn;
-
   const colocatedPlayers = players.filter((p) => p.id !== player.id && p.position === player.position);
+  const canSpecial = canAct && !player.hasUsedSpecialAbilityThisTurn &&
+    (player.role.id !== 'organizer' || colocatedPlayers.length > 0);
   const canShare = canAct && colocatedPlayers.length > 0 && player.hand.length > 0;
 
   // ── Action button definitions ────────────────────────────────────────────
