@@ -334,6 +334,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
   const activePlayer = state.players[state.currentPlayerIndex];
   const reachablePositions = canMove ? getReachablePositions(activePlayer.position) : [];
   const reachable = (pos: import('./types/game').Position) => reachablePositions.includes(pos);
+  const facesTop = activePlayer.role.id === 'organizer' || activePlayer.role.id === 'captain';
 
   // Role → corner mapping
   const byRole = (id: string): Player | undefined =>
@@ -399,7 +400,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
         {/* Surveillance (density) tracker for the Activist & Parent players, rotated
            180° (see .board-trackers-header) so it faces their side of the table. */}
         <div className="board-trackers board-trackers-header">
-          <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
+          <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} round={state.round} />
         </div>
         <RevealedCards cards={state.revealedSurveillanceCards} />
       </div>
@@ -453,6 +454,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
                 flashSlot={flashTarget?.neighborhood === 'suburb' ? flashTarget.slot : null}
+                facesTop={facesTop}
               />
             </div>
 
@@ -486,6 +488,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
                 flashSlot={flashTarget?.neighborhood === 'courthouse' ? flashTarget.slot : null}
+                facesTop={facesTop}
               />
               <div className="city-hall-area">
                 <div className="ch-road-v" />
@@ -548,6 +551,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
                 flashSlot={flashTarget?.neighborhood === 'media' ? flashTarget.slot : null}
+                facesTop={facesTop}
               />
             </div>
 
@@ -581,6 +585,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
                 activePlayerId={activePlayer.id}
                 onMove={handleMove}
                 flashSlot={flashTarget?.neighborhood === 'politics' ? flashTarget.slot : null}
+                facesTop={facesTop}
               />
             </div>
           </div>
@@ -591,7 +596,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
            New Game) so they get the same controls facing their side of the table. */}
         <div className="tv-bottom-center">
 <div className="board-trackers board-trackers-bottom">
-            <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} />
+            <DensityTracker value={state.densityTracker} vertical blocked={!!state.pendingIncident} round={state.round} />
           </div>
           <div className="tv-top-bar-row">
             <div className="tv-top-bar">

@@ -4,12 +4,13 @@ interface Props {
   value: number;
   vertical?: boolean;
   blocked?: boolean;
+  round?: number;
 }
 
 const DEVICE_LABELS = ['Ring', 'Ring', 'Speaker', 'Speaker', 'Traffic', 'Traffic', 'Flock', 'Flock'];
 const DEVICE_EMOJIS = ['📷', '📷', '🔊', '🔊', '🚦', '🚦', '🚗', '🚗'];
 
-export default function DensityTracker({ value, vertical, blocked }: Props) {
+export default function DensityTracker({ value, vertical, blocked, round }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [increasing, setIncreasing] = useState(false);
   const prevValue = useRef(value);
@@ -55,8 +56,8 @@ export default function DensityTracker({ value, vertical, blocked }: Props) {
           onClick={() => setExpanded((e) => !e)}
           title={expanded ? 'Collapse tracker' : 'Expand full tracker'}
         >
-          <span className="density-inline-badge-emoji">{DEVICE_EMOJIS[idx]}</span>
-          <span className="density-inline-badge-lv">Lv {value}</span>
+          {round === undefined && <span className="density-inline-badge-emoji">{DEVICE_EMOJIS[idx]}</span>}
+          <span className="density-inline-badge-lv">{round !== undefined ? `Round ${round}` : `Lv ${value}`}</span>
           <span className="density-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 

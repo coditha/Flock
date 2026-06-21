@@ -14,6 +14,7 @@ interface Props {
   activePlayerId?: number;
   onMove: (position: Position) => void;
   flashSlot?: number | null;
+  facesTop?: boolean;
 }
 
 const DEVICE_EMOJI: Record<DeviceType, string> = {
@@ -78,6 +79,7 @@ export default function NeighborhoodTile({
   activePlayerId,
   onMove,
   flashSlot,
+  facesTop,
 }: Props) {
   const color = NEIGHBORHOOD_COLORS[neighborhood.id];
   const filledSlots = neighborhood.slots.filter(Boolean).length;
@@ -99,7 +101,7 @@ export default function NeighborhoodTile({
         onSelect();
       }}
     >
-      <div className="neighborhood-header" style={{ background: color }}>
+      <div className={`neighborhood-header${facesTop ? ' header-flipped' : ''}`} style={{ background: color }}>
         <span className="neighborhood-name">{neighborhood.name}</span>
         <span className="neighborhood-density">{filledSlots}/4</span>
       </div>

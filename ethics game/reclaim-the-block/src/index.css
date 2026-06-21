@@ -665,6 +665,7 @@ input, select { font-family: inherit; }
   box-shadow: 2px 2px 0 var(--px-dark);
 }
 .neighborhood-name { font-weight: 700; font-size: 0.62rem; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 0.3px; }
+.neighborhood-header.header-flipped { transform: rotate(180deg); }
 .neighborhood-density { font-weight: 700; font-size: 0.62rem; color: #fff; text-shadow: 1px 1px 0 rgba(0,0,0,0.5); }
 
 /* Decorative trees scattered around the district (cosmetic only) */
