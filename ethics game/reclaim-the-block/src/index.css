@@ -1438,7 +1438,7 @@ input, select { font-family: inherit; }
 .card-category { font-size: 0.52rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: white; }
 .powerup-star { font-size: 0.75rem; }
 /* Art zone */
-.card-art { background: #f5f0e8; border-top: 1px solid rgba(0,0,0,0.18); border-bottom: 1px solid rgba(0,0,0,0.18); display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+.card-art { background: #f5f0e8; border-top: 1px solid rgba(0,0,0,0.18); display: flex; align-items: center; justify-content: center; padding: 6px 0; }
 .card-art-icon { font-size: 1.6rem; line-height: 1; }
 
 .card-name { padding: 2px 5px 1px; font-family: 'Press Start 2P', monospace; font-size: 0.1rem; line-height: 1.5; color: var(--px-dark); }
