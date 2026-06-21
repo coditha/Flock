@@ -5,10 +5,10 @@ interface Props {
 }
 
 const NEIGHBORHOOD_NAMES: Record<string, string> = {
-  suburb: 'Suburb',
+  suburb: 'Neighborhood',
   courthouse: 'Courthouse',
-  media: 'Media District',
-  politics: 'Politics Row',
+  media: 'Downtown',
+  politics: 'Civic Center',
 };
 
 export default function RevealedCards({ cards }: Props) {

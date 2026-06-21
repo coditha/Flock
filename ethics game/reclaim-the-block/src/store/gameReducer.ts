@@ -13,6 +13,8 @@ import { COMMUNITY_CARDS, INCIDENT_CARDS } from '../data/cards';
 import { SURVEILLANCE_CARDS } from '../data/surveillanceCards';
 import { ROLES } from '../data/roles';
 
+const MAX_ROUNDS = 8;
+
 // ── Utilities ──────────────────────────────────────────────────────────────
 
 export function shuffle<T>(arr: T[]): T[] {
@@ -150,10 +152,10 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
   const startingPlacements = shuffle(eligibleSlots).slice(0, 4);
 
   const NEIGHBORHOOD_DEFS = [
-    { id: 'suburb' as NeighborhoodId, name: 'Suburb' },
+    { id: 'suburb' as NeighborhoodId, name: 'Neighborhood' },
     { id: 'courthouse' as NeighborhoodId, name: 'Courthouse' },
-    { id: 'media' as NeighborhoodId, name: 'Media District' },
-    { id: 'politics' as NeighborhoodId, name: 'Politics Row' },
+    { id: 'media' as NeighborhoodId, name: 'Downtown' },
+    { id: 'politics' as NeighborhoodId, name: 'Civic Center' },
   ];
   const neighborhoods = NEIGHBORHOOD_DEFS.map((def, nhIdx) => {
     const slots: (DeviceType | null)[] = [null, null, null, null];
@@ -655,6 +657,9 @@ function applyCardEffect(
 function checkWinLoss(state: GameState): GameState {
   if (state.privacyMeter <= 0) {
     return { ...state, phase: 'lost', lossReason: 'Privacy and Community Trust Meter hit 0.' };
+  }
+  if (state.round > MAX_ROUNDS) {
+    return { ...state, phase: 'lost', lossReason: `The city completed its surveillance rollout. You ran out of time after ${MAX_ROUNDS} rounds.` };
   }
   const gameHasProgressed = state.surveillanceDiscard.length > 0;
   const allClear = state.neighborhoods.every((n) => n.densityTrack === 0);

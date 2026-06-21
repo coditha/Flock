@@ -48,13 +48,13 @@ function CornerPanel({
 
   const POSITION_SHORT: Record<string, string> = {
     'city-hall': 'Town Square',
-    suburb: 'Suburb', courthouse: 'Courthouse', media: 'Media', politics: 'Politics',
-    'suburb-n1': 'Sub N1', 'suburb-n2': 'Sub N2', 'suburb-n3': 'Sub N3', 'suburb-n4': 'Sub N4',
+    suburb: 'Neighborhood', courthouse: 'Courthouse', media: 'Downtown', politics: 'Civic Center',
+    'suburb-n1': 'Nbhd N1', 'suburb-n2': 'Nbhd N2', 'suburb-n3': 'Nbhd N3', 'suburb-n4': 'Nbhd N4',
     'courthouse-n1': 'Court N1', 'courthouse-n2': 'Court N2', 'courthouse-n3': 'Court N3', 'courthouse-n4': 'Court N4',
-    'media-n1': 'Med N1', 'media-n2': 'Med N2', 'media-n3': 'Med N3', 'media-n4': 'Med N4',
-    'politics-n1': 'Pol N1', 'politics-n2': 'Pol N2', 'politics-n3': 'Pol N3', 'politics-n4': 'Pol N4',
-    'suburb-road-1': 'Sub Road', 'courthouse-road-1': 'Court Road',
-    'media-road-1': 'Med Road', 'politics-road-1': 'Pol Road',
+    'media-n1': 'DT N1', 'media-n2': 'DT N2', 'media-n3': 'DT N3', 'media-n4': 'DT N4',
+    'politics-n1': 'CC N1', 'politics-n2': 'CC N2', 'politics-n3': 'CC N3', 'politics-n4': 'CC N4',
+    'suburb-road-1': 'Nbhd Road', 'courthouse-road-1': 'Court Road',
+    'media-road-1': 'DT Road', 'politics-road-1': 'CC Road',
   };
 
   // Horizontal overlap layout: cards spread evenly, overlap increases with hand size
@@ -376,6 +376,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
         <div className="tv-top-bar-row">
           <div className="tv-top-bar">
             <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
+            <div className="round-counter">Round {state.round} / 8</div>
           </div>
           <div className="settings-menu">
             <button
@@ -595,6 +596,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <div className="tv-top-bar-row">
             <div className="tv-top-bar">
               <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
+              <div className="round-counter">Round {state.round} / 8</div>
             </div>
             <div className="settings-menu">
               <button

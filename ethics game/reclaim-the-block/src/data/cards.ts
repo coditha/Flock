@@ -561,7 +561,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     id: 'incident-01',
     type: 'incident',
     name: 'Catalytic Converter Theft Spike',
-    effect: 'Add 1 surveillance device to a yellow neighborhood (Suburb).',
+    effect: 'Add 1 surveillance device to a yellow neighborhood (Neighborhood).',
     deviceTarget: 'suburb',
     deviceCount: 1,
     educationalNote:
@@ -608,7 +608,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     id: 'incident-06',
     type: 'incident',
     name: 'Protest Leads to More Monitoring',
-    effect: 'Add 1 surveillance device to the Red neighborhood (Politics Row).',
+    effect: 'Add 1 surveillance device to the Red neighborhood (Civic Center).',
     deviceTarget: 'politics',
     deviceCount: 1,
     educationalNote:
@@ -618,7 +618,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     id: 'incident-07',
     type: 'incident',
     name: 'Retail Theft Prevention Initiative',
-    effect: 'Add 1 surveillance device to the Green neighborhood (Media District).',
+    effect: 'Add 1 surveillance device to the Green neighborhood (Downtown).',
     deviceTarget: 'media',
     deviceCount: 1,
     educationalNote:

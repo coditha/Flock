@@ -28,7 +28,7 @@ const TUTORIAL_STEPS = [
   },
   {
     title: 'Community Cards',
-    body: 'Cards come in 5 colors: Legal (blue), Organizing (yellow), Media (green), Political (red), and Neighborhood (purple). You can hold up to 7 cards. Match colors to neighborhoods — Suburb needs yellow, Courthouse needs blue, Media needs green, Politics needs red.',
+    body: 'Cards come in 5 colors: Legal (blue), Organizing (yellow), Media (green), Political (red), and Neighborhood (purple). You can hold up to 7 cards. Match colors to neighborhoods — Neighborhood needs yellow, Courthouse needs blue, Downtown needs green, Civic Center needs red.',
   },
   {
     title: 'Shimmer Cards',

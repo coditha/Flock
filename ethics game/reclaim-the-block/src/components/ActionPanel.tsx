@@ -123,7 +123,7 @@ export default function ActionPanel({
         'Cost: 1 action + 2 matching-color cards.',
         'You must be inside the neighborhood.',
         'Color key:',
-        'Suburb → yellow   Courthouse → blue',
+        'Neighborhood → yellow   Courthouse → blue',
         'Media → green     Politics → red',
         nhColorNeeded
           ? `Currently need: 2 ${nhColorNeeded} cards.`
