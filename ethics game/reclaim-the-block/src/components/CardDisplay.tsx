@@ -46,8 +46,11 @@ export default function CardDisplay({ card, isSelected, onClick, disabled }: Pro
     >
       {/* Header band */}
       <div className="card-top" style={{ background: color }}>
-        <span className="card-category-icon">{CATEGORY_ICONS[card.category]}</span>
         <span className="card-category">{CATEGORY_LABELS[card.category]}</span>
+      </div>
+      {/* Art zone */}
+      <div className="card-art">
+        <span className="card-art-icon">{CATEGORY_ICONS[card.category]}</span>
       </div>
       {/* Body */}
       <div className="card-name" style={{ color }}>{card.name}</div>
