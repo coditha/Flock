@@ -1929,20 +1929,11 @@ input, select { font-family: inherit; }
   box-shadow: 0 4px 0 var(--px-dark), 4px 4px 0 var(--px-dark);
   pointer-events: all;    /* restore interactivity for the bar itself */
 }
-.round-counter {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  color: var(--text-secondary, #666);
-  white-space: nowrap;
-  letter-spacing: 0.03em;
-}
-
 /* Flip the TOP copy of the bar's contents 180° so the Privacy meter and the
    Log / New Game buttons all face the Activist & Parent players seated at the
    top of the table. The bottom copy (.tv-bottom-center) stays upright. */
 .tv-top-center .tv-top-bar .privacy-meter { transform: rotate(180deg); }
 .tv-top-center .tv-top-bar .tv-top-actions { transform: rotate(180deg); }
-.tv-top-center .tv-top-bar .round-counter { transform: rotate(180deg); }
 .tv-top-center .settings-dropdown { bottom: auto; top: calc(100% + 4px); left: auto; right: 0; transform: rotate(180deg); }
 
 /* ── Board zone (centre middle cell) ───────────────────────── */

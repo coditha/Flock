@@ -377,7 +377,6 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
         <div className="tv-top-bar-row">
           <div className="tv-top-bar">
             <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
-            <div className="round-counter">Round {state.round} / 8</div>
           </div>
           <div className="settings-menu">
             <button
@@ -601,8 +600,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
           <div className="tv-top-bar-row">
             <div className="tv-top-bar">
               <PrivacyMeter value={state.privacyMeter} blocked={!!state.pendingIncident} />
-              <div className="round-counter">Round {state.round} / 8</div>
-            </div>
+              </div>
             <div className="settings-menu">
               <button
                 className={`btn-quit ${showSettings === 'bottom' ? 'active' : ''}`}
