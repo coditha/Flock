@@ -262,10 +262,9 @@ function peekDrawCards(state: GameState, count: number): { state: GameState; dra
   s = { ...s, communityDeck: deck, communityDiscard: discard };
 
   if (deferredIncident) {
-    const newTracker = Math.min(8, s.densityTracker + 1);
-    s = { ...s, pendingIncident: { card: deferredIncident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id }, densityTracker: newTracker };
+    s = shiftMeter(s, -1, `Incident card drawn: ${deferredIncident.name}`);
+    s = { ...s, pendingIncident: { card: deferredIncident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id } };
     s = log(s, `⚠️ INCIDENT: ${deferredIncident.name}`);
-    s = log(s, `Surveillance Density increased to ${newTracker}`);
   }
 
   return { state: s, drawnCards };
@@ -310,15 +309,14 @@ function drawCommunityCards(state: GameState, playerId: number, count: number, d
   s = { ...s, communityDeck: deck, communityDiscard: discard };
 
   if (deferredIncident) {
-    const newTracker = Math.min(8, s.densityTracker + 1);
+    s = shiftMeter(s, -1, `Incident card drawn: ${deferredIncident.name}`);
     const incident = { card: deferredIncident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id };
     if (defer) {
-      s = { ...s, pendingDeferredIncident: incident, densityTracker: newTracker };
+      s = { ...s, pendingDeferredIncident: incident };
     } else {
-      s = { ...s, pendingIncident: incident, densityTracker: newTracker };
+      s = { ...s, pendingIncident: incident };
     }
     s = log(s, `⚠️ INCIDENT: ${deferredIncident.name}`);
-    s = log(s, `Surveillance Density increased to ${newTracker}`);
   }
 
   return s;
@@ -414,10 +412,10 @@ function placeDevice(
         const incident = communityDeck.splice(i, 1)[0] as IncidentCard;
         discard.push(incident);
         if (!s.cancelNextIncident) {
-          const newTracker = Math.min(8, s.densityTracker + 1);
-          s = { ...s, pendingIncident: { card: incident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id }, communityDeck, communityDiscard: discard, densityTracker: newTracker };
+          s = { ...s, communityDeck, communityDiscard: discard };
+          s = shiftMeter(s, -1, `Incident card drawn: ${incident.name}`);
+          s = { ...s, pendingIncident: { card: incident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id } };
           s = log(s, `⚠️ INCIDENT (neighborhood full): ${incident.name}`);
-          s = log(s, `Surveillance Density increased to ${newTracker}`);
         } else {
           s = { ...s, cancelNextIncident: false, communityDeck, communityDiscard: discard };
           s = log(s, `Incident "${incident.name}" cancelled by Class Action.`);
@@ -1094,6 +1092,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         actionsRemaining: 0,
         players: nextPlayers,
         pendingDiceRoll: true,
+        densityTracker: Math.min(8, s.densityTracker + 1),
       };
       s = log(s, `--- Round ${s.round} begins — ${s.players[0].role.name}, roll the dice! ---`);
 
