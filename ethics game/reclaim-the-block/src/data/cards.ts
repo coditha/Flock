@@ -500,7 +500,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-01',
     type: 'incident',
-    name: 'Catalytic Converter Theft Spike',
+    name: 'Theft Wave',
     effect: 'Add 1 surveillance device to a yellow neighborhood (Neighborhood).',
     deviceTarget: 'suburb',
     deviceCount: 1,
@@ -518,7 +518,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-03',
     type: 'incident',
-    name: 'City Approves Smart Traffic Lights',
+    name: 'Smart Traffic Approved',
     effect: 'Decrease the Privacy & Community Trust Meter by 1.',
     meterDelta: -1,
     educationalNote: 'AI traffic lights collect data automatically.',
@@ -526,7 +526,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-04',
     type: 'incident',
-    name: 'Crime Spike Reported on the News',
+    name: 'Crime Panic',
     effect: 'Decrease the Privacy & Community Trust Meter by 1.',
     meterDelta: -1,
     educationalNote: 'Fear drives more surveillance investment.',
@@ -534,7 +534,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-06',
     type: 'incident',
-    name: 'Protest Leads to More Monitoring',
+    name: 'Protest Monitoring',
     effect: 'Add 1 surveillance device to the Red neighborhood (Civic Center).',
     deviceTarget: 'politics',
     deviceCount: 1,
@@ -543,7 +543,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-07',
     type: 'incident',
-    name: 'Retail Theft Prevention Initiative',
+    name: 'Retail Tracking',
     effect: 'Add 1 surveillance device to the Green neighborhood (Downtown).',
     deviceTarget: 'media',
     deviceCount: 1,
