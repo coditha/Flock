@@ -57,7 +57,7 @@ export default function DensityTracker({ value, vertical, blocked, round }: Prop
           title={expanded ? 'Collapse tracker' : 'Expand full tracker'}
         >
           {round === undefined && <span className="density-inline-badge-emoji">{DEVICE_EMOJIS[idx]}</span>}
-          <span className="density-inline-badge-lv">{round !== undefined ? `Round ${round}` : `Lv ${value}`}</span>
+          <span className="density-inline-badge-lv">{round !== undefined ? `Round ${round}` : `${value}`}</span>
           <span className="density-inline-chevron">{expanded ? '◂' : '▸'}</span>
         </button>
 
