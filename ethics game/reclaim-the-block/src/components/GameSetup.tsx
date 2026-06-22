@@ -5,6 +5,9 @@ interface Props {
   onStart: (playerCount: 2 | 3 | 4) => void;
 }
 
+const ROLE_BODY = 'Each role has a unique ability usable once per turn:\n' +
+  ROLES.map(r => `${r.emoji} ${r.name} — ${r.specialAbility}`).join('\n');
+
 const TUTORIAL_STEPS = [
   {
     title: 'The Situation',
@@ -52,7 +55,7 @@ const TUTORIAL_STEPS = [
   },
   {
     title: 'Player Special Powers',
-    body: 'Each role has a unique ability usable once per turn:\n🟡 Parent — Draw 1 extra card when on the same tile as a teammate.\n🔵 Lawyer — Use 2 different-color cards to remove a device from ANY neighborhood.\n🟢 Activist — Discard 2 cards to lower the Surveillance Density Tracker by 1.\n🔴 City Council — Deposit with only 3 cards instead of 4.',
+    body: ROLE_BODY,
   },
   {
     title: 'Privacy Meter',
