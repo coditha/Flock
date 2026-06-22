@@ -97,13 +97,23 @@ export default function ActionPanel({
     state.densityTracker > 1;
 
   const depositRequired = state.reducedNextDeposit ? 2 : player.role.id === 'council' ? 3 : 4;
-  const depositCards = selectedCards.slice(0, depositRequired);
-  const depositColors = new Set(depositCards.map((c) => c.category));
-  const depositWildcards = depositCards.filter((c) => c.effectType === 'wildcard-deposit').length;
+  // Pick the best subset: one card per unique color, wildcards fill remaining slots
+  const depositColorMap = new Map<string, string>(); // category → cardId
+  const depositWildcardIds: string[] = [];
+  for (const card of selectedCards) {
+    if (card.effectType === 'wildcard-deposit') {
+      depositWildcardIds.push(card.id);
+    } else if (!depositColorMap.has(card.category)) {
+      depositColorMap.set(card.category, card.id);
+    }
+  }
+  const bestDepositIds = [
+    ...depositColorMap.values(),
+    ...depositWildcardIds,
+  ].slice(0, depositRequired);
   const canDeposit =
     canAct && player.position === 'city-hall' &&
-    selectedCards.length >= depositRequired &&
-    depositColors.size + depositWildcards >= depositRequired;
+    bestDepositIds.length >= depositRequired;
 
   const canPlayCard = canAct && selectedCards.length === 1 && selectedCards[0].isPowerUp;
   const colocatedPlayers = players.filter((p) => p.id !== player.id && p.position === player.position);
@@ -153,7 +163,7 @@ export default function ActionPanel({
       ].filter(Boolean).join('\n'),
       available: canDeposit,
       onTap: () => {
-        dispatch({ type: 'DEPOSIT_AT_CITY_HALL', cardIds: selectedCardIds.slice(0, depositRequired) });
+        dispatch({ type: 'DEPOSIT_AT_CITY_HALL', cardIds: bestDepositIds });
         onClearSelection();
       },
     },
