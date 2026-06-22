@@ -16,7 +16,7 @@ const STEPS = [
   },
   {
     title: 'Taking Your Turn',
-    body: 'Roll the dice to earn action points. Each action costs 1 point — spend them to move, remove devices, play cards, or use your special ability. When you are done, press End Turn to draw 2 new Community Cards.',
+    body: 'Roll the dice to earn actions for your turn. Use them to move, remove devices, play cards, or use your special ability. When you are done, press End Turn to draw 2 new Community Cards.',
   },
   {
     title: 'Moving Around',
