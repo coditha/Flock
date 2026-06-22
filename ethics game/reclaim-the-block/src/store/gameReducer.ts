@@ -666,6 +666,13 @@ function advanceTurnWithIncident(s: GameState, playerRoleId: string): GameState 
   const incidentCard = getIncidentForRound(s.round);
   if (!incidentCard || s.incidentFiredThisRound) return advanceTurn(s);
 
+  // Each player has an equal chance to trigger the incident.
+  // The last player in the round is guaranteed to trigger it if no one else did.
+  const playersRemaining = s.players.length - s.currentPlayerIndex;
+  if (Math.random() >= 1 / playersRemaining) return advanceTurn(s);
+
+  s = { ...s, incidentFiredThisRound: true };
+
   if (s.cancelNextIncident) {
     s = { ...s, cancelNextIncident: false };
     s = log(s, `Incident "${incidentCard.name}" cancelled by Class Action.`);
@@ -673,7 +680,6 @@ function advanceTurnWithIncident(s: GameState, playerRoleId: string): GameState 
   }
 
   s = shiftMeter(s, -1, `Incident: ${incidentCard.name}`);
-  s = { ...s, incidentFiredThisRound: true };
   s = advanceTurn(s);
   s = { ...s, pendingIncident: { card: incidentCard, triggeredByRoleId: playerRoleId } };
   s = log(s, `⚠️ INCIDENT: ${incidentCard.name}`);
