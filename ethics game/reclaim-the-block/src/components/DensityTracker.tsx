@@ -71,7 +71,7 @@ export default function DensityTracker({ value, vertical, blocked, round }: Prop
               >
                 <span className="density-inline-emoji">{DEVICE_EMOJIS[i]}</span>
                 <span className="density-inline-name">{label}</span>
-                <span className="density-inline-lv">Lv {i + 1}</span>
+                <span className="density-inline-lv">{i + 1}</span>
               </div>
             ))}
           </div>
