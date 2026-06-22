@@ -60,11 +60,6 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
             );
           })}
         </div>
-        <div className="pm-seg-labels">
-          <span style={{ color: 'var(--red)' }}>0</span>
-          <span style={{ color: 'var(--text-muted)' }}>15</span>
-          <span style={{ color: 'var(--green)' }}>30</span>
-        </div>
       </div>
     );
   }
@@ -85,15 +80,6 @@ export default function PrivacyMeter({ value, vertical, blocked }: Props) {
             />
           );
         })}
-      </div>
-      <div className="meter-labels">
-        {[0, 5, 10, 15, 20, 25, 30].map(n => (
-          <span key={n} className="meter-label-tick" style={
-            n === 0 ? { color: 'var(--red)' } :
-            n === 15 ? { color: 'var(--yellow)' } :
-            n === 30 ? { color: 'var(--green)' } : {}
-          }>{n}</span>
-        ))}
       </div>
     </div>
   );
