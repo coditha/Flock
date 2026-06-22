@@ -326,10 +326,10 @@ function drawCommunityCards(state: GameState, playerId: number, count: number, d
   return s;
 }
 
-function drawCommunityCardsForAll(state: GameState, count: number, defer = false): GameState {
+function drawCommunityCardsForAll(state: GameState, count: number, defer = false, noIncident = false): GameState {
   let s = state;
   for (const player of s.players) {
-    s = drawCommunityCards(s, player.id, count, defer);
+    s = drawCommunityCards(s, player.id, count, defer, noIncident);
   }
   return s;
 }
@@ -485,7 +485,7 @@ function applyCardEffect(
 
     case 'draw-cards-all':
     case 'draw-cards-swap':
-      s = drawCommunityCardsForAll(s, card.effectValue ?? 1, true);
+      s = drawCommunityCardsForAll(s, card.effectValue ?? 1, true, true);
       break;
 
     case 'remove-device-own': {

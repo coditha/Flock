@@ -448,7 +448,7 @@ export const COMMUNITY_CARDS: CommunityCard[] = [
     category: 'red',
     name: 'Election Day',
     educationalContent: 'Vote out surveillance supporters.',
-    effect: 'Move the Privacy & Trust Meter back 1 space.',
+    effect: 'Move the Privacy & Trust Meter 1 space forward.',
     effectType: 'meter-plus-immediate',
     effectValue: 1,
     isPowerUp: true,
