@@ -15,7 +15,7 @@ const TUTORIAL_STEPS = [
   },
   {
     title: 'Your Goal',
-    body: 'Remove all excess surveillance devices from all 4 neighborhoods before the Privacy & Community Trust meter hits 0. All players win or lose together — coordinate your moves!',
+    body: 'Remove all excess surveillance devices from all 4 neighborhoods before the Privacy & Community Trust meter bottoms out — or before the governor signs a surveillance contract at the end of Round 8. All players win or lose together — coordinate your moves!',
   },
   {
     title: 'Taking Your Turn',
@@ -60,10 +60,6 @@ const TUTORIAL_STEPS = [
   {
     title: 'Privacy Meter',
     body: 'Every device the city places drops the Privacy & Community Trust meter. If it falls all the way down, everyone loses. Keep it healthy by removing devices, depositing at the Town Square, and playing shimmer cards. Watch for the red pulse — it means danger!',
-  },
-  {
-    title: '8-Round Limit',
-    body: 'You have 8 rounds to push back before the governor signs a contract to put surveillance everywhere — that\'s an automatic game over. Work fast, coordinate with your team, and make every round count!',
   },
   {
     title: 'Ready to Play!',
