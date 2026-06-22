@@ -60,11 +60,15 @@ const STEPS = [
   },
   {
     title: 'Privacy Meter',
-    body: 'The meter starts at 20 out of 30. Every device placed by the city drops it. If it hits 0, everyone loses. Keep it healthy by removing devices, depositing at the Town Square, and playing shimmer cards. Watch for the red pulse — it means danger!',
+    body: 'Every device the city places drops the Privacy & Community Trust meter. If it falls all the way down, everyone loses. Keep it healthy by removing devices, depositing at the Town Square, and playing shimmer cards. Watch for the red pulse — it means danger!',
+  },
+  {
+    title: '8-Round Limit',
+    body: 'You have 8 rounds to push back before the governor signs a contract to put surveillance everywhere — that\'s an automatic game over. Work fast, coordinate with your team, and make every round count!',
   },
   {
     title: 'Ready to Play!',
-    body: 'Work together, share cards, use your special powers, and clear all 4 neighborhoods before the Privacy Meter hits zero. Good luck — your community is counting on you!',
+    body: 'Work together, share cards, use your special powers, and clear all 4 neighborhoods before time runs out or the Privacy Meter bottoms out. Good luck — your community is counting on you!',
   },
 ];
 
