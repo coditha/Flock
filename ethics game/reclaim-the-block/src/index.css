@@ -450,7 +450,7 @@ input, select { font-family: inherit; }
 .density-inline-badge-name { flex: 1; text-align: left; font-weight: 700; font-size: 0.75rem; }
 .density-inline-badge-lv {
   flex: 1; text-align: left; white-space: nowrap;
-  font-family: 'Press Start 2P', monospace; font-size: 0.7rem;
+  font-family: 'Press Start 2P', monospace; font-size: 1rem;
   color: var(--yellow); text-shadow: 1px 1px 0 var(--px-dark);
 }
 .density-inline-chevron { font-size: 0.8rem; color: var(--text-muted); }

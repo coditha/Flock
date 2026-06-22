@@ -64,13 +64,12 @@ export default function DensityTracker({ value, vertical, blocked, round }: Prop
         {/* In-place expansion — full tracker unfolds beneath the badge */}
         {expanded && (
           <div className="density-inline-track">
-            {DEVICE_LABELS.map((label, i) => (
+            {DEVICE_LABELS.map((_label, i) => (
               <div
                 key={i}
                 className={`density-inline-step ${i + 1 === value ? 'current' : i + 1 < value ? 'passed' : ''}`}
               >
                 <span className="density-inline-emoji">{DEVICE_EMOJIS[i]}</span>
-                <span className="density-inline-name">{label}</span>
                 <span className="density-inline-lv">{i + 1}</span>
               </div>
             ))}
