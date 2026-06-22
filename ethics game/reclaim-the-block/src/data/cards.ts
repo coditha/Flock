@@ -532,14 +532,6 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     educationalNote: 'Fear drives more surveillance investment.',
   },
   {
-    id: 'incident-05',
-    type: 'incident',
-    name: 'Data Breach',
-    effect: 'Privacy & Community Trust decreases by 1.',
-    meterDelta: -1,
-    educationalNote: 'Leaked footage damages community trust.',
-  },
-  {
     id: 'incident-06',
     type: 'incident',
     name: 'Protest Leads to More Monitoring',
@@ -556,13 +548,5 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     deviceTarget: 'media',
     deviceCount: 1,
     educationalNote: 'Stores expand facial recognition after theft.',
-  },
-  {
-    id: 'incident-08',
-    type: 'incident',
-    name: 'Wildfire Evacuation Monitoring',
-    effect: 'Privacy & Community Trust decreases by 1.',
-    meterDelta: -1,
-    educationalNote: 'Emergencies justify expanded drone surveillance.',
   },
 ];
