@@ -543,7 +543,7 @@ export const INCIDENT_CARDS: IncidentCard[] = [
   {
     id: 'incident-07',
     type: 'incident',
-    name: 'Retail Tracking',
+    name: 'Retail AI Tracking',
     effect: 'Add 1 surveillance device to the Green neighborhood (Downtown).',
     deviceTarget: 'media',
     deviceCount: 1,

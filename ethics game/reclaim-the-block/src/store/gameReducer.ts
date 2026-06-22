@@ -9,9 +9,10 @@ import type {
   Position,
   RoleId,
 } from '../types/game';
-import { COMMUNITY_CARDS, INCIDENT_CARDS } from '../data/cards';
+import { COMMUNITY_CARDS } from '../data/cards';
 import { SURVEILLANCE_CARDS } from '../data/surveillanceCards';
 import { ROLES } from '../data/roles';
+import { getIncidentForRound } from '../data/roundConfig';
 
 const MAX_ROUNDS = 8;
 
@@ -66,8 +67,7 @@ function shiftMeter(state: GameState, delta: number, reason: string): GameState 
 }
 
 function buildCommunityDeck(): Card[] {
-  const allCards: Card[] = [...COMMUNITY_CARDS, ...INCIDENT_CARDS];
-  return shuffle(allCards);
+  return shuffle([...COMMUNITY_CARDS]);
 }
 
 // Slot adjacency within a neighborhood: N1(0) N2(1) N3(2) N4(3)
@@ -196,6 +196,8 @@ export function buildInitialState(playerCount: 2 | 3 | 4): GameState {
 
     pendingDiceRoll: true,
     lastDiceRoll: null,
+
+    incidentFiredThisRound: false,
 
     gameLog: ['Game started! Good luck reclaiming the block.'],
     lossReason: undefined,
@@ -406,25 +408,6 @@ function placeDevice(
   if (densityTrack === 4) {
     s = { ...s, densityTracker: Math.min(8, s.densityTracker + 1) };
     s = log(s, `Density Tracker increased to ${s.densityTracker}`);
-    // Draw incident card
-    const communityDeck = [...s.communityDeck];
-    const discard = [...s.communityDiscard];
-    for (let i = 0; i < communityDeck.length; i++) {
-      if (communityDeck[i].type === 'incident') {
-        const incident = communityDeck.splice(i, 1)[0] as IncidentCard;
-        discard.push(incident);
-        if (!s.cancelNextIncident) {
-          s = { ...s, communityDeck, communityDiscard: discard };
-          s = shiftMeter(s, -1, `Incident card drawn: ${incident.name}`);
-          s = { ...s, pendingIncident: { card: incident, triggeredByRoleId: s.players[s.currentPlayerIndex]?.role.id } };
-          s = log(s, `⚠️ INCIDENT (neighborhood full): ${incident.name}`);
-        } else {
-          s = { ...s, cancelNextIncident: false, communityDeck, communityDiscard: discard };
-          s = log(s, `Incident "${incident.name}" cancelled by Class Action.`);
-        }
-        break;
-      }
-    }
   }
 
   // Flock reader bleed
@@ -677,6 +660,24 @@ function checkWinLoss(state: GameState): GameState {
     return { ...state, phase: 'won' };
   }
   return state;
+}
+
+function advanceTurnWithIncident(s: GameState, playerRoleId: string): GameState {
+  const incidentCard = getIncidentForRound(s.round);
+  if (!incidentCard || s.incidentFiredThisRound) return advanceTurn(s);
+
+  if (s.cancelNextIncident) {
+    s = { ...s, cancelNextIncident: false };
+    s = log(s, `Incident "${incidentCard.name}" cancelled by Class Action.`);
+    return advanceTurn(s);
+  }
+
+  s = shiftMeter(s, -1, `Incident: ${incidentCard.name}`);
+  s = { ...s, incidentFiredThisRound: true };
+  s = advanceTurn(s);
+  s = { ...s, pendingIncident: { card: incidentCard, triggeredByRoleId: playerRoleId } };
+  s = log(s, `⚠️ INCIDENT: ${incidentCard.name}`);
+  return s;
 }
 
 function advanceTurn(s: GameState): GameState {
@@ -1030,19 +1031,19 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const limited = enforceHandLimit(s, playerId, true);
       if (limited) return limited;
 
-      return advanceTurn(s);
+      return advanceTurnWithIncident(s, player.role.id);
     }
 
     case 'DISCARD_TO_HAND_LIMIT': {
       if (!state.pendingDiscard) return state;
       const { playerId, count, advanceAfter } = state.pendingDiscard;
       if (action.cardIds.length !== count) return state;
-      const playerName = state.players.find((p) => p.id === playerId)!.role.name;
+      const discardPlayer = state.players.find((p) => p.id === playerId)!;
       let s = removeCardFromHand(state, playerId, action.cardIds);
-      s = log(s, `${playerName} discarded ${count} card(s) to meet the hand limit.`);
+      s = log(s, `${discardPlayer.role.name} discarded ${count} card(s) to meet the hand limit.`);
       s = { ...s, pendingDiscard: null };
       // Only end the turn if the overflow came from the end-of-turn draw
-      return advanceAfter ? advanceTurn(s) : s;
+      return advanceAfter ? advanceTurnWithIncident(s, discardPlayer.role.id) : s;
     }
 
     // ── Board Phase ───────────────────────────────────────────────────
@@ -1095,6 +1096,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         players: nextPlayers,
         pendingDiceRoll: true,
         densityTracker: Math.min(8, s.densityTracker + 1),
+        incidentFiredThisRound: false,
       };
       s = log(s, `--- Round ${s.round} begins — ${s.players[0].role.name}, roll the dice! ---`);
 

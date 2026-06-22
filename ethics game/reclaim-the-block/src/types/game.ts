@@ -157,6 +157,8 @@ export interface GameState {
   pendingDiceRoll: boolean;
   lastDiceRoll: number | null;
 
+  incidentFiredThisRound: boolean;
+
   gameLog: string[];
   lossReason?: string;
 }

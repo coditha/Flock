@@ -1,5 +1,6 @@
 import { useReducer, useState, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { gameReducer, buildInitialState, getReachablePositions } from './store/gameReducer';
+import { getBoardPhaseEvent } from './data/roundConfig';
 import type { GameAction } from './store/gameReducer';
 import type { NeighborhoodId, SlotIndex, CommunityCard, Player, GameState } from './types/game';
 import GameSetup from './components/GameSetup';
@@ -698,7 +699,7 @@ function GameScreen({ playerCount, onRestart, onNewGame }: GameScreenProps) {
             <div className="board-phase-body">
               <div className="board-phase-icon">⚠️</div>
               <div className="board-phase-title">Board Phase</div>
-              <p className="board-phase-text">All players have taken their turns. The city is placing the next surveillance device.</p>
+              <p className="board-phase-text">{getBoardPhaseEvent(state.round)}</p>
             </div>
             <div className="board-phase-footer">
               <button
