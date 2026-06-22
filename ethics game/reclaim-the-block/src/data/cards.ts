@@ -549,4 +549,12 @@ export const INCIDENT_CARDS: IncidentCard[] = [
     deviceCount: 1,
     educationalNote: 'Stores expand facial recognition after theft.',
   },
+  {
+    id: 'incident-09',
+    type: 'incident',
+    name: 'AI Mislabels Activity as Suspicious',
+    effect: 'Privacy & Community Trust decreases by 2.',
+    meterDelta: -2,
+    educationalNote: 'AI systems incorrectly label normal activity as suspicious in certain neighborhoods.',
+  },
 ];
